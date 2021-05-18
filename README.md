@@ -1,4 +1,4 @@
-# foodstack
+# FoodStack
 
 Flutter app by Team APPetite.
 

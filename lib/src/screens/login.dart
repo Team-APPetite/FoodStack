@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/screens/signup.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -38,7 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               OutlinedButton(
                   onPressed: () {
-
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>
+                            SignUpScreen()));
                   },
                   child: Text('Sign up')
               )

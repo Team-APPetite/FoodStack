@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/screens/signup.dart';
+import 'package:foodstack/src/themeColors.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
               fontFamily: 'Avenir',
               fontSize: 60.0,
               fontWeight: FontWeight.bold,
+              color: ThemeColors.dark,
             ),
           ),
           SizedBox(height: 45.0),
@@ -30,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
               hintStyle: TextStyle(fontSize: 12.0, color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.teal,
+                  color: ThemeColors.teals,
                   width: 2.0,
                 ),
               ),
@@ -44,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
               hintStyle: TextStyle(fontSize: 12.0, color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.teal,
+                  color: ThemeColors.teals,
                   width: 2.0,
                 ),
               ),
@@ -79,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
               ),
-              primary: Colors.orange,
+              primary: ThemeColors.oranges,
             ),
           ),
           SizedBox(height: 50.0),

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "701366733071",
+    "project_id": "foodstack-e8d0f",
+    "storage_bucket": "foodstack-e8d0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701366733071:android:90ccc9fb31d92b3dbe167a",
+        "android_client_info": {
+          "package_name": "com.charismakausar.foodstack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "701366733071-1jurjajrnm7dblu63ftqa6treavvu5e5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBifZn2W0RCqaht_xtOeTvCtsZapaKQVkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "701366733071-1jurjajrnm7dblu63ftqa6treavvu5e5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

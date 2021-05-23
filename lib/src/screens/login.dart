@@ -10,50 +10,129 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-        backgroundColor: Colors.orange,
-      ),
-      body: Column(
-        children: [
+      body: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(children: [
+          SizedBox(height: 75.0),
+          Text(
+            'FoodStack',
+            style: TextStyle(
+              fontFamily: 'Avenir',
+              fontSize: 60.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 45.0),
           TextField(
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              hintText: 'Email',
+              hintText: 'EMAIL',
+              hintStyle: TextStyle(fontSize: 12.0, color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.teal,
+                  width: 2.0,
+                ),
+              ),
             ),
           ),
+          SizedBox(height: 15.0),
           TextField(
             obscureText: true,
             decoration: InputDecoration(
-              hintText: 'Password',
+              hintText: 'PASSWORD',
+              hintStyle: TextStyle(fontSize: 12.0, color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.teal,
+                  width: 2.0,
+                ),
+              ),
             ),
           ),
+          SizedBox(height: 45.0),
+          TextButton(
+            child: Text(
+              'Forgot Password?',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16.0,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+            onPressed: () {},
+          ),
+          SizedBox(height: 45.0),
+          ElevatedButton(
+            onPressed: () {},
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
+              child: Text(
+                'LOGIN',
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              primary: Colors.orange,
+            ),
+          ),
+          SizedBox(height: 50.0),
+          Text(
+            'or Sign in with',
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 16.0,
+            ),
+          ),
+          SizedBox(height: 30.0),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: SizedBox(
+              height: 60,
+              width: 60,
+              child: ElevatedButton(
+                child: Image.asset('images/google.png'),
+                style: ElevatedButton.styleFrom(
+                    shape: CircleBorder(), primary: Colors.white),
+                onPressed: () {},
+              ),
+            ),
+          ),
+          SizedBox(height: 45.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              OutlinedButton(
-                  onPressed: (){
-
-                  },
-                  child: Text('Login')
+              Text(
+                'New to FoodStack?',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16.0,
+                ),
               ),
-              OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) =>
-                            SignUpScreen()));
-                  },
-                  child: Text('Sign up')
-              )
+              TextButton(
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16.0,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignUpScreen()));
+                },
+              ),
             ],
           ),
-          OutlinedButton(
-              onPressed: () {
-
-              },
-              child: Text('Sign in with Google')
-          ),
         ]),
+      ),
     );
   }
 }

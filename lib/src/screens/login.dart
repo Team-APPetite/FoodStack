@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/screens/signup.dart';
 import 'package:foodstack/src/themeColors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -8,6 +10,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String _email, _password;
+  final auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
+            onChanged: (value) {
+              _email = value.trim();
+            },
           ),
           SizedBox(height: 15.0),
           TextField(
@@ -51,6 +59,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
+            onChanged: (value) {
+              _password = value.trim();
+            },
           ),
           SizedBox(height: 45.0),
           TextButton(
@@ -66,7 +77,15 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 45.0),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              auth
+                  .signInWithEmailAndPassword(
+                      email: _email, password: _password)
+                  .then((_) {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => HomeScreen()));
+              });
+            },
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),

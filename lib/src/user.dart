@@ -1,3 +1,5 @@
+// Unused class, for user profile
+
 class User {
   String _firstName;
   String _lastName;

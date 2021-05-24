@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/app.dart';
 import 'package:foodstack/src/themeColors.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -25,6 +24,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
         SizedBox(height: 70.0),
+        TextField(
+          keyboardType: TextInputType.name,
+          decoration: InputDecoration(
+            hintText: 'FIRST NAME',
+            hintStyle: TextStyle(fontSize: 12.0, color: Colors.grey),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: ThemeColors.teals,
+                width: 2.0,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 15.0),
+        TextField(
+          keyboardType: TextInputType.name,
+          decoration: InputDecoration(
+            hintText: 'LAST NAME',
+            hintStyle: TextStyle(fontSize: 12.0, color: Colors.grey),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: ThemeColors.teals,
+                width: 2.0,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 15.0),
         TextField(
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(

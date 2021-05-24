@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/themeColors.dart';
+
+import 'home.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -7,6 +10,9 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  String _firstName, _lastName, _email, _password, _passwordConfirmation;
+  final auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +42,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           ),
+          onChanged: (value) {
+            _firstName = value.trim();
+          },
         ),
         SizedBox(height: 15.0),
         TextField(
@@ -50,6 +59,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           ),
+          onChanged: (value) {
+            _lastName = value.trim();
+          },
         ),
         SizedBox(height: 15.0),
         TextField(
@@ -64,6 +76,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           ),
+          onChanged: (value) {
+            _email = value.trim();
+          },
         ),
         SizedBox(height: 15.0),
         TextField(
@@ -78,6 +93,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           ),
+          onChanged: (value) {
+            _password = value.trim();
+          },
         ),
         SizedBox(height: 15.0),
         TextField(
@@ -92,13 +110,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           ),
+          onChanged: (value) {
+            _passwordConfirmation = value.trim();
+          },
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 110.0),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                auth
+                    .createUserWithEmailAndPassword(
+                    email: _email, password: _password)
+                    .then((_) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                });
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 80.0, vertical: 16.0),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/themeColors.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'home.dart';
 
@@ -10,7 +11,11 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  String _firstName, _lastName, _email, _password, _passwordConfirmation;
+  String _firstName = 'default';
+  String _lastName = 'default';
+  String _email = 'default';
+  String _password = 'default';
+  String _passwordConfirmation = 'default';
   final auth = FirebaseAuth.instance;
 
   @override
@@ -119,15 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           children: [
             SizedBox(height: 110.0),
             ElevatedButton(
-              onPressed: () {
-                auth
-                    .createUserWithEmailAndPassword(
-                    email: _email, password: _password)
-                    .then((_) {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
-                });
-              },
+              onPressed: () => _signup(_firstName, _email, _password, _passwordConfirmation),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 80.0, vertical: 16.0),
@@ -149,5 +146,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ]),
     ));
+  }
+
+  _signup(String _firstName, String _email, String _password, String _passwordConfirmation) async {
+    try {
+      if (_firstName == 'default') {
+        Fluttertoast.showToast(
+          msg: 'Please enter your first name',
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+        );
+      } else if (_lastName == 'default') {
+        Fluttertoast.showToast(
+          msg: 'Please enter your last name',
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+        );
+      } else if (_email == 'default') {
+        Fluttertoast.showToast(
+          msg: 'Please enter your email address',
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+        );
+      } else if (_password == 'default') {
+        Fluttertoast.showToast(
+          msg: 'Please enter a password',
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+        );
+      } else if (_password != _passwordConfirmation) {
+        Fluttertoast.showToast(
+          msg: 'Passwords do not match',
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+        );
+      } else {
+        await auth.createUserWithEmailAndPassword(
+            email: _email, password: _password);
+
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomeScreen()));
+      }
+    } on FirebaseAuthException catch (error) {
+      print(error);
+      Fluttertoast.showToast(
+        msg: '${error.message}',
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 5,
+      );
+    }
   }
 }

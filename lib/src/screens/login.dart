@@ -3,6 +3,7 @@ import 'package:foodstack/src/screens/signup.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'home.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _email, _password;
+  String _email = 'default', _password = 'default';
   final auth = FirebaseAuth.instance;
 
   @override
@@ -77,15 +78,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 45.0),
           ElevatedButton(
-            onPressed: () {
-              auth
-                  .signInWithEmailAndPassword(
-                      email: _email, password: _password)
-                  .then((_) {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => HomeScreen()));
-              });
-            },
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
@@ -96,6 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
+            onPressed: () => _login(_email, _password),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
@@ -155,5 +148,29 @@ class _LoginScreenState extends State<LoginScreen> {
         ]),
       ),
     );
+  }
+
+  _login(String _email, String _password) async {
+    try {
+      if (_email == 'default') {
+        Fluttertoast.showToast(
+          msg: 'Please enter your email address',
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 5,
+        );
+      } else {
+        await auth.signInWithEmailAndPassword(
+            email: _email, password: _password);
+
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomeScreen()));
+      }
+    } on FirebaseAuthException catch (error) {
+      Fluttertoast.showToast(
+        msg: '${error.message}',
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 5,
+      );
+    }
   }
 }

@@ -21,7 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+        body: Padding(
       padding: const EdgeInsets.all(30.0),
       child: Column(children: [
         SizedBox(height: 75.0),
@@ -124,7 +124,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           children: [
             SizedBox(height: 110.0),
             ElevatedButton(
-              onPressed: () => _signup(_firstName, _email, _password, _passwordConfirmation),
+              onPressed: () => _signup(_firstName, _lastName, _email, _password,
+                  _passwordConfirmation),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 80.0, vertical: 16.0),
@@ -148,7 +149,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     ));
   }
 
-  _signup(String _firstName, String _email, String _password, String _passwordConfirmation) async {
+  _signup(String _firstName, String _lastName, String _email, String _password,
+      String _passwordConfirmation) async {
     try {
       if (_firstName == 'default') {
         Fluttertoast.showToast(

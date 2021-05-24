@@ -10,7 +10,7 @@ class ThemeColors {
   static Color light = Color(hexColor('#DFDDDB'));
 
   static int hexColor(String color) {
-    String hexStr = '0xff' + color;
+    String hexStr = '0xFF' + color;
     hexStr = hexStr.replaceAll('#', '');
     int hexColor = int.parse(hexStr);
     return hexColor;

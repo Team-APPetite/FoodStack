@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/screens/signup.dart';
+import 'package:foodstack/src/screens/reset.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'home.dart';
+import 'package:foodstack/src/screens/home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,18 +35,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget header() {
-    return Column(
-      children: [
-        Text(
-          'FoodStack',
-          style: TextStyle(
-            fontFamily: 'Avenir',
-            fontSize: 60.0,
-            fontWeight: FontWeight.bold,
-            color: ThemeColors.dark,
-          ),
-        ),
-      ],
+    return Text(
+      'FoodStack',
+      style: TextStyle(
+        fontFamily: 'Avenir',
+        fontSize: 60.0,
+        fontWeight: FontWeight.bold,
+        color: ThemeColors.dark,
+      ),
     );
   }
 
@@ -94,7 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
             decoration: TextDecoration.underline,
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ResetScreen()));
+        },
       ),
       SizedBox(height: 20.0),
       ElevatedButton(
@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await auth.signInWithEmailAndPassword(
             email: _email, password: _password);
 
-        Navigator.of(context).pushReplacement(
+        Navigator.push(context,
             MaterialPageRoute(builder: (context) => HomeScreen()));
       }
     } on FirebaseAuthException catch (error) {

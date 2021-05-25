@@ -12,7 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _email = 'default', _password = 'default';
+  String _email = '', _password = '';
   final auth = FirebaseAuth.instance;
 
   @override
@@ -139,7 +139,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Image.asset('images/google.png'),
               style: ElevatedButton.styleFrom(
                   shape: CircleBorder(), primary: Colors.white),
-              onPressed: () {},
+              onPressed: () {
+                // TODO
+              },
             ),
           ),
         ),
@@ -178,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _login(String _email, String _password) async {
     try {
-      if (_email == 'default') {
+      if (_email == '') {
         Fluttertoast.showToast(
           msg: 'Please enter your email address',
           gravity: ToastGravity.TOP,

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'verify.dart';
 
 import 'home.dart';
 
@@ -11,11 +12,11 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  String _firstName = 'default';
-  String _lastName = 'default';
-  String _email = 'default';
-  String _password = 'default';
-  String _passwordConfirmation = 'default';
+  String _firstName = '';
+  String _lastName = '';
+  String _email = '';
+  String _password = '';
+  String _passwordConfirmation = '';
   final auth = FirebaseAuth.instance;
 
   @override
@@ -152,25 +153,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
   _signup(String _firstName, String _lastName, String _email, String _password,
       String _passwordConfirmation) async {
     try {
-      if (_firstName == 'default') {
+      if (_firstName == '') {
         Fluttertoast.showToast(
           msg: 'Please enter your first name',
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 5,
         );
-      } else if (_lastName == 'default') {
+      } else if (_lastName == '') {
         Fluttertoast.showToast(
           msg: 'Please enter your last name',
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 5,
         );
-      } else if (_email == 'default') {
+      } else if (_email == '') {
         Fluttertoast.showToast(
           msg: 'Please enter your email address',
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 5,
         );
-      } else if (_password == 'default') {
+      } else if (_password == '') {
         Fluttertoast.showToast(
           msg: 'Please enter a password',
           gravity: ToastGravity.TOP,
@@ -186,8 +187,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         await auth.createUserWithEmailAndPassword(
             email: _email, password: _password);
 
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => VerifyScreen()));
       }
     } on FirebaseAuthException catch (error) {
       print(error);

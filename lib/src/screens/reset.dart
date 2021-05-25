@@ -51,7 +51,7 @@ class _ResetScreenState extends State<ResetScreen> {
         Text(
           'Enter your email to receive instructions for resetting your password',
           style: TextStyle(
-            color: Colors.grey,
+            color: ThemeColors.dark,
             fontSize: 16.0,
           ),
           textAlign: TextAlign.center,

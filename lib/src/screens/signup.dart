@@ -2,9 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/widgets/back.dart';
 import 'verify.dart';
-
-import 'home.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -22,9 +21,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
+        body: Stack(
+          children: [
+            Padding(
       padding: const EdgeInsets.all(30.0),
-      child: Column(children: [
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            header(),
+            signupForm(),
+      ]),
+    ),
+            BackArrow()
+          ],
+        ));
+  }
+
+  Widget header() {
+    return Column(
+      children: [
         SizedBox(height: 75.0),
         Text(
           'Sign Up for FoodStack',
@@ -35,7 +48,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             color: ThemeColors.dark,
           ),
         ),
-        SizedBox(height: 70.0),
+        SizedBox(height: 30.0),
+      ],
+    );
+  }
+
+  Widget signupForm() {
+    return Column(
+      children: [
         TextField(
           keyboardType: TextInputType.name,
           decoration: InputDecoration(
@@ -120,10 +140,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             _passwordConfirmation = value.trim();
           },
         ),
+        SizedBox(height: 50.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 110.0),
             ElevatedButton(
               onPressed: () => _signup(_firstName, _lastName, _email, _password,
                   _passwordConfirmation),
@@ -146,8 +166,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ],
         ),
-      ]),
-    ));
+        SizedBox(height: 100.0)
+      ],
+    );
   }
 
   _signup(String _firstName, String _lastName, String _email, String _password,
@@ -187,8 +208,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         await auth.createUserWithEmailAndPassword(
             email: _email, password: _password);
 
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => VerifyScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => VerifyScreen()));
       }
     } on FirebaseAuthException catch (error) {
       print(error);

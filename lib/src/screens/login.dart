@@ -5,6 +5,7 @@ import 'package:foodstack/src/themeColors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/widgets/back.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -21,15 +22,12 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 120.0, horizontal: 30.0),
         child:
-         Column(
-           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-           children: [
-             header(),
-             loginUI(),
-             socialLogin(),
-             newUser(),
-           ]
-         ),
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          header(),
+          loginForm(),
+          socialLogin(),
+          newUser(),
+        ]),
       ),
     );
   }
@@ -46,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget loginUI() {
+  Widget loginForm() {
     return Column(children: [
       TextField(
         keyboardType: TextInputType.emailAddress,
@@ -92,8 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ResetScreen()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ResetScreen()));
         },
       ),
       SizedBox(height: 20.0),
@@ -190,8 +188,8 @@ class _LoginScreenState extends State<LoginScreen> {
         await auth.signInWithEmailAndPassword(
             email: _email, password: _password);
 
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }
     } on FirebaseAuthException catch (error) {
       Fluttertoast.showToast(

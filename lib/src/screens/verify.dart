@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/themeColors.dart';
+import 'package:foodstack/src/widgets/back.dart';
 import 'home.dart';
 import 'dart:async';
 
@@ -27,37 +28,42 @@ class _VerifyScreenState extends State<VerifyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.email,
-              size: 100,
-              color: ThemeColors.teals,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.email,
+                  size: 100,
+                  color: ThemeColors.teals,
+                ),
+                Text(
+                  'Verify your email',
+                  style: TextStyle(
+                    fontFamily: 'Avenir',
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                    color: ThemeColors.dark,
+                  ),
+                ),
+                SizedBox(height: 30.0),
+                Text(
+                  'A verification email has been sent to ${user.email}, please verify.',
+                  style: TextStyle(
+                    color: ThemeColors.dark,
+                    fontSize: 16.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 50.0)
+              ],
             ),
-            Text(
-              'Verify your email',
-              style: TextStyle(
-                fontFamily: 'Avenir',
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold,
-                color: ThemeColors.dark,
-              ),
-            ),
-            SizedBox(height: 30.0),
-            Text(
-              'A verification email has been sent to ${user.email}, please verify.',
-              style: TextStyle(
-                color: ThemeColors.dark,
-                fontSize: 16.0,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 50.0)
-          ],
-        ),
+          ),
+          BackArrow()
+        ],
       ),
     );
   }
@@ -65,10 +71,10 @@ class _VerifyScreenState extends State<VerifyScreen> {
   Future<void> checkEmailVerified() async {
     user = auth.currentUser;
     await user.reload();
-    if(user.emailVerified) {
+    if (user.emailVerified) {
       timer.cancel();
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 }

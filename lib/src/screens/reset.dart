@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/widgets/back.dart';
 
 class ResetScreen extends StatefulWidget {
   @override
@@ -16,14 +17,18 @@ class _ResetScreenState extends State<ResetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 120.0, horizontal: 30.0),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, children: [
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 120.0, horizontal: 30.0),
+            child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               header(),
               instructions(),
-              resetUI(),
-        ]),
+              resetForm(),
+            ]),
+          ),
+          BackArrow()
+        ],
       ),
     );
   }
@@ -60,7 +65,8 @@ class _ResetScreenState extends State<ResetScreen> {
       ],
     );
   }
-  Widget resetUI() {
+
+  Widget resetForm() {
     return Column(children: [
       TextField(
         keyboardType: TextInputType.emailAddress,
@@ -102,10 +108,9 @@ class _ResetScreenState extends State<ResetScreen> {
   }
 
   _reset(String _email) async {
-
     try {
       User user = auth.currentUser;
-      if(user.emailVerified) {
+      if (user.emailVerified) {
         await auth.sendPasswordResetEmail(email: _email);
         Navigator.of(context).pop();
       } else {

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/widgets/back.dart';
+import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'track.dart';
 import 'home.dart';
@@ -15,33 +15,31 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        Center(
-          child: OutlinedButton(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
-              child: Text(
-                'Add new address',
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
+      appBar: Header.getAppBar(),
+      body: Center(
+        child: OutlinedButton(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
+            child: Text(
+              'Add new address',
+              style: TextStyle(
+                fontSize: 16.0,
               ),
-            ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddressScreen()));
-            },
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              primary: ThemeColors.teals,
             ),
           ),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddressScreen()));
+          },
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            primary: ThemeColors.teals,
+          ),
         ),
-        BackArrow()
-      ]),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

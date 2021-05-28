@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/widgets/back.dart';
+import 'package:foodstack/src/widgets/header.dart';
 import 'home.dart';
 import 'profile.dart';
 import 'package:foodstack/src/themeColors.dart';
@@ -14,7 +14,8 @@ class _TrackScreenState extends State<TrackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [Center(child: Text('Coming Soon')), BackArrow()]),
+      appBar: Header.getAppBar(),
+      body: Center(child: Text('Coming Soon')),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

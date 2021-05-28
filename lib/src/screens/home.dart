@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'profile.dart';
 import 'track.dart';
-import 'package:foodstack/src/widgets/back.dart';
+import 'package:foodstack/src/widgets/header.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -13,15 +13,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Padding(
+      body: Padding(
               padding: EdgeInsets.all(30.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(height: 100.0),
                   Text(
-                    'Welcome to FoodStack',
+                    'Hungry? Order Now',
                     style: TextStyle(
                       fontFamily: 'Avenir',
                       fontSize: 32.0,
@@ -35,11 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () {},
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 50.0),
+                              horizontal: 10.0, vertical: 40.0),
                           child: Column(
                             children: [
                               Text(
-                                'New Order',
+                                'Start a\nNew Order',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 18.0,
@@ -60,18 +58,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10, height: 300.0),
+                    SizedBox(width: 10),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {},
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 50.0),
+                              horizontal: 10.0, vertical: 40.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Nearby Orders',
+                                'Nearby\nOrders',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 18.0,
@@ -101,11 +99,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           onPressed: () {},
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 50.0),
+                                horizontal: 10.0, vertical: 40.0),
                             child: Column(
                               children: [
                                 Text(
-                                  'Favourites',
+                                  'Your\nFavourites',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 18.0,
@@ -123,17 +121,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10, height: 150.0),
+                      SizedBox(width: 10),
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {},
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 50.0),
+                                horizontal: 10.0, vertical: 40.0),
                             child: Column(
                               children: [
                                 Text(
-                                  'Recent Orders',
+                                  'Recent\nOrders',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 18.0,
@@ -155,9 +153,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               )),
-          BackArrow()
-        ],
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

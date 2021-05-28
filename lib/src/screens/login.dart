@@ -5,7 +5,7 @@ import 'package:foodstack/src/themeColors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodstack/src/widgets/back.dart';
+import 'package:foodstack/src/widgets/header.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -19,8 +19,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 120.0, horizontal: 30.0),
+        padding: const EdgeInsets.all(30.0),
         child:
             Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           header(),

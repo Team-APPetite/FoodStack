@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodstack/src/widgets/back.dart';
+import 'package:foodstack/src/widgets/header.dart';
 import 'verify.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -21,26 +21,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-          children: [
-            Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        appBar: Header.getAppBar(),
+        resizeToAvoidBottomInset: false,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             header(),
             signupForm(),
-      ]),
-    ),
-            BackArrow()
-          ],
+          ]),
         ));
   }
 
   Widget header() {
     return Column(
       children: [
-        SizedBox(height: 75.0),
         Text(
-          'Sign Up for FoodStack',
+          'Sign Up',
           style: TextStyle(
             fontFamily: 'Avenir',
             fontSize: 30.0,
@@ -141,30 +137,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
           },
         ),
         SizedBox(height: 50.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () => _signup(_firstName, _lastName, _email, _password,
-                  _passwordConfirmation),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 80.0, vertical: 16.0),
-                child: Text(
-                  'SIGN UP',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                  ),
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                primary: ThemeColors.oranges,
+        ElevatedButton(
+          onPressed: () => _signup(
+              _firstName, _lastName, _email, _password, _passwordConfirmation),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
+            child: Text(
+              'SIGN UP',
+              style: TextStyle(
+                fontSize: 16.0,
               ),
             ),
-          ],
+          ),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            primary: ThemeColors.oranges,
+          ),
         ),
         SizedBox(height: 100.0)
       ],

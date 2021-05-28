@@ -4,6 +4,7 @@ import 'package:foodstack/src/widgets/back.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'track.dart';
 import 'home.dart';
+import 'address.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -14,7 +15,33 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [Center(child: Text('Coming Soon')), BackArrow()]),
+      body: Stack(children: [
+        Center(
+          child: OutlinedButton(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
+              child: Text(
+                'Add new address',
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddressScreen()));
+            },
+            style: OutlinedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              primary: ThemeColors.teals,
+            ),
+          ),
+        ),
+        BackArrow()
+      ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -34,17 +61,14 @@ class _ProfilePageState extends State<ProfilePage> {
         currentIndex: 2,
         onTap: (icon) {
           if (icon == 0) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomeScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomeScreen()));
           } else if (icon == 1) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => TrackScreen()));
-          } else {
-
-          }
+          } else {}
         },
       ),
-
     );
   }
 }

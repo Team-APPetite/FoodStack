@@ -14,37 +14,34 @@ class _TrackScreenState extends State<TrackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:
-            Stack(children: [Center(child: Text('Coming Soon')), BackArrow()]),
-        bottomNavigationBar: BottomNavigationBar(
-    items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-        icon: Icon(Icons.list_alt_outlined, size: 25),
-    label: 'Order',
-    ),
-    BottomNavigationBarItem(
-    icon: Icon(Icons.location_on_outlined, size: 25),
-    label: 'Track',
-    ),
-    BottomNavigationBarItem(
-    icon: Icon(Icons.person, size: 25),
-    label: 'Profile',
-    ),
-    ],
-    selectedItemColor: ThemeColors.teals,
-    currentIndex: 1,
-    onTap: (icon) {
-    if (icon == 0) {
-    Navigator.push(context,
-    MaterialPageRoute(builder: (context) => HomeScreen()));
-    } else if (icon == 2) {
-    Navigator.push(context,
-    MaterialPageRoute(builder: (context) => ProfilePage()));
-    } else {
-
-    }
-    },
-    ),
+      body: Stack(children: [Center(child: Text('Coming Soon')), BackArrow()]),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list_alt_outlined, size: 25),
+            label: 'Order',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.location_on_outlined, size: 25),
+            label: 'Track',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person, size: 25),
+            label: 'Profile',
+          ),
+        ],
+        selectedItemColor: ThemeColors.teals,
+        currentIndex: 1,
+        onTap: (icon) {
+          if (icon == 0) {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          } else if (icon == 2) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProfilePage()));
+          } else {}
+        },
+      ),
     );
   }
 }

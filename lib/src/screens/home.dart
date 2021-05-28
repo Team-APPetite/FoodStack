@@ -176,7 +176,6 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: ThemeColors.teals,
         onTap: (icon) {
           if (icon == 0) {
-
           } else if (icon == 1) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => TrackScreen()));

@@ -15,7 +15,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header.getAppBar(),
       body: Center(
         child: OutlinedButton(
           child: Padding(

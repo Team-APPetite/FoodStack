@@ -11,7 +11,7 @@ class Header {
           color: ThemeColors.dark,
           fontWeight: FontWeight.bold,
           fontFamily: 'Avenir',
-          fontSize: 24.0,
+          fontSize: 22.0,
         ),
       ),
       leading: BackArrow(),

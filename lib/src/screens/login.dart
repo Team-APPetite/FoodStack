@@ -5,7 +5,6 @@ import 'package:foodstack/src/themeColors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodstack/src/widgets/header.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -87,7 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(
             color: Colors.grey,
             fontSize: 16.0,
-            decoration: TextDecoration.underline,
+            //decoration: TextDecoration.underline,
+            //fontWeight: FontWeight.bold
           ),
         ),
         onPressed: () {
@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Text(
           'or Sign in with',
           style: TextStyle(
-            color: Colors.grey,
+            color: ThemeColors.dark,
             fontSize: 16.0,
           ),
         ),
@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Text(
           'New to FoodStack?',
           style: TextStyle(
-            color: Colors.grey,
+            color: ThemeColors.dark,
             fontSize: 16.0,
           ),
         ),
@@ -163,9 +163,9 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Text(
             'Sign Up',
             style: TextStyle(
-              color: Colors.grey,
+              color: ThemeColors.oranges,
               fontSize: 16.0,
-              decoration: TextDecoration.underline,
+              fontWeight: FontWeight.bold
             ),
           ),
           onPressed: () {

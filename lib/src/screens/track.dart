@@ -14,7 +14,6 @@ class _TrackScreenState extends State<TrackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header.getAppBar(),
       body: Center(child: Text('Coming Soon')),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

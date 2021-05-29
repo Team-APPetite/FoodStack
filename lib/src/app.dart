@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:foodstack/providers/userLocator.dart';
 import 'package:foodstack/src/screens/login.dart';
+import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
   @override
@@ -9,9 +11,12 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FoodStack',
-      home: LoginScreen(),
+    return ChangeNotifierProvider(
+      create: (context) => UserLocator(),
+      child: MaterialApp(
+        title: 'FoodStack',
+        home: LoginScreen(),
+      ),
     );
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'profile.dart';
 import 'track.dart';
-import 'package:foodstack/src/widgets/header.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/services/geolocatorService.dart';
+import 'package:foodstack/src/services/geolocatorService.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

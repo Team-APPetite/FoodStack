@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/providers/userLocator.dart';
+import 'package:foodstack/src/app_providers/userLocator.dart';
 import 'package:foodstack/src/screens/login.dart';
 import 'package:provider/provider.dart';
 

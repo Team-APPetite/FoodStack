@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodstack/providers/userLocator.dart';
-import 'package:foodstack/services/geocoderService.dart';
+import 'package:foodstack/src/app_providers/userLocator.dart';
+import 'package:foodstack/src/services/geocoderService.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:foodstack/src/widgets/header.dart';

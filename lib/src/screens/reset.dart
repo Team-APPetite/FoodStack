@@ -106,17 +106,17 @@ class _ResetScreenState extends State<ResetScreen> {
 
   _reset(String _email) async {
     try {
-      User user = auth.currentUser;
-      if (user.emailVerified) {
+      // User user = auth.currentUser;
+      // if (user.emailVerified) {
         await auth.sendPasswordResetEmail(email: _email);
         Navigator.of(context).pop();
-      } else {
-        Fluttertoast.showToast(
-          msg: 'This email is not verified',
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 5,
-        );
-      }
+      // } else {
+      //   Fluttertoast.showToast(
+      //     msg: 'This email is not verified',
+      //     gravity: ToastGravity.TOP,
+      //     timeInSecForIosWeb: 5,
+      //   );
+      // }
     } on FirebaseAuthException catch (error) {
       Fluttertoast.showToast(
         msg: '${error.message}',

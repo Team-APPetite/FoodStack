@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodstack/customBottomNavBar.dart';
-import 'package:foodstack/src/themeColors.dart';
-import '../../enums.dart';
+import 'package:foodstack/src/widgets/customBottomNavBar.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
+import '../enums.dart';
 import 'login.dart';
 import 'address.dart';
 
@@ -31,7 +31,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: EdgeInsets.all(20),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  color: Color(0XFFF56f9),
+                  //color: Color(0XFFF56f9),
+                  color: ThemeColors.light,
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(
@@ -61,7 +62,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: EdgeInsets.all(20),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  color: Color(0XFFF56f9),
+                  // color: Color(0XFFF56f9),
+                  color: ThemeColors.light,
                   onPressed: () {
                     auth.signOut();
                     Navigator.push(context,

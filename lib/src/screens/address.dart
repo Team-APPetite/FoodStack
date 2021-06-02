@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/app_providers/userLocator.dart';
-import 'package:foodstack/src/themeColors.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/widgets/button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:provider/provider.dart';
@@ -97,25 +98,7 @@ class _AddressScreenState extends State<AddressScreen> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            ElevatedButton(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 80.0, vertical: 16.0),
-                                child: Text(
-                                  'DELIVER HERE',
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
-                                primary: ThemeColors.oranges,
-                              ),
-                            ),
+                            AppButton(buttonText: 'DELIVER HERE', onPressed: () {},),
                           ],
                         ),
                       ),

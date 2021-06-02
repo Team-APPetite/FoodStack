@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/screens/signup.dart';
 import 'package:foodstack/src/screens/reset.dart';
-import 'package:foodstack/src/themeColors.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/widgets/button.dart';
+import 'package:foodstack/src/widgets/textField.dart';
+import 'package:foodstack/src/widgets/socialButton.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -45,35 +48,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget loginForm() {
     return Column(children: [
-      TextField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
+      AppTextField(
           hintText: 'EMAIL',
-          hintStyle: TextStyle(fontSize: 12.0, color: Colors.grey),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: ThemeColors.teals,
-              width: 2.0,
-            ),
-          ),
-        ),
-        onChanged: (value) {
-          _email = value.trim();
-        },
-      ),
+          textInputType: TextInputType.emailAddress,
+          onChanged: (value) {
+            _email = value.trim();
+          }),
       SizedBox(height: 15.0),
-      TextField(
+      AppTextField(
+        hintText: 'PASSWORD',
         obscureText: true,
-        decoration: InputDecoration(
-          hintText: 'PASSWORD',
-          hintStyle: TextStyle(fontSize: 12.0, color: Colors.grey),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: ThemeColors.teals,
-              width: 2.0,
-            ),
-          ),
-        ),
         onChanged: (value) {
           _password = value.trim();
         },
@@ -85,8 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(
             color: Colors.grey,
             fontSize: 16.0,
-            //decoration: TextDecoration.underline,
-            //fontWeight: FontWeight.bold
           ),
         ),
         onPressed: () {
@@ -95,23 +77,9 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       ),
       SizedBox(height: 20.0),
-      ElevatedButton(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
-          child: Text(
-            'LOGIN',
-            style: TextStyle(
-              fontSize: 16.0,
-            ),
-          ),
-        ),
+      AppButton(
+        buttonText: 'LOGIN',
         onPressed: () => _login(_email, _password),
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          primary: ThemeColors.oranges,
-        ),
       ),
       SizedBox(height: 20.0),
     ]);
@@ -128,21 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         SizedBox(height: 20.0),
-        FittedBox(
-          fit: BoxFit.scaleDown,
-          child: SizedBox(
-            height: 60,
-            width: 60,
-            child: ElevatedButton(
-              child: Image.asset('images/google.png'),
-              style: ElevatedButton.styleFrom(
-                  shape: CircleBorder(), primary: Colors.white),
-              onPressed: () {
-                // TODO Google Sign In
-              },
-            ),
-          ),
-        ),
+        SocialButton(image: Image.asset('images/google.png')),
       ],
     );
   }
@@ -162,10 +116,9 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Text(
             'Sign Up',
             style: TextStyle(
-              color: ThemeColors.oranges,
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold
-            ),
+                color: ThemeColors.oranges,
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold),
           ),
           onPressed: () {
             Navigator.push(context,

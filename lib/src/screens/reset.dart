@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodstack/src/themeColors.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
+import 'package:foodstack/src/widgets/textField.dart';
 
 class ResetScreen extends StatefulWidget {
   @override
@@ -65,41 +67,15 @@ class _ResetScreenState extends State<ResetScreen> {
 
   Widget resetForm() {
     return Column(children: [
-      TextField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          hintText: 'EMAIL',
-          hintStyle: TextStyle(fontSize: 12.0, color: Colors.grey),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: ThemeColors.teals,
-              width: 2.0,
-            ),
-          ),
-        ),
+      AppTextField(
+        hintText: 'EMAIL',
+        textInputType: TextInputType.emailAddress,
         onChanged: (value) {
           _email = value.trim();
         },
       ),
       SizedBox(height: 50.0),
-      ElevatedButton(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
-          child: Text(
-            'SEND EMAIL',
-            style: TextStyle(
-              fontSize: 16.0,
-            ),
-          ),
-        ),
-        onPressed: () => _reset(_email),
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          primary: ThemeColors.oranges,
-        ),
-      ),
+      AppButton(buttonText: 'SEND EMAIL', onPressed: () => _reset(_email),),
       SizedBox(height: 50.0)
     ]);
   }
@@ -108,8 +84,8 @@ class _ResetScreenState extends State<ResetScreen> {
     try {
       // User user = auth.currentUser;
       // if (user.emailVerified) {
-        await auth.sendPasswordResetEmail(email: _email);
-        Navigator.of(context).pop();
+      await auth.sendPasswordResetEmail(email: _email);
+      Navigator.of(context).pop();
       // } else {
       //   Fluttertoast.showToast(
       //     msg: 'This email is not verified',

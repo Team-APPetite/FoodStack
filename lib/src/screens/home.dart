@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/customBottomNavBar.dart';
-import 'package:foodstack/enums.dart';
-import 'package:foodstack/src/themeColors.dart';
+import 'package:foodstack/src/widgets/customBottomNavBar.dart';
+import 'package:foodstack/src/enums.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

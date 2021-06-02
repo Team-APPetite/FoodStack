@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:foodstack/src/themeColors.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 
 class Header {
   static getAppBar({String title = ''}) {

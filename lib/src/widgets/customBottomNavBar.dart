@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/enums.dart';
+import 'package:foodstack/src/enums.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/screens/profile.dart';
 import 'package:foodstack/src/screens/track.dart';
-import 'package:foodstack/src/themeColors.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 class customBottomNavBar extends StatelessWidget{
   const customBottomNavBar({
     Key key,

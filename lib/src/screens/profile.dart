@@ -5,8 +5,6 @@ import 'package:foodstack/customBottomNavBar.dart';
 import 'package:foodstack/src/themeColors.dart';
 import '../../enums.dart';
 import 'login.dart';
-import 'track.dart';
-import 'home.dart';
 import 'address.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -41,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: Row(
                     children: [
-                      Icon(Icons.map_outlined, color: ThemeColors.teals,),
+                      Icon(Icons.map_outlined, size: 30, color: ThemeColors.teals,),
                       SizedBox(width: 20),
                       Expanded(
                           child: Text("Add New Address",
@@ -51,41 +49,45 @@ class _ProfilePageState extends State<ProfilePage> {
                                 .bodyText1,
                           )
                       ),
-                      Icon(Icons.arrow_forward, color: ThemeColors.teals),
+                      Icon(Icons.arrow_forward_ios_rounded, color: ThemeColors.teals),
                     ],
                   )
               ),
             ),
-
-
-            SizedBox(height: 30.0,),
-            ElevatedButton(
-              child: Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
-                child: Text(
-                  'Logout',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                  ),
-                ),
-              ),
-              onPressed: () {
-                auth.signOut();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                primary: ThemeColors.teals,
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: FlatButton(
+                  padding: EdgeInsets.all(20),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  color: Color(0XFFF56f9),
+                  onPressed: () {
+                    auth.signOut();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout_outlined, size: 30, color: ThemeColors.teals,),
+                      SizedBox(width: 20),
+                      Expanded(
+                          child: Text("Logout",
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .bodyText1,
+                          )
+                      ),
+                      Icon(Icons.arrow_forward_ios_rounded, color: ThemeColors.teals),
+                    ],
+                  )
               ),
             ),
-          ],
+          ]
         ),
       ),
-      bottomNavigationBar: customBottomNavBar(selectedMenu: MenuState.profile),
+    bottomNavigationBar: customBottomNavBar(selectedMenu: MenuState.profile),
     );
   }
 }

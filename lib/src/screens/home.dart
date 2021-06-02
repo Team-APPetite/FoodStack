@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/customBottomNavBar.dart';
 import 'package:foodstack/enums.dart';
 import 'package:foodstack/src/themeColors.dart';
-import 'profile.dart';
-import 'track.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

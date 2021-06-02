@@ -2,10 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/customBottomNavBar.dart';
 import 'package:foodstack/enums.dart';
-import 'package:foodstack/src/widgets/header.dart';
-import 'home.dart';
-import 'profile.dart';
-import 'package:foodstack/src/themeColors.dart';
 
 class TrackScreen extends StatefulWidget {
   @override

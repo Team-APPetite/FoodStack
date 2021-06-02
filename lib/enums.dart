@@ -1,0 +1,1 @@
+enum MenuState {order, track, profile}

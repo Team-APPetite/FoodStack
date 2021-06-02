@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/customBottomNavBar.dart';
 import 'package:foodstack/src/themeColors.dart';
+import '../../enums.dart';
 import 'login.dart';
 import 'track.dart';
 import 'home.dart';
@@ -24,28 +26,38 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            OutlinedButton(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text(
-                  'Add new address',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                  ),
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddressScreen()));
-              },
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                primary: ThemeColors.teals,
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: FlatButton(
+                  padding: EdgeInsets.all(20),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  color: Color(0XFFF56f9),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(
+                            builder: (context) => AddressScreen()));
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.map_outlined, color: ThemeColors.teals,),
+                      SizedBox(width: 20),
+                      Expanded(
+                          child: Text("Add New Address",
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .bodyText1,
+                          )
+                      ),
+                      Icon(Icons.arrow_forward, color: ThemeColors.teals),
+                    ],
+                  )
               ),
             ),
+
+
             SizedBox(height: 30.0,),
             ElevatedButton(
               child: Padding(
@@ -73,33 +85,9 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined, size: 25),
-            label: 'Order',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.location_on_outlined, size: 25),
-            label: 'Track',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, size: 25),
-            label: 'Profile',
-          ),
-        ],
-        selectedItemColor: ThemeColors.teals,
-        currentIndex: 2,
-        onTap: (icon) {
-          if (icon == 0) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
-          } else if (icon == 1) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TrackScreen()));
-          } else {}
-        },
-      ),
+      bottomNavigationBar: customBottomNavBar(selectedMenu: MenuState.profile),
     );
   }
 }
+
+

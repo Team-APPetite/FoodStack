@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foodstack/customBottomNavBar.dart';
+import 'package:foodstack/enums.dart';
 import 'package:foodstack/src/themeColors.dart';
 import 'profile.dart';
 import 'track.dart';
@@ -152,33 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               )),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined, size: 25),
-            label: 'Order',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.location_on_outlined, size: 25),
-            label: 'Track',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, size: 25),
-            label: 'Profile',
-          ),
-        ],
-        selectedItemColor: ThemeColors.teals,
-        onTap: (icon) {
-          if (icon == 0) {
-          } else if (icon == 1) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TrackScreen()));
-          } else {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProfilePage()));
-          }
-        },
-      ),
+      bottomNavigationBar: customBottomNavBar(selectedMenu: MenuState.order)
     );
   }
 }

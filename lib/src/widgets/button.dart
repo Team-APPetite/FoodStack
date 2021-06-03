@@ -22,6 +22,7 @@ class _AppButtonState extends State<AppButton> {
         padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
         child: Text(
           widget.buttonText,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16.0,
           ),

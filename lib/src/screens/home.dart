@@ -75,6 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             )),
-        bottomNavigationBar: customBottomNavBar(selectedMenu: MenuState.order));
+        bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.order));
   }
 }

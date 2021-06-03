@@ -21,77 +21,81 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: FlatButton(
-                  padding: EdgeInsets.all(20),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  //color: Color(0XFFF56f9),
-                  color: ThemeColors.light,
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(
-                            builder: (context) => AddressScreen()));
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.map_outlined, size: 30, color: ThemeColors.teals,),
-                      SizedBox(width: 20),
-                      Expanded(
-                          child: Text("Add New Address",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText1,
-                          )
-                      ),
-                      Icon(Icons.arrow_forward_ios_rounded, color: ThemeColors.teals),
-                    ],
-                  )
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(height: 20),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: FlatButton(
+                    padding: EdgeInsets.all(20),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    //color: Color(0XFFF56f9),
+                    color: ThemeColors.light,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddressScreen()));
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.map_outlined,
+                          size: 30,
+                          color: ThemeColors.teals,
+                        ),
+                        SizedBox(width: 20),
+                        Expanded(
+                            child: Text(
+                          "Add New Address",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        )),
+                        Icon(Icons.arrow_forward_ios_rounded,
+                            color: ThemeColors.teals),
+                      ],
+                    )),
               ),
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: FlatButton(
-                  padding: EdgeInsets.all(20),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  // color: Color(0XFFF56f9),
-                  color: ThemeColors.light,
-                  onPressed: () {
-                    auth.signOut();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.logout_outlined, size: 30, color: ThemeColors.teals,),
-                      SizedBox(width: 20),
-                      Expanded(
-                          child: Text("Logout",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText1,
-                          )
-                      ),
-                      Icon(Icons.arrow_forward_ios_rounded, color: ThemeColors.teals),
-                    ],
-                  )
+              SizedBox(height: 20),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: FlatButton(
+                    padding: EdgeInsets.all(20),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    // color: Color(0XFFF56f9),
+                    color: ThemeColors.light,
+                    onPressed: () {
+                      auth.signOut();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.logout_outlined,
+                          size: 30,
+                          color: ThemeColors.teals,
+                        ),
+                        SizedBox(width: 20),
+                        Expanded(
+                            child: Text(
+                          "Logout",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        )),
+                        Icon(Icons.arrow_forward_ios_rounded,
+                            color: ThemeColors.teals),
+                      ],
+                    )),
               ),
-            ),
-          ]
-        ),
+            ]),
       ),
-    bottomNavigationBar: customBottomNavBar(selectedMenu: MenuState.profile),
+      bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.profile),
     );
   }
 }
-
-

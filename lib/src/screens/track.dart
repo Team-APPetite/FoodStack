@@ -12,8 +12,7 @@ class _TrackScreenState extends State<TrackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Track the progress of your order here!')),
-      bottomNavigationBar: customBottomNavBar (selectedMenu: MenuState.track)
-    );
+        body: Center(child: Text('Track the progress of your order here!')),
+        bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.track));
   }
 }

@@ -5,7 +5,7 @@ import 'package:foodstack/src/screens/profile.dart';
 import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
-class CustomBottomNavBar extends StatelessWidget {
+class CustomBottomNavBar extends StatelessWidget{
   const CustomBottomNavBar({
     Key key,
     @required this.selectedMenu,

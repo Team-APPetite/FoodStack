@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 
 class RestaurantCard extends StatefulWidget {
-  Restaurant restaurant;
+  final Restaurant restaurant;
 
   RestaurantCard({this.restaurant});
 

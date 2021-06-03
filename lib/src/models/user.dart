@@ -1,14 +1,9 @@
 // Unused class, for user profile
 
 class User {
-  String firstName;
-  String lastName;
+  String name;
   String email;
-  String password;
+  String address;
 
-  User({this.firstName, this.lastName, this.email, this.password});
-
-  String getFullName() {
-    return firstName + lastName;
-  }
+  User({this.name, this.email, this.address});
 }

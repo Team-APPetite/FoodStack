@@ -4,7 +4,7 @@ class Restaurant {
   final String restaurantId;
   final String restaurantName;
   final String cuisineType;
-  final int deliveryMins;
+  final String deliveryMins;
   final double rating;
   final String image;
 

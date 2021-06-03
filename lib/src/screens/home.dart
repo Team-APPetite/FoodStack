@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/screens/newOrder.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/enums.dart';
@@ -38,7 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       buttonText: 'Start a\nNew Order',
                       icon: Icons.add_shopping_cart,
                       color: ThemeColors.mint,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => NewOrderScreen()));
+                      },
                     ),
                   ),
                   SizedBox(width: 10),

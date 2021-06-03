@@ -4,6 +4,7 @@ import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/screens/profile.dart';
 import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+// ignore: camel_case_types
 class customBottomNavBar extends StatelessWidget{
   const customBottomNavBar({
     Key key,

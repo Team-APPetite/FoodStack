@@ -135,8 +135,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           timeInSecForIosWeb: 5,
         );
       } else {
-        await auth.createUserWithEmailAndPassword(
+        UserCredential result = await auth.createUserWithEmailAndPassword(
             email: _email, password: _password);
+        User user = result.user;
+        user.updateProfile(displayName: _firstName + " " + _lastName); //added this line
 
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => VerifyScreen()));

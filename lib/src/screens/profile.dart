@@ -14,6 +14,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final auth = FirebaseAuth.instance;
+  String _displayName;
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +23,67 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 40),
+            Text(
+              'Profile',
+              style: TextStyle(
+                fontFamily: 'Avenir',
+                fontSize: 40.0,
+                fontWeight: FontWeight.bold,
+                color: ThemeColors.dark,
+              ),
+            ),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: TextFormField(
+                initialValue: auth.currentUser.displayName,
+                  decoration: InputDecoration(
+                      hoverColor: ThemeColors.teals,
+                      fillColor: ThemeColors.light,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15)
+                    ),
+                    labelText: "Name"
+                ),
+                onChanged: (value) {
+                  _displayName = value.trim();
+                },
+                textInputAction: TextInputAction.newline,
+                onFieldSubmitted: (term){
+                  auth.currentUser.updateProfile(
+                    displayName: _displayName,
+                  );
+                },
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: TextFormField(
+                initialValue: auth.currentUser.email,
+                decoration: InputDecoration(
+                  hoverColor: ThemeColors.teals,
+                  fillColor: ThemeColors.light,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)
+                  ),
+                  labelText: "Email",
+                ),
+              ),
+            ),
+
+            SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              // ignore: deprecated_member_use
               child: FlatButton(
                   padding: EdgeInsets.all(20),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                  //color: Color(0XFFF56f9),
+                      borderRadius: BorderRadius.circular(15)
+                  ),
                   color: ThemeColors.light,
                   onPressed: () {
                     Navigator.push(context,
@@ -55,9 +107,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   )
               ),
             ),
-            SizedBox(height: 20),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              // ignore: deprecated_member_use
               child: FlatButton(
                   padding: EdgeInsets.all(20),
                   shape: RoundedRectangleBorder(

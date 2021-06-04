@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
 class Header {
-  static getAppBar({String title = ''}) {
+  static getAppBar({String title = '', bool search = false}) {
     return AppBar(
       title: Text(
         title,
@@ -17,6 +17,14 @@ class Header {
       leading: BackArrow(),
       elevation: 0,
       backgroundColor: Colors.transparent,
+      bottom: (search) ? PreferredSize(
+        preferredSize: Size(0, 80),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CupertinoSearchTextField(
+            padding: EdgeInsets.all(15.0))
+        ),
+      ) : PreferredSize(child: Container(), preferredSize: Size(0, 0))
     );
   }
 }

@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/screens/menu.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
-import 'package:foodstack/src/app_providers/restaurantProvider.dart';
-import 'package:provider/provider.dart';
 
 // TODO Use Provider for displaying values
 // Will update UI later and modularize later
 
 class RestaurantCard extends StatefulWidget {
-  final Restaurant restaurant;
+  final String restaurantName;
+  final String cuisineType;
+  final String deliveryMins;
+  final double rating;
+  final String image;
 
-  RestaurantCard({this.restaurant});
+  RestaurantCard(
+      this.restaurantName,
+      this.cuisineType,
+      this.deliveryMins,
+      this.rating,
+      this.image);
 
   @override
   _RestaurantCardState createState() => _RestaurantCardState();
@@ -20,12 +26,14 @@ class RestaurantCard extends StatefulWidget {
 class _RestaurantCardState extends State<RestaurantCard> {
   @override
   Widget build(BuildContext context) {
-    final restaurantProvider = Provider.of<RestaurantProvider>(context);
-
     return TextButton(
       onPressed: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MenuScreen(restaurantName: restaurantProvider.restaurantName,)));
+            context,
+            MaterialPageRoute(
+                builder: (context) => MenuScreen(
+                      restaurantName: widget.restaurantName,
+                    )));
       },
       child: Container(
         height: 150.0,
@@ -35,15 +43,14 @@ class _RestaurantCardState extends State<RestaurantCard> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             Expanded(
-              flex: 2,
-              child: Image.network(widget.restaurant.image),
+              flex: 4,
+              child: Image.network(widget.image),
             ),
             Expanded(
-              flex: 3,
+              flex: 10,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
@@ -51,8 +58,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                //restaurantProvider.restaurantName,
-                      widget.restaurant.restaurantName,
+                      widget.restaurantName,
                       style: TextStyle(
                         color: ThemeColors.dark,
                         fontWeight: FontWeight.bold,
@@ -60,28 +66,34 @@ class _RestaurantCardState extends State<RestaurantCard> {
                       ),
                     ),
                     Text(
-                        widget.restaurant.cuisineType,
+                      widget.cuisineType,
                       style: TextStyle(
                         color: ThemeColors.mint,
                         fontWeight: FontWeight.bold,
                         fontSize: 16.0,
                       ),
                     ),
-                    SizedBox(height: 10.0,),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     Row(
                       children: [
                         Icon(
-                            Icons.star_rounded,
-                        color: ThemeColors.yellows,),
+                          Icons.star_rounded,
+                          color: ThemeColors.yellows,
+                        ),
                         Icon(
                           Icons.star_rounded,
-                          color: ThemeColors.yellows,),
+                          color: ThemeColors.yellows,
+                        ),
                         Icon(
                           Icons.star_rounded,
-                          color: ThemeColors.yellows,),
+                          color: ThemeColors.yellows,
+                        ),
                         Icon(
                           Icons.star_half_rounded,
-                          color: ThemeColors.yellows,),
+                          color: ThemeColors.yellows,
+                        ),
                       ],
                     )
                   ],
@@ -89,27 +101,26 @@ class _RestaurantCardState extends State<RestaurantCard> {
               ),
             ),
             Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Icon(
-                    Icons.favorite,
-                    color: Colors.pinkAccent,
-                    size: 30.0,
-                  ),
-                  Text(
-                      widget.restaurant.deliveryMins + ' mins',
-                    style: TextStyle(
-                      color: ThemeColors.mint,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.0,
+                flex: 3,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Icon(
+                      Icons.favorite,
+                      color: Colors.pinkAccent,
+                      size: 30.0,
                     ),
-                  ),
-                ],
-              )
-            ),
+                    Text(
+                      widget.deliveryMins + ' mins',
+                      style: TextStyle(
+                        color: ThemeColors.mint,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ],
+                )),
           ]),
         ),
       ),

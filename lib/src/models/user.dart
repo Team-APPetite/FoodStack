@@ -1,5 +1,3 @@
-// Unused class, for user profile
-
 class User {
   String name;
   String email;

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 // TODO Can probably do without stful widget?
+// Use this file to add data to cloud firestore
 
 class Restaurants extends StatefulWidget {
   @override
@@ -15,16 +16,13 @@ class _RestaurantsState extends State<Restaurants> {
   Widget build(BuildContext context) {
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
 
-    restaurantProvider.loadRestaurant(Restaurant(
-        restaurantId: '11100',
-        restaurantName: 'KFC',
+    restaurantProvider.addRestaurant(Restaurant(
+        restaurantName: 'Fat Boy\'s The Burger Bar',
         cuisineType: 'Fast Food',
-        deliveryMins: '35',
+        deliveryMins: '38',
         rating: 4,
         image:
-        'https://upload.wikimedia.org/wikipedia/sco/thumb/b/bf/KFC_logo.svg/1200px-KFC_logo.svg.png'));
-
-    restaurantProvider.addRestaurant();
+        'https://thesmartlocal.com/reviews/wp-content/uploads/2012/05/fat-1336894297.jpg'));
 
     return Container();
   }

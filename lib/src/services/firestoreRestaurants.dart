@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 
-class FirestoreService {
+class FirestoreRestaurants {
   FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // Create

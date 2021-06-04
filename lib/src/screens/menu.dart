@@ -17,7 +17,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header.getAppBar(title: widget.restaurantName),
+      appBar: Header.getAppBar(title: widget.restaurantName, search: true),
       body: GridView.count(
         crossAxisCount: 2,
         crossAxisSpacing: 15.0,

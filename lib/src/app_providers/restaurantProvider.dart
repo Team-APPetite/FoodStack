@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:foodstack/src/services/firestoreService.dart';
+import 'package:foodstack/src/services/firestoreRestaurants.dart';
 import 'package:uuid/uuid.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 
 class RestaurantProvider with ChangeNotifier {
-  final firestoreService = FirestoreService();
+  final firestoreService = FirestoreRestaurants();
 
   String _restaurantId;
   String _restaurantName;
@@ -30,34 +30,21 @@ class RestaurantProvider with ChangeNotifier {
   }
 
   // Functions
-  loadRestaurant(Restaurant restaurant){
-    if (restaurant != null){
+  addRestaurant(Restaurant restaurant){
+    if (restaurant.restaurantId != null){
       _restaurantId = restaurant.restaurantId;
-      _restaurantName = restaurant.restaurantName;
-      _cuisineType = restaurant.cuisineType;
-      _deliveryMins = restaurant.deliveryMins;
-      _rating = restaurant.rating;
-      _image = restaurant.image;
     } else {
-      _restaurantId = null;
-      _restaurantName = null;
-      _cuisineType = null;
-      _deliveryMins = null;
-      _rating = null;;
-      _image = null;
+      _restaurantId = uuid.v1();
     }
-  }
 
-  addRestaurant(){
-    if (_restaurantId == null){
-      //Add
-      var newRestaurant = Restaurant(restaurantId: uuid.v1(), restaurantName: _restaurantName, cuisineType: _cuisineType, deliveryMins: _deliveryMins, rating: _rating, image: _image);
-      firestoreService.setRestaurant(newRestaurant);
-    } else {
-      //Edit
-      var updatedRestaurant = Restaurant(restaurantId: _restaurantId, restaurantName: _restaurantName, cuisineType: _cuisineType, deliveryMins: _deliveryMins, rating: _rating, image: _image);
-      firestoreService.setRestaurant(updatedRestaurant);
-    }
+    _restaurantName = restaurant.restaurantName;
+    _cuisineType = restaurant.cuisineType;
+    _deliveryMins = restaurant.deliveryMins;
+    _rating = restaurant.rating;
+    _image = restaurant.image;
+
+    var newRestaurant = Restaurant(restaurantId:  _restaurantId, restaurantName: _restaurantName, cuisineType: _cuisineType, deliveryMins: _deliveryMins, rating: _rating, image: _image);
+    firestoreService.setRestaurant(newRestaurant);
   }
 
   removeRestaurant(String restaurantId){

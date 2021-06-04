@@ -4,9 +4,9 @@ import 'package:foodstack/src/widgets/foodCard.dart';
 import 'package:foodstack/src/widgets/header.dart';
 
 class MenuScreen extends StatefulWidget {
-  Restaurant restaurant;
+  String restaurantName;
 
-  MenuScreen({this.restaurant});
+  MenuScreen({this.restaurantName});
 
   @override
   _MenuScreenState createState() => _MenuScreenState();
@@ -17,7 +17,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header.getAppBar(title: widget.restaurant.restaurantName),
+      appBar: Header.getAppBar(title: widget.restaurantName),
       body: GridView.count(
         crossAxisCount: 2,
         crossAxisSpacing: 15.0,

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/screens/menu.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/app_providers/restaurantProvider.dart';
+import 'package:provider/provider.dart';
 
-// Will update UI later
+// TODO Use Provider for displaying values
+// Will update UI later and modularize later
 
 class RestaurantCard extends StatefulWidget {
   final Restaurant restaurant;
@@ -17,10 +20,12 @@ class RestaurantCard extends StatefulWidget {
 class _RestaurantCardState extends State<RestaurantCard> {
   @override
   Widget build(BuildContext context) {
+    final restaurantProvider = Provider.of<RestaurantProvider>(context);
+
     return TextButton(
       onPressed: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MenuScreen(restaurant: widget.restaurant,)));
+            context, MaterialPageRoute(builder: (context) => MenuScreen(restaurantName: restaurantProvider.restaurantName,)));
       },
       child: Container(
         height: 150.0,
@@ -46,6 +51,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
+                //restaurantProvider.restaurantName,
                       widget.restaurant.restaurantName,
                       style: TextStyle(
                         color: ThemeColors.dark,
@@ -75,9 +81,6 @@ class _RestaurantCardState extends State<RestaurantCard> {
                           color: ThemeColors.yellows,),
                         Icon(
                           Icons.star_half_rounded,
-                          color: ThemeColors.yellows,),
-                        Icon(
-                          Icons.star_outline_rounded,
                           color: ThemeColors.yellows,),
                       ],
                     )

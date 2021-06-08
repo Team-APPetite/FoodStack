@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 // TODO Can probably do without stful widget?
-// Use this file to add data to cloud firestore
+// Use the code in this file to add data to cloud firestore
+// from the newOrder screen
 
 class Restaurants extends StatefulWidget {
   @override

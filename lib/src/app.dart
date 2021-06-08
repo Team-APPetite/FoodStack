@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/app_providers/menuProvider.dart';
 import 'package:foodstack/src/app_providers/userLocator.dart';
 import 'package:foodstack/src/app_providers/restaurantProvider.dart';
 import 'package:foodstack/src/screens/login.dart';
@@ -16,6 +17,7 @@ class _AppState extends State<App> {
       providers: [
         ChangeNotifierProvider(create: (context) => UserLocator()),
         ChangeNotifierProvider(create: (context) => RestaurantProvider()),
+        ChangeNotifierProvider(create: (context) => MenuProvider()),
       ],
       child: MaterialApp(
         title: 'FoodStack',

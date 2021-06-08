@@ -16,26 +16,28 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
   Widget build(BuildContext context) {
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
 
+    // TODO Add search bar
     return Scaffold(
-        appBar: Header.getAppBar(title: 'Start a New Order', search: true),
+        appBar: Header.getAppBar(title: 'Start a New Order'),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: StreamBuilder<List<Restaurant>>(
               stream: restaurantProvider.restaurantsList,
               builder: (context, snapshot) {
-                return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-                      // TODO Update restaurant card and add search bar
-                      return (snapshot.data == null)
-                          ? Center(child: CircularProgressIndicator())
-                          : RestaurantCard(
+                return (snapshot.data == null)
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          // TODO Update restaurant card and add search bar
+                          return RestaurantCard(
+                              snapshot.data[index].restaurantId,
                               snapshot.data[index].restaurantName,
                               snapshot.data[index].cuisineType,
                               snapshot.data[index].deliveryMins,
                               snapshot.data[index].rating,
                               snapshot.data[index].image);
-                    });
+                        });
               }),
         ));
   }

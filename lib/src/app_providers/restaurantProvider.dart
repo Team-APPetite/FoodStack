@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:foodstack/src/services/firestoreRestaurants.dart';
 import 'package:uuid/uuid.dart';
@@ -12,6 +13,7 @@ class RestaurantProvider with ChangeNotifier {
   String _deliveryMins;
   double _rating;
   String _image;
+  GeoPoint _coordinates;
 
   var uuid = Uuid();
 
@@ -21,6 +23,7 @@ class RestaurantProvider with ChangeNotifier {
   String get deliveryMins => _deliveryMins;
   double get rating => _rating;
   String get image => _image;
+  GeoPoint get coordinates => _coordinates;
   Stream<List<Restaurant>> get restaurantsList =>
       firestoreService.getRestaurants();
 
@@ -43,6 +46,7 @@ class RestaurantProvider with ChangeNotifier {
     _deliveryMins = restaurant.deliveryMins;
     _rating = restaurant.rating;
     _image = restaurant.image;
+    _coordinates = restaurant.coordinates;
 
     var newRestaurant = Restaurant(
         restaurantId: _restaurantId,
@@ -50,7 +54,8 @@ class RestaurantProvider with ChangeNotifier {
         cuisineType: _cuisineType,
         deliveryMins: _deliveryMins,
         rating: _rating,
-        image: _image);
+        image: _image,
+        coordinates: _coordinates);
     firestoreService.setRestaurant(newRestaurant);
   }
 

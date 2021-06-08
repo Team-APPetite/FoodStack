@@ -23,12 +23,10 @@ class _MenuScreenState extends State<MenuScreen> {
     final menuProvider = Provider.of<MenuProvider>(context);
     menuProvider.selectRestaurant = widget.restaurantId;
     // menuProvider.addFoodItem(widget.restaurantId, FoodItem(
-    //       foodName: 'French Fries (L)',
-    //       description: 'A large box of salted potato fries.',
-    //       price: 4.00,
-    //       image:
-    //       'https://www.mcdelivery.com.sg/sg/static/1623068177388/assets/65/products/505040
-    // .png?'));
+    //       foodName: 'Chicken McNuggets (20pc)',
+    //       description: '20 crispy chicken nuggets fried in sunflower oil.',
+    //       price: 13.60,
+    //       image: 'https://www.mcdelivery.com.sg/sg/static/1623068177388/assets/65/products/101900.png?'));
 
     return Scaffold(
         appBar: Header.getAppBar(title: widget.restaurantName),
@@ -42,7 +40,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     : GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.8,
+                      childAspectRatio: 0.9,
                     ),
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
@@ -55,27 +53,5 @@ class _MenuScreenState extends State<MenuScreen> {
                     });
               }),
         ));
-
-    // Scaffold(
-    //   appBar: Header.getAppBar(title: widget.restaurantName),
-    //   body: Padding(
-    //     padding: const EdgeInsets.all(8.0),
-    //     child: GridView.count(
-    //       crossAxisCount: 2,
-    //       children: [
-    //         FoodCard('1', 'Burger', 4.75, 'https://media.istockphoto.com/photos/mouthwatering-delicious-homemade-burger-used-to-chop-beef-on-the-picture-id907077304?k=6&m=907077304&s=612x612&w=0&h=N0o_NtwciuBRFPg56dD8vBYiTxJvgJBRz8Z7sRIfd38='),
-    //         FoodCard('1', 'Burger', 4.75, 'https://media.istockphoto.com/photos/mouthwatering-delicious-homemade-burger-used-to-chop-beef-on-the-picture-id907077304?k=6&m=907077304&s=612x612&w=0&h=N0o_NtwciuBRFPg56dD8vBYiTxJvgJBRz8Z7sRIfd38='),
-    //         FoodCard('1', 'Burger', 4.75, 'https://media.istockphoto.com/photos/mouthwatering-delicious-homemade-burger-used-to-chop-beef-on-the-picture-id907077304?k=6&m=907077304&s=612x612&w=0&h=N0o_NtwciuBRFPg56dD8vBYiTxJvgJBRz8Z7sRIfd38='),
-    //         FoodCard('1', 'Burger', 4.75, 'https://media.istockphoto.com/photos/mouthwatering-delicious-homemade-burger-used-to-chop-beef-on-the-picture-id907077304?k=6&m=907077304&s=612x612&w=0&h=N0o_NtwciuBRFPg56dD8vBYiTxJvgJBRz8Z7sRIfd38='),
-    //         FoodCard('1', 'Burger', 4.75, 'https://media.istockphoto.com/photos/mouthwatering-delicious-homemade-burger-used-to-chop-beef-on-the-picture-id907077304?k=6&m=907077304&s=612x612&w=0&h=N0o_NtwciuBRFPg56dD8vBYiTxJvgJBRz8Z7sRIfd38='),
-    //         FoodCard('1', 'Burger', 4.75, 'https://media.istockphoto.com/photos/mouthwatering-delicious-homemade-burger-used-to-chop-beef-on-the-picture-id907077304?k=6&m=907077304&s=612x612&w=0&h=N0o_NtwciuBRFPg56dD8vBYiTxJvgJBRz8Z7sRIfd38='),
-    //         FoodCard('1', 'Burger', 4.75, 'https://media.istockphoto.com/photos/mouthwatering-delicious-homemade-burger-used-to-chop-beef-on-the-picture-id907077304?k=6&m=907077304&s=612x612&w=0&h=N0o_NtwciuBRFPg56dD8vBYiTxJvgJBRz8Z7sRIfd38='),
-    //         FoodCard('1', 'Burger', 4.75, 'https://media.istockphoto.com/photos/mouthwatering-delicious-homemade-burger-used-to-chop-beef-on-the-picture-id907077304?k=6&m=907077304&s=612x612&w=0&h=N0o_NtwciuBRFPg56dD8vBYiTxJvgJBRz8Z7sRIfd38='),
-    //         FoodCard('1', 'Burger', 4.75, 'https://media.istockphoto.com/photos/mouthwatering-delicious-homemade-burger-used-to-chop-beef-on-the-picture-id907077304?k=6&m=907077304&s=612x612&w=0&h=N0o_NtwciuBRFPg56dD8vBYiTxJvgJBRz8Z7sRIfd38='),
-    //         FoodCard('1', 'Burger', 4.75, 'https://media.istockphoto.com/photos/mouthwatering-delicious-homemade-burger-used-to-chop-beef-on-the-picture-id907077304?k=6&m=907077304&s=612x612&w=0&h=N0o_NtwciuBRFPg56dD8vBYiTxJvgJBRz8Z7sRIfd38='),
-    //       ],
-    //     ),
-    //   )
-    // );
   }
 }

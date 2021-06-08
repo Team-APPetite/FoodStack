@@ -41,6 +41,7 @@ class _FoodCardState extends State<FoodCard> {
                 flex: 2,
                 child: Text(
                   widget.foodName,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: ThemeColors.dark,
                     fontWeight: FontWeight.bold,

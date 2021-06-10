@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(width: 10),
                   Expanded(
                     child: BigButton(
-                      buttonText: 'Nearby\nOrders',
+                      buttonText: 'Join\nOrders',
                       icon: Icons.person_add_alt_1_outlined,
                       color: ThemeColors.oranges,
                       onPressed: () {},

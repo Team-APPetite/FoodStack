@@ -51,6 +51,14 @@ class MenuProvider with ChangeNotifier {
     firestoreService.setFoodItem(restaurantId, newFoodItem);
   }
 
+  loadFoodItem(String restaurantId, FoodItem foodItem) {
+    _foodName = foodItem.foodName;
+    _description = foodItem.description;
+    _price = foodItem.price;
+    _image = foodItem.image;
+    _restaurantId = restaurantId;
+  }
+
   removeFoodItem(String restaurantId, String foodId) {
     firestoreService.removeFoodItem(restaurantId, foodId);
   }

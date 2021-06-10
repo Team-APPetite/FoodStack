@@ -22,15 +22,17 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
-        child:
-            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          header(),
-          loginForm(),
-          socialLogin(),
-          newUser(),
-        ]),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 60.0),
+          child:
+              Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            header(),
+            loginForm(),
+            socialLogin(),
+            newUser(),
+          ]),
+        ),
       ),
     );
   }
@@ -63,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _password = value.trim();
         },
       ),
-      SizedBox(height: 20.0),
+      SizedBox(height: 15.0),
       TextButton(
         child: Text(
           'Forgot Password?',
@@ -77,12 +79,12 @@ class _LoginScreenState extends State<LoginScreen> {
               context, MaterialPageRoute(builder: (context) => ResetScreen()));
         },
       ),
-      SizedBox(height: 20.0),
+      SizedBox(height: 15.0),
       AppButton(
         buttonText: 'LOGIN',
         onPressed: () => _login(_email, _password),
       ),
-      SizedBox(height: 20.0),
+      SizedBox(height: 30.0),
     ]);
   }
 
@@ -96,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fontSize: 16.0,
           ),
         ),
-        SizedBox(height: 20.0),
+        SizedBox(height: 15.0),
         SocialButton(image: Image.asset('images/google.png')),
       ],
     );

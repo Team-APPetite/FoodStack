@@ -38,7 +38,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
                     )));
       },
       child: Container(
-        height: 150.0,
+        height: 130.0,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24.0),
           border: Border.all(
@@ -68,15 +68,15 @@ class _RestaurantCardState extends State<RestaurantCard> {
                       style: TextStyle(
                         color: ThemeColors.dark,
                         fontWeight: FontWeight.bold,
-                        fontSize: 17.0,
+                        fontSize: 16.0,
                       ),
                     ),
                     Text(
                       widget.cuisineType,
                       style: TextStyle(
-                        color: ThemeColors.mint,
+                        color: ThemeColors.teals,
                         fontWeight: FontWeight.bold,
-                        fontSize: 14.0,
+                        fontSize: 12.0,
                       ),
                     ),
                     SizedBox(
@@ -113,15 +113,16 @@ class _RestaurantCardState extends State<RestaurantCard> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Icon(
-                      Icons.favorite,
-                      color: Colors.pinkAccent,
+                      Icons.favorite_outline,
+                      color: ThemeColors.oranges,
                       size: 30.0,
                     ),
                     Text(
                       widget.deliveryMins + ' mins',
                       style: TextStyle(
-                        color: ThemeColors.mint,
-                        fontSize: 13.0,
+                        color: ThemeColors.teals,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12.0,
                       ),
                     ),
                   ],

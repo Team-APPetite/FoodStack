@@ -23,9 +23,7 @@ class _AppButtonState extends State<AppButton> {
         child: Text(
           widget.buttonText,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16.0,
-          ),
+          style: TextStyle(fontSize: 16.0),
         ),
       ),
       onPressed: widget.onPressed,

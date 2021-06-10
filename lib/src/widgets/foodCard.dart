@@ -6,8 +6,11 @@ class FoodCard extends StatefulWidget {
   final String foodName;
   final double price;
   final String image;
+  final void Function() onPressedDetails;
+  final void Function() onPressedCart;
 
-  FoodCard(this.foodName, this.price, this.image);
+  FoodCard(this.foodName, this.price, this.image, this.onPressedDetails,
+      this.onPressedCart);
 
   @override
   _FoodCardState createState() => _FoodCardState();
@@ -16,55 +19,72 @@ class FoodCard extends StatefulWidget {
 class _FoodCardState extends State<FoodCard> {
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {},
-      child: Container(
-        height: 700.0,
-        width: 200.0,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24.0),
-          border: Border.all(
-            color: ThemeColors.light,
-            width: 1,
-          ),
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 6,
-                child: Image.network(widget.image),
+    return Stack(
+      children: [
+        TextButton(
+          onPressed: widget.onPressedDetails,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24.0),
+              border: Border.all(
+                color: ThemeColors.light,
+                width: 1,
               ),
-              Expanded(
-                flex: 2,
-                child: Text(
-                  widget.foodName,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: ThemeColors.dark,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+              color: Colors.white,
+            ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 6,
+                        child: Image.network(widget.image),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Text(
+                          widget.foodName,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: ThemeColors.dark,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          '\$' + widget.price.toString(),
+                          style: TextStyle(
+                            color: ThemeColors.teals,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Text(
-                  '\$' + widget.price.toString(),
-                  style: TextStyle(
-                    color: ThemeColors.mint,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
+        Align(
+            alignment: Alignment.topRight,
+            child: FloatingActionButton(
+              child: Icon(
+                Icons.add,
+              ),
+              mini: true,
+              elevation: 0,
+              heroTag: null,
+              onPressed: widget.onPressedCart,
+              backgroundColor: ThemeColors.mint,
+            ))
+      ],
     );
   }
 }

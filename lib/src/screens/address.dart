@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/app_providers/userLocator.dart';
+import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -13,6 +14,7 @@ class AddressScreen extends StatefulWidget {
 }
 
 class _AddressScreenState extends State<AddressScreen> {
+  FirestoreUsers firestoreService = FirestoreUsers();
   @override
   Widget build(BuildContext context) {
     final userLocator = Provider.of<UserLocator>(context);
@@ -97,7 +99,9 @@ class _AddressScreenState extends State<AddressScreen> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            AppButton(buttonText: 'DELIVER HERE', onPressed: () {},),
+                            AppButton(buttonText: 'DELIVER HERE', onPressed: () {
+                              firestoreService.updateUser(userLocator.deliveryAddress.addressLine);
+                            },),
                           ],
                         ),
                       ),

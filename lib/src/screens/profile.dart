@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import '../enums.dart';
@@ -14,6 +15,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final auth = FirebaseAuth.instance;
+  FirestoreUsers _firestoreService = FirestoreUsers();
   String _displayName;
 
 
@@ -54,8 +56,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 textInputAction: TextInputAction.newline,
                 onFieldSubmitted: (term){
                   auth.currentUser.updateProfile(
-                    displayName: _displayName,
-                  );
+                    displayName: _displayName,);
+                  _firestoreService.updateName(_displayName);
                 },
               ),
             ),

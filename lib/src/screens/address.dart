@@ -100,7 +100,7 @@ class _AddressScreenState extends State<AddressScreen> {
                               textAlign: TextAlign.center,
                             ),
                             AppButton(buttonText: 'DELIVER HERE', onPressed: () {
-                              firestoreService.updateUser(userLocator.deliveryAddress.addressLine);
+                              firestoreService.updateAddress(userLocator.deliveryAddress.addressLine);
                             },),
                           ],
                         ),

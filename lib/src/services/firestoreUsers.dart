@@ -21,7 +21,7 @@ class FirestoreUsers {
   }
 
   //Update user address
-  Future<void> updateUser(String address) {
+  Future<void> updateAddress(String address) {
     CollectionReference users = _db.collection('users');
     var currUid = _auth.currentUser.uid;
     return users
@@ -30,6 +30,18 @@ class FirestoreUsers {
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
   }
+
+  //Update user display name
+  Future<void> updateName(String name) {
+    CollectionReference users = _db.collection('users');
+    var currUid = _auth.currentUser.uid;
+    return users
+        .doc(currUid)
+        .update({'name': name})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
 
 
 

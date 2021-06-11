@@ -13,21 +13,18 @@ class Users {
     this.address,
   });
 
-  Users.fromJson(Map<String, dynamic> json) {
-    uid = json['uid'];
-    name = json['name'];
-    email = json['email'];
-    address = json['address'];
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'name': name,
+      'email': email,
+      'address': address,
+    };
   }
 
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['uid'] = this.uid;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['address'] = this.address;
-
-    return data;
-  }
+  Users.fromFirestore(Map<String, dynamic> firestore)
+    :uid = firestore['uid'],
+     name = firestore['name'],
+     email = firestore ['email'],
+     address = firestore['address'];
 }

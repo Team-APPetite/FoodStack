@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/models/user.dart';
+import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/textField.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'verify.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -19,6 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _password = '';
   String _passwordConfirmation = '';
   final auth = FirebaseAuth.instance;
+  final FirestoreUsers firestoreService = FirestoreUsers();
 
   @override
   Widget build(BuildContext context) {
@@ -138,8 +142,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         UserCredential result = await auth.createUserWithEmailAndPassword(
             email: _email, password: _password);
         User user = result.user;
-        user.updateProfile(displayName: _firstName + " " + _lastName); //added this line
-
+        String _diplayName = _firstName + " " + _lastName;
+        user.updateProfile(displayName: _diplayName); //added this line
+        var currUser = Users(uid: result.user.uid, email: result.user.email, name: _diplayName);
+        await firestoreService.addUser(currUser);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => VerifyScreen()));
       }

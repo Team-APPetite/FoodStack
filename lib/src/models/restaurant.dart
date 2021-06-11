@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Restaurant {
@@ -7,6 +8,7 @@ class Restaurant {
   final String deliveryMins;
   final double rating;
   final String image;
+  final GeoPoint coordinates;
 
   Restaurant(
       {@required this.restaurantId,
@@ -14,7 +16,8 @@ class Restaurant {
       this.cuisineType,
       this.deliveryMins,
       this.rating,
-      this.image});
+      this.image,
+      this.coordinates});
 
   factory Restaurant.fromJson(Map<String, dynamic> json) {
     return Restaurant(
@@ -24,6 +27,7 @@ class Restaurant {
       deliveryMins: json['deliveryMins'],
       rating: json['rating'],
       image: json['image'],
+      coordinates: json['coordinates']
     );
   }
 
@@ -35,6 +39,7 @@ class Restaurant {
       'deliveryMins': deliveryMins,
       'rating': rating,
       'image': image,
+      'coordinates': coordinates
     };
   }
 }

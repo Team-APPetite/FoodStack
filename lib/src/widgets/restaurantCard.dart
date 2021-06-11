@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/screens/menu.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
-// TODO Use Provider for displaying values
-// Will update UI later and modularize later
+// Will update UI and modularize later
 
 class RestaurantCard extends StatefulWidget {
+  final String restaurantId;
   final String restaurantName;
   final String cuisineType;
   final String deliveryMins;
@@ -13,6 +13,7 @@ class RestaurantCard extends StatefulWidget {
   final String image;
 
   RestaurantCard(
+      this.restaurantId,
       this.restaurantName,
       this.cuisineType,
       this.deliveryMins,
@@ -32,14 +33,19 @@ class _RestaurantCardState extends State<RestaurantCard> {
             context,
             MaterialPageRoute(
                 builder: (context) => MenuScreen(
+                  restaurantId: widget.restaurantId,
                       restaurantName: widget.restaurantName,
                     )));
       },
       child: Container(
-        height: 150.0,
+        height: 130.0,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24.0),
-          color: ThemeColors.light,
+          border: Border.all(
+            color: ThemeColors.light,
+            width: 1,
+          ),
+          color: Colors.white,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -50,7 +56,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
               child: Image.network(widget.image),
             ),
             Expanded(
-              flex: 10,
+              flex: 11,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
@@ -62,15 +68,15 @@ class _RestaurantCardState extends State<RestaurantCard> {
                       style: TextStyle(
                         color: ThemeColors.dark,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                       ),
                     ),
                     Text(
                       widget.cuisineType,
                       style: TextStyle(
-                        color: ThemeColors.mint,
+                        color: ThemeColors.teals,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
+                        fontSize: 12.0,
                       ),
                     ),
                     SizedBox(
@@ -107,16 +113,16 @@ class _RestaurantCardState extends State<RestaurantCard> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Icon(
-                      Icons.favorite,
-                      color: Colors.pinkAccent,
+                      Icons.favorite_outline,
+                      color: ThemeColors.oranges,
                       size: 30.0,
                     ),
                     Text(
                       widget.deliveryMins + ' mins',
                       style: TextStyle(
-                        color: ThemeColors.mint,
+                        color: ThemeColors.teals,
                         fontWeight: FontWeight.bold,
-                        fontSize: 14.0,
+                        fontSize: 12.0,
                       ),
                     ),
                   ],

@@ -30,8 +30,7 @@ class _AddressScreenState extends State<AddressScreen> {
         body: (userLocator.deliveryAddress == null)
             ? Center(child: CircularProgressIndicator())
             : Padding(
-                padding: const EdgeInsets.only(
-                    left: 30.0, right: 30.0, bottom: 30.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
                     // TODO Search for addresses
@@ -79,7 +78,7 @@ class _AddressScreenState extends State<AddressScreen> {
                     Container(
                       height: 200.0,
                       child: Padding(
-                        padding: const EdgeInsets.all(30.0),
+                        padding: const EdgeInsets.symmetric(vertical: 30.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

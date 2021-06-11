@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 
 class FoodItem {
   final String foodId;
-  final String restaurantId;
+  final String foodName;
   final String description;
+  final double price;
   final String image;
 
   FoodItem(
       {@required this.foodId,
-        this.restaurantId,
+        this.foodName,
         this.description,
+        this.price,
         this.image});
 
   factory FoodItem.fromJson(Map<String, dynamic> json) {
     return FoodItem(
       foodId: json['foodId'],
-      restaurantId: json['restaurantId'],
+      foodName: json['foodName'],
       description: json['description'],
+      price: json['price'],
       image: json['image'],
     );
   }
@@ -24,8 +27,9 @@ class FoodItem {
   Map<String, dynamic> toMap() {
     return {
       'foodId': foodId,
-      'restaurantId': restaurantId,
+      'foodName': foodName,
       'description': description,
+      'price': price,
       'image': image,
     };
   }

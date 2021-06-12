@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
 class AppTextField extends StatefulWidget {
@@ -27,7 +28,7 @@ class _AppTextFieldState extends State<AppTextField> {
       obscureText: widget.obscureText,
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle: TextStyle(fontSize: 12.0, color: Colors.grey),
+        hintStyle: TextStyles.hintText(),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: ThemeColors.teals,

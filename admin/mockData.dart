@@ -27,7 +27,7 @@ class _MockDataState extends State<MockData> {
     restaurantProvider.addRestaurant(Restaurant(
         restaurantName: 'Fat Boy\'s The Burger Bar',
         cuisineType: 'Fast Food',
-        deliveryMins: '38',
+        deliveryFee: 6,
         rating: 4,
         image:
             'https://thesmartlocal.com/reviews/wp-content/uploads/2012/05/fat-1336894297.jpg',

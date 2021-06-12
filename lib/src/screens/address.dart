@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/app_providers/userLocator.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -86,17 +87,12 @@ class _AddressScreenState extends State<AddressScreen> {
                           children: [
                             Text(
                               userLocator.deliveryAddress.featureName,
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: TextStyles.heading3(),
                               textAlign: TextAlign.center,
                             ),
                             Text(
                               userLocator.deliveryAddress.addressLine,
-                              style: TextStyle(
-                                fontSize: 16.0,
-                              ),
+                              style: TextStyles.body(),
                               textAlign: TextAlign.center,
                             ),
                             AppButton(buttonText: 'DELIVER HERE', onPressed: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
 class Header {
@@ -7,12 +8,7 @@ class Header {
     return AppBar(
       title: Text(
         title,
-        style: TextStyle(
-          color: ThemeColors.dark,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Avenir',
-          fontSize: 22.0,
-        ),
+        style: TextStyles.heading2(),
       ),
       leading: BackArrow(),
       elevation: 0,

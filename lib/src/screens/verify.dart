@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'home.dart';
@@ -41,20 +42,12 @@ class _VerifyScreenState extends State<VerifyScreen> {
             ),
             Text(
               'Verify your email',
-              style: TextStyle(
-                fontFamily: 'Avenir',
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold,
-                color: ThemeColors.dark,
-              ),
+              style: TextStyles.heading1(),
             ),
             SizedBox(height: 30.0),
             Text(
               'A verification email has been sent to ${user.email}, please verify.',
-              style: TextStyle(
-                color: ThemeColors.dark,
-                fontSize: 16.0,
-              ),
+              style: TextStyles.body(),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 100.0)

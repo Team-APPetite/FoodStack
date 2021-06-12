@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
 class FoodCard extends StatefulWidget {
@@ -47,22 +48,14 @@ class _FoodCardState extends State<FoodCard> {
                         child: Text(
                           widget.foodName,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: ThemeColors.dark,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                          ),
+                          style: TextStyles.heading3(),
                         ),
                       ),
                       Expanded(
                         flex: 1,
                         child: Text(
                           '\$' + widget.price.toString(),
-                          style: TextStyle(
-                            color: ThemeColors.teals,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                          ),
+                          style: TextStyles.emphasis(),
                         ),
                       ),
                     ],

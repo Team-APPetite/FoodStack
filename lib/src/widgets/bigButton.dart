@@ -31,13 +31,13 @@ class _BigButtonState extends State<BigButton> {
               widget.buttonText,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16.0,
+                fontSize: 18.0,
                 fontWeight: FontWeight.bold
               ),
             ),
             Icon(
               widget.icon,
-              size: 75,
+              size: 60,
             ),
           ],
         ),

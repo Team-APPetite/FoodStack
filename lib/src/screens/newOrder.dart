@@ -27,11 +27,11 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
           child: StreamBuilder<List<Restaurant>>(
               stream: restaurantProvider.restaurantsList,
               builder: (context, snapshot) {
-                if (snapshot.data == null || userLocator.coordinates == null) {
+                if (snapshot.data == null || userLocator.currentLocation == null) {
                   return Center(child: CircularProgressIndicator());
                 } else {
-                  final userLatitude = userLocator.coordinates.latitude;
-                  final userLongitude = userLocator.coordinates.longitude;
+                  final userLatitude = userLocator.currentLocation.latitude;
+                  final userLongitude = userLocator.currentLocation.longitude;
                   snapshot.data.sort((a, b) => Geolocator.distanceBetween(
                           a.coordinates.latitude,
                           a.coordinates.longitude,
@@ -50,7 +50,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                             snapshot.data[index].restaurantId,
                             snapshot.data[index].restaurantName,
                             snapshot.data[index].cuisineType,
-                            snapshot.data[index].deliveryMins,
+                            snapshot.data[index].deliveryFee,
                             snapshot.data[index].rating,
                             snapshot.data[index].image);
                       });

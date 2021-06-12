@@ -10,7 +10,7 @@ class RestaurantProvider with ChangeNotifier {
   String _restaurantId;
   String _restaurantName;
   String _cuisineType;
-  String _deliveryMins;
+  double _deliveryFee;
   double _rating;
   String _image;
   GeoPoint _coordinates;
@@ -20,7 +20,7 @@ class RestaurantProvider with ChangeNotifier {
   // Getters
   String get restaurantName => _restaurantName;
   String get cuisineType => _cuisineType;
-  String get deliveryMins => _deliveryMins;
+  double get deliveryFee => _deliveryFee;
   double get rating => _rating;
   String get image => _image;
   GeoPoint get coordinates => _coordinates;
@@ -43,7 +43,7 @@ class RestaurantProvider with ChangeNotifier {
 
     _restaurantName = restaurant.restaurantName;
     _cuisineType = restaurant.cuisineType;
-    _deliveryMins = restaurant.deliveryMins;
+    _deliveryFee = restaurant.deliveryFee;
     _rating = restaurant.rating;
     _image = restaurant.image;
     _coordinates = restaurant.coordinates;
@@ -52,7 +52,7 @@ class RestaurantProvider with ChangeNotifier {
         restaurantId: _restaurantId,
         restaurantName: _restaurantName,
         cuisineType: _cuisineType,
-        deliveryMins: _deliveryMins,
+        deliveryFee: _deliveryFee,
         rating: _rating,
         image: _image,
         coordinates: _coordinates);

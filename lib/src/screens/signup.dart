@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/user.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/widgets/button.dart';
@@ -43,12 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       children: [
         Text(
           'Sign Up',
-          style: TextStyle(
-            fontFamily: 'Avenir',
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-            color: ThemeColors.dark,
-          ),
+          style: TextStyles.heading1(),
         ),
         SizedBox(height: 30.0),
       ],
@@ -143,7 +139,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             email: _email, password: _password);
         User user = result.user;
         String _diplayName = _firstName + " " + _lastName;
-        user.updateProfile(displayName: _diplayName); //added this line
+        user.updateProfile(displayName: _diplayName);
         var currUser = Users(uid: result.user.uid, email: result.user.email, name: _diplayName);
         await firestoreService.addUser(currUser);
         Navigator.push(

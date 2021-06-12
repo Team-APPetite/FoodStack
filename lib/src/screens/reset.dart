@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/widgets/button.dart';
@@ -37,12 +38,7 @@ class _ResetScreenState extends State<ResetScreen> {
       children: [
         Text(
           'Reset Password',
-          style: TextStyle(
-            fontFamily: 'Avenir',
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-            color: ThemeColors.dark,
-          ),
+          style: TextStyles.heading1(),
         ),
         SizedBox(height: 30.0)
       ],
@@ -54,10 +50,7 @@ class _ResetScreenState extends State<ResetScreen> {
       children: [
         Text(
           'Enter your email to receive instructions for resetting your password',
-          style: TextStyle(
-            color: ThemeColors.dark,
-            fontSize: 16.0,
-          ),
+          style: TextStyles.body(),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 30.0)

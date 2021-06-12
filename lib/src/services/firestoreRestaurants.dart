@@ -4,13 +4,13 @@ import 'package:foodstack/src/models/restaurant.dart';
 class FirestoreRestaurants {
   FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // Create
+  // Read
   Stream<List<Restaurant>> getRestaurants() {
     return _db.collection('restaurants').snapshots().map((snapshot) =>
         snapshot.docs.map((doc) => Restaurant.fromJson(doc.data())).toList());
   }
 
-  // Read and Update
+  // Create and Update
   Future<void> setRestaurant(Restaurant restaurant) {
     var options = SetOptions(merge: true);
 

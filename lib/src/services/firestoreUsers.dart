@@ -41,8 +41,4 @@ class FirestoreUsers {
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
   }
-
-
-
-
 }

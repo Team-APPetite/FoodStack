@@ -4,7 +4,7 @@ import 'package:foodstack/src/models/foodItem.dart';
 class FirestoreMenu {
   FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // Create
+  // Read
   Stream<List<FoodItem>> getMenu(String restaurantId) {
     return _db
         .collection('restaurants')
@@ -15,7 +15,7 @@ class FirestoreMenu {
             snapshot.docs.map((doc) => FoodItem.fromJson(doc.data())).toList());
   }
 
-  // Read and Update
+  // Create and Update
   Future<void> setFoodItem(String restaurantId, FoodItem foodItem) {
     var options = SetOptions(merge: true);
 

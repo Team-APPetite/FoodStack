@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/screens/signup.dart';
 import 'package:foodstack/src/screens/reset.dart';
-import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -40,12 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget header() {
     return Text(
       'FoodStack',
-      style: TextStyle(
-        fontFamily: 'Avenir',
-        fontSize: 60.0,
-        fontWeight: FontWeight.bold,
-        color: ThemeColors.dark,
-      ),
+      style: TextStyles.title(),
     );
   }
 
@@ -69,10 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
       TextButton(
         child: Text(
           'Forgot Password?',
-          style: TextStyle(
-            color: Colors.grey,
-            fontSize: 16.0,
-          ),
+          style: TextStyles.link(),
         ),
         onPressed: () {
           Navigator.push(
@@ -93,10 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Text(
           'or Sign in with',
-          style: TextStyle(
-            color: ThemeColors.dark,
-            fontSize: 16.0,
-          ),
+          style: TextStyles.body(),
         ),
         SizedBox(height: 15.0),
         SocialButton(image: Image.asset('images/google.png')),
@@ -110,18 +99,12 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Text(
           'New to FoodStack?',
-          style: TextStyle(
-            color: ThemeColors.dark,
-            fontSize: 16.0,
-          ),
+          style: TextStyles.body(),
         ),
         TextButton(
           child: Text(
             'Sign Up',
-            style: TextStyle(
-                color: ThemeColors.oranges,
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold),
+            style: TextStyles.textButton(),
           ),
           onPressed: () {
             Navigator.push(context,

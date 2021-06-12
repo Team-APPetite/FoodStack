@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/screens/menu.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
 // Will update UI and modularize later
@@ -8,7 +9,7 @@ class RestaurantCard extends StatefulWidget {
   final String restaurantId;
   final String restaurantName;
   final String cuisineType;
-  final String deliveryMins;
+  final double deliveryFee;
   final double rating;
   final String image;
 
@@ -16,7 +17,7 @@ class RestaurantCard extends StatefulWidget {
       this.restaurantId,
       this.restaurantName,
       this.cuisineType,
-      this.deliveryMins,
+      this.deliveryFee,
       this.rating,
       this.image);
 
@@ -25,6 +26,8 @@ class RestaurantCard extends StatefulWidget {
 }
 
 class _RestaurantCardState extends State<RestaurantCard> {
+  bool _favourites = false;
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -52,11 +55,11 @@ class _RestaurantCardState extends State<RestaurantCard> {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             Expanded(
-              flex: 4,
+              flex: 1,
               child: Image.network(widget.image),
             ),
             Expanded(
-              flex: 11,
+              flex: 3,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
@@ -65,19 +68,11 @@ class _RestaurantCardState extends State<RestaurantCard> {
                   children: [
                     Text(
                       widget.restaurantName,
-                      style: TextStyle(
-                        color: ThemeColors.dark,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
+                      style: TextStyles.heading3(),
                     ),
                     Text(
                       widget.cuisineType,
-                      style: TextStyle(
-                        color: ThemeColors.teals,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.0,
-                      ),
+                      style: TextStyles.details(),
                     ),
                     SizedBox(
                       height: 10.0,
@@ -107,23 +102,36 @@ class _RestaurantCardState extends State<RestaurantCard> {
               ),
             ),
             Expanded(
-                flex: 3,
+                flex: 1,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Icon(
-                      Icons.favorite_outline,
-                      color: ThemeColors.oranges,
-                      size: 30.0,
+                    IconButton(
+                      icon: _favourites
+                          ? Icon(Icons.favorite,
+                        color: Colors.red,)
+                          : Icon(Icons.favorite_border,
+                        color: ThemeColors.light,),
+                      iconSize: 30.0,
+                      onPressed: () {
+                        setState(() {
+                          _favourites = !_favourites;
+                        });
+                      },
                     ),
-                    Text(
-                      widget.deliveryMins + ' mins',
-                      style: TextStyle(
-                        color: ThemeColors.teals,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.0,
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.delivery_dining,
+                          color: ThemeColors.teals,
+                          size: 20,
+                        ),
+                        Text(
+                          '\$${widget.deliveryFee}',
+                          style: TextStyles.details(),
+                        ),
+                      ],
                     ),
                   ],
                 )),

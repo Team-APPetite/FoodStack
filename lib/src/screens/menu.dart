@@ -4,6 +4,7 @@ import 'package:foodstack/src/app_providers/menuProvider.dart';
 import 'package:foodstack/src/models/foodItem.dart';
 import 'package:foodstack/src/screens/cart.dart';
 import 'package:foodstack/src/screens/details.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/foodCard.dart';
@@ -30,11 +31,6 @@ class _MenuScreenState extends State<MenuScreen> {
     final menuProvider = Provider.of<MenuProvider>(context);
 
     menuProvider.selectRestaurant = widget.restaurantId;
-    // menuProvider.addFoodItem(widget.restaurantId, FoodItem(
-    //       foodName: 'Chicken McNuggets (20pc)',
-    //       description: '20 crispy chicken nuggets fried in sunflower oil.',
-    //       price: 13.60,
-    //       image: 'https://www.mcdelivery.com.sg/sg/static/1623068177388/assets/65/products/101900.png?'));
 
     return Scaffold(
         appBar: Header.getAppBar(title: widget.restaurantName),
@@ -61,7 +57,8 @@ class _MenuScreenState extends State<MenuScreen> {
                                   snapshot.data[index].foodName,
                                   snapshot.data[index].price,
                                   snapshot.data[index].image, () {
-                                // load menuProvider
+                                menuProvider.loadFoodItem(
+                                    widget.restaurantId, snapshot.data[index]);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -70,8 +67,7 @@ class _MenuScreenState extends State<MenuScreen> {
                               }, () {
                                 setState(() {
                                   cartItems.add(1);
-                                  cartItems[itemCount] =
-                                      snapshot.data[index];
+                                  cartItems[itemCount] = snapshot.data[index];
                                   itemCount++;
                                 });
                               });
@@ -103,14 +99,11 @@ class _MenuScreenState extends State<MenuScreen> {
                             color: ThemeColors.yellows,
                           ),
                           Positioned(
-                              bottom: 12,
-                              left: (itemCount < 10) ? 24 : 18,
+                              bottom: 14,
+                              left: (itemCount < 10) ? 25 : 20,
                               child: Text(
                                 '$itemCount',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                    color: ThemeColors.dark),
+                                style: TextStyles.heading3(),
                               ))
                         ],
                       )

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/screens/newOrder.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/enums.dart';
@@ -22,12 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   'Hungry? Order Now',
-                  style: TextStyle(
-                    fontFamily: 'Avenir',
-                    fontSize: 32.0,
-                    fontWeight: FontWeight.bold,
-                    color: ThemeColors.dark,
-                  ),
+                  style: TextStyles.heading1(),
                 ),
                 // TODO Search for restaurants
                 CupertinoSearchTextField(

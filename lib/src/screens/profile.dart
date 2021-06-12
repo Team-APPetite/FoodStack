@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import '../enums.dart';
@@ -30,12 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 40),
             Text(
               'Profile',
-              style: TextStyle(
-                fontFamily: 'Avenir',
-                fontSize: 40.0,
-                fontWeight: FontWeight.bold,
-                color: ThemeColors.dark,
-              ),
+              style: TextStyles.heading1(),
             ),
             const SizedBox(height: 10),
             Padding(

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:foodstack/src/app_providers/menuProvider.dart';
-import 'package:foodstack/src/app_providers/restaurantProvider.dart';
+import 'package:foodstack/src/providers/menuProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/models/foodItem.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:provider/provider.dart';

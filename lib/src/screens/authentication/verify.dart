@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/header.dart';
-import 'home.dart';
+import 'package:foodstack/src/screens/home.dart';
 import 'dart:async';
 
 class VerifyScreen extends StatefulWidget {

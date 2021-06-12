@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/user.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
-import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/textField.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'verify.dart';
+import 'package:foodstack/src/screens/authentication/verify.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override

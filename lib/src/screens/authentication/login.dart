@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/screens/signup.dart';
-import 'package:foodstack/src/screens/reset.dart';
+import 'package:foodstack/src/screens/authentication/signup.dart';
+import 'package:foodstack/src/screens/authentication/reset.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/screens/home.dart';

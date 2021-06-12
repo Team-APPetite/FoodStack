@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/app_providers/menuProvider.dart';
+import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/widgets/header.dart';
 
 class DetailsScreen extends StatefulWidget {

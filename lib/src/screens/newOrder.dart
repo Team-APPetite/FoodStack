@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/restaurantCard.dart';
-import 'package:foodstack/src/app_providers/restaurantProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:foodstack/src/app_providers/userLocator.dart';
+import 'package:foodstack/src/providers/userLocator.dart';
 
 class NewOrderScreen extends StatefulWidget {
   @override
@@ -27,7 +27,8 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
           child: StreamBuilder<List<Restaurant>>(
               stream: restaurantProvider.restaurantsList,
               builder: (context, snapshot) {
-                if (snapshot.data == null || userLocator.currentLocation == null) {
+                if (snapshot.data == null ||
+                    userLocator.currentLocation == null) {
                   return Center(child: CircularProgressIndicator());
                 } else {
                   final userLatitude = userLocator.currentLocation.latitude;

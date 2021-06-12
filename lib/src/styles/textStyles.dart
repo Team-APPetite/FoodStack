@@ -48,7 +48,7 @@ class TextStyles {
     return TextStyle(
       color: ThemeColors.teals,
       fontWeight: FontWeight.bold,
-      fontSize: 12.0,
+      fontSize: 16.0,
     );
   }
 
@@ -75,6 +75,9 @@ class TextStyles {
   }
 
   static TextStyle hintText() {
-    return TextStyle(fontSize: 12.0, color: Colors.grey);
+    return TextStyle(
+      fontSize: 12.0,
+      color: Colors.grey,
+    );
   }
 }

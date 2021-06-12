@@ -35,6 +35,8 @@ dependencies:
   geocoder: ^0.2.1
   cloud_firestore: ^2.2.0
   uuid: ^3.0.4
+  flutter_number_picker: ^1.0.1
+  numberpicker: ^2.1.1
 
 dev_dependencies:
   flutter_test:

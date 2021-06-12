@@ -4,7 +4,7 @@ import 'package:foodstack/src/screens/newOrder.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
-import 'package:foodstack/src/enums.dart';
+import 'package:foodstack/src/utilities/enums.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
 class HomeScreen extends StatefulWidget {

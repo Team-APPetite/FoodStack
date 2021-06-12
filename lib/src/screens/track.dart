@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
-import 'package:foodstack/src/enums.dart';
+import 'package:foodstack/src/utilities/enums.dart';
 
 class TrackScreen extends StatefulWidget {
   @override

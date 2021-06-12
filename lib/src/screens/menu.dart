@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/app_providers/menuProvider.dart';
+import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/models/foodItem.dart';
 import 'package:foodstack/src/screens/cart.dart';
 import 'package:foodstack/src/screens/details.dart';

@@ -5,8 +5,8 @@ import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
-import '../enums.dart';
-import 'login.dart';
+import '../../src/utilities/enums.dart';
+import 'authentication/login.dart';
 import 'address.dart';
 
 class ProfilePage extends StatefulWidget {

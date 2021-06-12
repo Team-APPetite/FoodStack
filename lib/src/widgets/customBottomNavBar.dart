@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/enums.dart';
+import 'package:foodstack/src/utilities/enums.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/screens/profile.dart';
 import 'package:foodstack/src/screens/track.dart';

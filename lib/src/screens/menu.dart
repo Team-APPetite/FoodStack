@@ -103,7 +103,10 @@ class _MenuScreenState extends State<MenuScreen> {
                               left: (itemCount < 10) ? 25 : 20,
                               child: Text(
                                 '$itemCount',
-                                style: TextStyles.heading3(),
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold
+                                ),
                               ))
                         ],
                       )

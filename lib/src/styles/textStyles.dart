@@ -4,8 +4,8 @@ import 'package:foodstack/src/styles/themeColors.dart';
 class TextStyles {
   static TextStyle title() {
     return TextStyle(
-      fontFamily: 'Avenir',
-      fontSize: 60.0,
+      fontFamily: 'Montserrat',
+      fontSize: 50.0,
       fontWeight: FontWeight.bold,
       color: ThemeColors.dark,
     );
@@ -13,7 +13,7 @@ class TextStyles {
 
   static TextStyle heading1() {
     return TextStyle(
-      fontFamily: 'Avenir',
+      fontFamily: 'Montserrat',
       fontSize: 30.0,
       fontWeight: FontWeight.bold,
       color: ThemeColors.dark,
@@ -22,15 +22,16 @@ class TextStyles {
 
   static TextStyle heading2() {
     return TextStyle(
+      fontFamily: 'Montserrat',
       color: ThemeColors.dark,
       fontWeight: FontWeight.bold,
-      fontFamily: 'Avenir',
       fontSize: 22.0,
     );
   }
 
   static TextStyle heading3() {
     return TextStyle(
+      fontFamily: 'Montserrat',
       color: ThemeColors.dark,
       fontWeight: FontWeight.bold,
       fontSize: 16.0,

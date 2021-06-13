@@ -18,6 +18,8 @@ class FoodCard extends StatefulWidget {
 }
 
 class _FoodCardState extends State<FoodCard> {
+  int quantity = 0;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -40,7 +42,7 @@ class _FoodCardState extends State<FoodCard> {
                   child: Column(
                     children: [
                       Expanded(
-                        flex: 6,
+                        flex: 5,
                         child: Image.network(widget.image),
                       ),
                       Expanded(
@@ -68,14 +70,15 @@ class _FoodCardState extends State<FoodCard> {
         Align(
             alignment: Alignment.topRight,
             child: FloatingActionButton(
-              child: Icon(
-                Icons.add,
-              ),
+              child: quantity == 0
+                  ? Icon(Icons.add)
+                  : Text(quantity.toString(), style: TextStyle(fontSize: 16.0)),
               mini: true,
               elevation: 0,
               heroTag: null,
               onPressed: widget.onPressedCart,
               backgroundColor: ThemeColors.mint,
+              splashColor: ThemeColors.oranges,
             ))
       ],
     );

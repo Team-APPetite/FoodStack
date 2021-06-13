@@ -31,6 +31,7 @@ class _BigButtonState extends State<BigButton> {
               widget.buttonText,
               textAlign: TextAlign.center,
               style: TextStyle(
+                fontFamily: 'Montserrat',
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold
               ),

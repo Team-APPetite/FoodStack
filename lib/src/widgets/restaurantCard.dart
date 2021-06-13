@@ -61,7 +61,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
             Expanded(
               flex: 3,
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.only(left: 12.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,

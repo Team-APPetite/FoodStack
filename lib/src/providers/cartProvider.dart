@@ -1,38 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:foodstack/src/services/firestoreRestaurants.dart';
 import 'package:uuid/uuid.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 
 class CartProvider with ChangeNotifier {
-  // final firestoreService = FirestoreCarts();
-  //
-  // String _userId;
-  // String _restaurantId;
-  // String _cuisineType;
-  // double _deliveryFee;
-  // double _rating;
-  // String _image;
-  // GeoPoint _coordinates;
-  //
-  // var uuid = Uuid();
-  //
-  // // Getters
-  // String get restaurantName => _restaurantName;
-  // String get cuisineType => _cuisineType;
-  // double get deliveryFee => _deliveryFee;
-  // double get rating => _rating;
-  // String get image => _image;
-  // GeoPoint get coordinates => _coordinates;
-  // Stream<List<Restaurant>> get restaurantsList =>
-  //     firestoreService.getRestaurants();
-  //
-  // // Setters (Sample - Add more if needed)
-  // set changeRestaurantName(String restaurantName) {
-  //   _restaurantName = restaurantName;
-  //   notifyListeners();
-  // }
-  //
+
+  int _joinDuration;
+  int _itemCount;
+  var _cartItems;
+
+  var uuid = Uuid();
+
+  int get joinDuration => _joinDuration;
+  int get itemCount => _itemCount;
+  int get cartItems => _cartItems;
+
+  set joinDuration(int duration) {
+    _joinDuration = duration;
+    notifyListeners();
+  }
+
+
+
+  incrementItemCount({int increase = 1}) {
+    _itemCount = _itemCount + increase;
+    notifyListeners();
+  }
+
+  decrementItemCount({int decrease = 1}) {
+    _itemCount = _itemCount - decrease;
+    notifyListeners();
+  }
+
+
   // // Functions
   // addRestaurant(Restaurant restaurant) {
   //   if (restaurant.restaurantId != null) {
@@ -62,4 +62,15 @@ class CartProvider with ChangeNotifier {
   // removeRestaurant(String restaurantId) {
   //   firestoreService.removeRestaurant(restaurantId);
   // }
+
+// void SaveNestedData() {
+//   _db.collection("restaurants").add({
+//     "name": "McD",
+//     "cuisineType": "Fast Food",
+//     "menu": [
+//       {"food": "Meal", "price": 10.5},
+//       {"food": "Burger", "price": 6.45},
+//       {"food": "Pie", "price": 1.95}]
+//   });
+// }
 }

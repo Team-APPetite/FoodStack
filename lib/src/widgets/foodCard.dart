@@ -47,10 +47,12 @@ class _FoodCardState extends State<FoodCard> {
                       ),
                       Expanded(
                         flex: 3,
-                        child: Text(
-                          widget.foodName,
-                          textAlign: TextAlign.center,
-                          style: TextStyles.heading3(),
+                        child: Center(
+                          child: Text(
+                            widget.foodName,
+                            textAlign: TextAlign.center,
+                            style: TextStyles.heading3(),
+                          ),
                         ),
                       ),
                       Expanded(

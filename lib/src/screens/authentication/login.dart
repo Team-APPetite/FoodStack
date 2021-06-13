@@ -5,6 +5,7 @@ import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/textField.dart';
 import 'package:foodstack/src/widgets/socialButton.dart';
@@ -135,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
         msg: '${error.message}',
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 5,
+        backgroundColor: ThemeColors.dark,
       );
     }
   }

@@ -1,27 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:provider/provider.dart';
 
 class FoodCard extends StatefulWidget {
+  final String foodId;
   final String foodName;
   final double price;
   final String image;
   final void Function() onPressedDetails;
-  final void Function() onPressedCart;
 
-  FoodCard(this.foodName, this.price, this.image, this.onPressedDetails,
-      this.onPressedCart);
+  FoodCard(this.foodId, this.foodName, this.price, this.image, this.onPressedDetails);
 
   @override
   _FoodCardState createState() => _FoodCardState();
 }
 
 class _FoodCardState extends State<FoodCard> {
-  int quantity = 0;
+
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    int quantity = cartProvider.getItemQuantityOf(widget.foodId);
+
     return Stack(
       children: [
         TextButton(
@@ -72,16 +76,28 @@ class _FoodCardState extends State<FoodCard> {
         Align(
             alignment: Alignment.topRight,
             child: FloatingActionButton(
-              child: quantity == 0
-                  ? Icon(Icons.add)
-                  : Text(quantity.toString(), style: TextStyle(fontSize: 16.0)),
+              child: Icon(Icons.add),
               mini: true,
               elevation: 0,
               heroTag: null,
-              onPressed: widget.onPressedCart,
+              onPressed: () {
+                cartProvider.addToCart(CurrentCartItem(
+                    foodId: widget.foodId,
+                    foodName: widget.foodName,
+                    image: widget.image,
+                    price: widget.price,
+                    notes: 'none'));
+              },
               backgroundColor: ThemeColors.mint,
               splashColor: ThemeColors.oranges,
-            ))
+            )),
+        Padding(
+          padding: const EdgeInsets.only(top: 20, left: 15),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(quantity > 0 ? ' x' + quantity.toString() : '', style: TextStyles.textButton(),),
+          ),
+        )
       ],
     );
   }

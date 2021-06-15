@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/screens/menu.dart';
+import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
@@ -13,13 +14,8 @@ class RestaurantCard extends StatefulWidget {
   final double rating;
   final String image;
 
-  RestaurantCard(
-      this.restaurantId,
-      this.restaurantName,
-      this.cuisineType,
-      this.deliveryFee,
-      this.rating,
-      this.image);
+  RestaurantCard(this.restaurantId, this.restaurantName, this.cuisineType,
+      this.deliveryFee, this.rating, this.image);
 
   @override
   _RestaurantCardState createState() => _RestaurantCardState();
@@ -30,14 +26,17 @@ class _RestaurantCardState extends State<RestaurantCard> {
 
   @override
   Widget build(BuildContext context) {
+    final FirestoreUsers firestoreService = FirestoreUsers();
+
     return TextButton(
       onPressed: () {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => MenuScreen(
-                  restaurantId: widget.restaurantId,
+                      restaurantId: widget.restaurantId,
                       restaurantName: widget.restaurantName,
+                  deliveryFee: widget.deliveryFee,
                     )));
       },
       child: Container(
@@ -109,14 +108,23 @@ class _RestaurantCardState extends State<RestaurantCard> {
                   children: [
                     IconButton(
                       icon: _favourites
-                          ? Icon(Icons.favorite,
-                        color: Colors.red,)
-                          : Icon(Icons.favorite_border,
-                        color: ThemeColors.light,),
+                          ? Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            )
+                          : Icon(
+                              Icons.favorite_border,
+                              color: ThemeColors.light,
+                            ),
                       iconSize: 30.0,
                       onPressed: () {
                         setState(() {
                           _favourites = !_favourites;
+                          _favourites
+                              ? firestoreService
+                                  .addToFavourites(widget.restaurantId)
+                              : firestoreService
+                                  .removeFromFavourites(widget.restaurantId);
                         });
                       },
                     ),

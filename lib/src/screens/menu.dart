@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/models/foodItem.dart';
 import 'package:foodstack/src/screens/cart.dart';
@@ -13,26 +14,72 @@ import 'package:provider/provider.dart';
 class MenuScreen extends StatefulWidget {
   final String restaurantId;
   final String restaurantName;
+  final double deliveryFee;
 
-  MenuScreen({this.restaurantId, this.restaurantName});
+  MenuScreen({this.restaurantId, this.restaurantName, this.deliveryFee});
 
   @override
   _MenuScreenState createState() => _MenuScreenState();
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  int itemCount = 0;
   var cartItems = [];
 
   // TODO Add search bar
+  // TODO Add restaurant image by putting GridView in column(expanded())
   @override
   Widget build(BuildContext context) {
     final menuProvider = Provider.of<MenuProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
 
     menuProvider.selectRestaurant = widget.restaurantId;
+    cartProvider.deliveryFee = widget.deliveryFee;
+
+    Widget viewCart() {
+      return Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 100,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: ThemeColors.light,
+                  blurRadius: 4,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  AppButton(
+                    buttonText: 'VIEW CART',
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChangeNotifierProvider.value(
+                              value: cartProvider,
+                              child: CartScreen(),
+                            ),
+                          ));
+                    },
+                  ),
+                  cartProvider.itemQuantityIcon(),
+                ],
+              ),
+            ),
+          ));
+    }
 
     return Scaffold(
-        appBar: Header.getAppBar(title: widget.restaurantName),
+        appBar: Header.getAppBar(
+          title: widget.restaurantName,
+          // alert: cartProvider.itemCount > 0 ? 'loseCart' : 'none',
+        ),
         body: Stack(
           children: [
             Scrollbar(
@@ -51,69 +98,29 @@ class _MenuScreenState extends State<MenuScreen> {
                                 childAspectRatio: 0.8,
                               ),
                               itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
-                                // TODO Update food card and add search bar
-                                return FoodCard(
-                                    snapshot.data[index].foodName,
-                                    snapshot.data[index].price,
-                                    snapshot.data[index].image, () {
-                                  menuProvider.loadFoodItem(
-                                      widget.restaurantId, snapshot.data[index]);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailsScreen(menuProvider)));
-                                }, () {
-                                  setState(() {
-                                    cartItems.add(1);
-                                    cartItems[itemCount] = snapshot.data[index];
-                                    itemCount++;
-                                  });
-                                });
-                              });
+                              itemBuilder: (context, index) =>
+                                  ChangeNotifierProvider.value(
+                                      value: cartProvider,
+                                      child: FoodCard(
+                                          snapshot.data[index].foodId,
+                                          snapshot.data[index].foodName,
+                                          snapshot.data[index].price,
+                                          snapshot.data[index].image, () {
+                                        menuProvider.loadFoodItem(
+                                            widget.restaurantId,
+                                            snapshot.data[index]);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailsScreen(
+                                                        menuProvider)));
+                                      })),
+                            );
                     }),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30.0),
-              child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      AppButton(
-                        buttonText: 'VIEW CART',
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CartScreen(cartItems)));
-                        },
-                      ),
-                      Stack(
-                        children: [
-                          Icon(
-                            Icons.shopping_bag_outlined,
-                            size: 60,
-                            color: ThemeColors.yellows,
-                          ),
-                          Positioned(
-                              bottom: 14,
-                              left: (itemCount < 10) ? 25 : 20,
-                              child: Text(
-                                '$itemCount',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ))
-                        ],
-                      )
-                    ],
-                  )),
-            ),
+            viewCart(),
           ],
         ));
   }

@@ -5,13 +5,14 @@ class Users {
   String name;
   String email;
   String address;
+  List favourites;
 
-  Users({
-    @required this.uid,
-    this.name,
-    this.email,
-    this.address,
-  });
+  Users(
+      {@required this.uid,
+      this.name,
+      this.email,
+      this.address,
+      this.favourites});
 
   Map<String, dynamic> toMap() {
     return {
@@ -19,12 +20,14 @@ class Users {
       'name': name,
       'email': email,
       'address': address,
+      'favourites': favourites
     };
   }
 
   Users.fromFirestore(Map<String, dynamic> firestore)
-    :uid = firestore['uid'],
-     name = firestore['name'],
-     email = firestore ['email'],
-     address = firestore['address'];
+      : uid = firestore['uid'],
+        name = firestore['name'],
+        email = firestore['email'],
+        address = firestore['address'],
+        favourites = firestore['favourites'];
 }

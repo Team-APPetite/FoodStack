@@ -41,4 +41,28 @@ class FirestoreUsers {
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
   }
+
+  //Add restaurant to user favourites array
+  Future<void> addToFavourites(String restaurantId) async {
+    CollectionReference users = _db.collection('users');
+    var currUid = _auth.currentUser.uid;
+    List addFavourite = [restaurantId];
+    return users
+        .doc(currUid)
+        .update({'favourites': FieldValue.arrayUnion(addFavourite)})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  //Remove restaurant from user favourites array
+  Future<void> removeFromFavourites(String restaurantId) async {
+    CollectionReference users = _db.collection('users');
+    var currUid = _auth.currentUser.uid;
+    List addFavourite = [restaurantId];
+    return users
+        .doc(currUid)
+        .update({'favourites': FieldValue.arrayRemove(addFavourite)})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
 }

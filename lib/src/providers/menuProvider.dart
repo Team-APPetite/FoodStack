@@ -25,7 +25,6 @@ class MenuProvider with ChangeNotifier {
   // Setters
   set selectRestaurant(String restaurantId) {
     _restaurantId = restaurantId;
-    // notifyListeners();
   }
 
   // Functions

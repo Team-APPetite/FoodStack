@@ -23,7 +23,7 @@ class FirestoreCarts {
   }
 
   // Delete
-  Future<void> removeCart(String cartId) {
+  Future<void> deleteCart(String cartId) {
     return _db.collection('carts').doc(cartId).delete();
   }
 }

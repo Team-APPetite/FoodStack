@@ -34,6 +34,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
     menuProvider.selectRestaurant = widget.restaurantId;
     cartProvider.deliveryFee = widget.deliveryFee;
+    cartProvider.restaurantId = widget.restaurantId;
 
     Widget viewCart() {
       return Align(
@@ -82,16 +83,16 @@ class _MenuScreenState extends State<MenuScreen> {
         ),
         body: Stack(
           children: [
-            Scrollbar(
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 100.0),
-                child: StreamBuilder<List<FoodItem>>(
-                    stream: menuProvider.menu,
-                    builder: (context, snapshot) {
-                      return (snapshot.data == null)
-                          ? Center(child: CircularProgressIndicator())
-                          : GridView.builder(
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 100.0),
+              child: StreamBuilder<List<FoodItem>>(
+                  stream: menuProvider.menu,
+                  builder: (context, snapshot) {
+                    return (snapshot.data == null)
+                        ? Center(child: CircularProgressIndicator())
+                        : Scrollbar(
+                          child: GridView.builder(
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -116,9 +117,9 @@ class _MenuScreenState extends State<MenuScreen> {
                                                     DetailsScreen(
                                                         menuProvider)));
                                       })),
-                            );
-                    }),
-              ),
+                            ),
+                        );
+                  }),
             ),
             viewCart(),
           ],

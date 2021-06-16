@@ -1,17 +1,27 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/models/cart.dart';
+import 'package:foodstack/src/models/currentCartItem.dart';
 import 'package:foodstack/src/services/firestoreCarts.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/numbers.dart';
+import 'package:uuid/uuid.dart';
 
 class CartProvider with ChangeNotifier {
   final firestoreService = FirestoreCarts();
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   int _joinDuration = 20;
   int _itemCount = 0;
   int _uniqueItemCount = 0;
   var _cartItems = [];
 
+  var uuid = Uuid();
+
+  String _cartId;
+  String _restaurantId;
+  String _userId;
   double _deliveryFee;
 
   int get joinDuration => _joinDuration;
@@ -29,8 +39,13 @@ class CartProvider with ChangeNotifier {
     _deliveryFee = fee;
   }
 
+  set restaurantId(String id) {
+    _restaurantId = id;
+  }
+
   addToCart(CurrentCartItem cartItem) {
-    CurrentCartItem exists = _cartItems.firstWhere((item) => item.foodId == cartItem.foodId,
+    CurrentCartItem exists = _cartItems.firstWhere(
+        (item) => item.foodId == cartItem.foodId,
         orElse: () => null);
 
     if (exists == null) {
@@ -56,8 +71,8 @@ class CartProvider with ChangeNotifier {
   }
 
   int getItemQuantityOf(String foodId) {
-    CurrentCartItem exists = _cartItems.firstWhere((item) => item.foodId == foodId,
-        orElse: () => null);
+    CurrentCartItem exists = _cartItems
+        .firstWhere((item) => item.foodId == foodId, orElse: () => null);
 
     if (exists == null) {
       return 0;
@@ -68,8 +83,8 @@ class CartProvider with ChangeNotifier {
   }
 
   updateItemQuantityOf(String foodId, int quantity) {
-    CurrentCartItem exists = _cartItems.firstWhere((item) => item.foodId == foodId,
-        orElse: () => null);
+    CurrentCartItem exists = _cartItems
+        .firstWhere((item) => item.foodId == foodId, orElse: () => null);
 
     if (exists != null) {
       int updateIndex = _cartItems.indexOf(exists);
@@ -112,30 +127,34 @@ class CartProvider with ChangeNotifier {
   }
 
   String deliveryFeeRange() {
-    return '\$${_deliveryFee/5} - \$$_deliveryFee';
+    return '\$${_deliveryFee / 5} - \$$_deliveryFee';
   }
 
   String totalRange() {
     double subtotal = getSubtotal();
-    double min = Numbers.roundTo2d(_deliveryFee/5 + subtotal);
+    double min = Numbers.roundTo2d(_deliveryFee / 5 + subtotal);
     double max = Numbers.roundTo2d(_deliveryFee + subtotal);
     return '\$$min - \$$max';
   }
-}
 
-class CurrentCartItem {
-  String foodId;
-  String foodName;
-  String image;
-  double price;
-  int quantity;
-  String notes;
+  confirmCart() {
+    _cartId = uuid.v1();
+    _userId = _auth.currentUser.uid;
 
-  CurrentCartItem(
-      {this.foodId,
-      this.foodName,
-      this.image,
-      this.price,
-      this.quantity,
-      this.notes});
+    List<dynamic> cartItemsList = [];
+
+    _cartItems.forEach((item) => cartItemsList
+        .add(CartItem(item.foodId, item.quantity, item.notes).toMap()));
+    var cart = Cart(_cartId, _userId, _restaurantId, cartItemsList);
+    firestoreService.setCart(cart);
+    clearCart();
+  }
+
+  deleteCart(String cartId) {
+    firestoreService.deleteCart(cartId);
+  }
+
+  clearCart() {
+
+  }
 }

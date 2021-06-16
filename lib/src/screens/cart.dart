@@ -105,7 +105,11 @@ class _CartScreenState extends State<CartScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CheckoutScreen()));
+                          builder: (_) => ChangeNotifierProvider.value(
+                            value: cartProvider,
+                            child: CheckoutScreen(),
+                          ),
+                        ));
                   },
                 )
               ],

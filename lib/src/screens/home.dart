@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/screens/favourites.dart';
 import 'package:foodstack/src/screens/newOrder.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
@@ -59,7 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         buttonText: 'Your\nFavourites',
                         icon: Icons.favorite_border_outlined,
                         color: ThemeColors.yellows,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => FavouritesScreen()));
+                        },
                       ),
                     ),
                     SizedBox(width: 10),

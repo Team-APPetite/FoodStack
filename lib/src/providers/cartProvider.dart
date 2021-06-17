@@ -17,8 +17,6 @@ class CartProvider with ChangeNotifier {
   int _uniqueItemCount = 0;
   var _cartItems = [];
 
-  var uuid = Uuid();
-
   String _cartId;
   String _restaurantId;
   String _userId;
@@ -68,6 +66,30 @@ class CartProvider with ChangeNotifier {
     _uniqueItemCount--;
     _itemCount--;
     notifyListeners();
+  }
+
+  confirmCart() {
+    var uuid = Uuid();
+    _cartId = uuid.v1();
+    _userId = _auth.currentUser.uid;
+
+    List<dynamic> cartItemsList = [];
+
+    _cartItems.forEach((item) => cartItemsList
+        .add(CartItem(item.foodId, item.quantity, item.notes).toMap()));
+    var cart = Cart(_cartId, _userId, _restaurantId, cartItemsList);
+    firestoreService.setCart(cart);
+    clearCart();
+  }
+
+  deleteCart(String cartId) {
+    firestoreService.deleteCart(cartId);
+  }
+
+  clearCart() {
+    _itemCount = 0;
+    _uniqueItemCount = 0;
+    _cartItems = [];
   }
 
   int getItemQuantityOf(String foodId) {
@@ -135,26 +157,5 @@ class CartProvider with ChangeNotifier {
     double min = Numbers.roundTo2d(_deliveryFee / 5 + subtotal);
     double max = Numbers.roundTo2d(_deliveryFee + subtotal);
     return '\$$min - \$$max';
-  }
-
-  confirmCart() {
-    _cartId = uuid.v1();
-    _userId = _auth.currentUser.uid;
-
-    List<dynamic> cartItemsList = [];
-
-    _cartItems.forEach((item) => cartItemsList
-        .add(CartItem(item.foodId, item.quantity, item.notes).toMap()));
-    var cart = Cart(_cartId, _userId, _restaurantId, cartItemsList);
-    firestoreService.setCart(cart);
-    clearCart();
-  }
-
-  deleteCart(String cartId) {
-    firestoreService.deleteCart(cartId);
-  }
-
-  clearCart() {
-
   }
 }

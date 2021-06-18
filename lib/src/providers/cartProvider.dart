@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/cart.dart';
 import 'package:foodstack/src/models/currentCartItem.dart';
+import 'package:foodstack/src/providers/timerProvider.dart';
 import 'package:foodstack/src/services/firestoreCarts.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/numbers.dart';
@@ -10,6 +11,7 @@ import 'package:uuid/uuid.dart';
 
 class CartProvider with ChangeNotifier {
   final firestoreService = FirestoreCarts();
+  final joinTimer = TimerProvider();
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   int _joinDuration = 20;
@@ -79,6 +81,7 @@ class CartProvider with ChangeNotifier {
         .add(CartItem(item.foodId, item.quantity, item.notes).toMap()));
     var cart = Cart(_cartId, _userId, _restaurantId, cartItemsList);
     firestoreService.setCart(cart);
+    joinTimer.startJoinTimer(_joinDuration);
     clearCart();
   }
 

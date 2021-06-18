@@ -20,6 +20,8 @@ class FirestoreUsers {
         .then((snapshot) => Users.fromFirestore(snapshot.data()));
   }
 
+
+
   //Update user address
   Future<void> updateAddress(String address) {
     CollectionReference users = _db.collection('users');

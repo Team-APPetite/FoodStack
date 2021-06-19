@@ -37,11 +37,9 @@ class OrderProvider with ChangeNotifier {
    
 
   // Functions
-  Future setOrder() async{
+   setOrder() {
 
     _orderId = uuid.v4();
-
-
     _restaurantId = null;
     _creatorId = FirebaseAuth.instance.currentUser.uid;
     _paymentId = null;

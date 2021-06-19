@@ -24,7 +24,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 AppButton(
           buttonText: 'CONFIRM',
           onPressed: () {
-                //cartProvider.confirmCart();
+                cartProvider.confirmCart();
                 orderProvider.setOrder();
           },
         ),

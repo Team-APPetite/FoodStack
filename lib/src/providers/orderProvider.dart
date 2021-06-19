@@ -15,7 +15,7 @@ class OrderProvider with ChangeNotifier {
    String _restaurantId;
    String _creatorId;
    String _paymentId;
-   Status _status;
+   String _status;
    String _deliveryAddress;
    Timestamp _orderTime;
    double _totalPrice;
@@ -28,7 +28,7 @@ class OrderProvider with ChangeNotifier {
    String get restaurantId => _restaurantId;
    String get creatorId => _creatorId;
    String get paymentId => _paymentId;
-   Status get status => _status;
+   String get status => _status;
    String get deliveryAddress => _deliveryAddress;
    Timestamp get orderTime => _orderTime;
    double get totalPrice => _totalPrice;
@@ -43,7 +43,7 @@ class OrderProvider with ChangeNotifier {
     _restaurantId = null;
     _creatorId = FirebaseAuth.instance.currentUser.uid;
     _paymentId = null;
-    _status = Status.active;
+    _status = Status.active.toString();
     _deliveryAddress = null;
     _orderTime = null;
     _totalPrice = null;

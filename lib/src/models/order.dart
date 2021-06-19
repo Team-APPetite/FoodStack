@@ -7,7 +7,7 @@ class Order {
   final String restaurantId;
   final String creatorId;
   final String paymentId;
-  final Status status;
+  final String status;
   final String deliveryAddress;
   final Timestamp orderTime;
   final double totalPrice;

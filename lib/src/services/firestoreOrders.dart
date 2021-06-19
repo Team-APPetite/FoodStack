@@ -9,14 +9,14 @@ class FirestoreOrders {
   Future<void> addOrder(Order order) {
     var options = SetOptions(merge: true);
     return _db
-        .collection('order')
+        .collection('orders')
         .doc(order.orderId)
         .set(order.toMap(), options);
   }
 
   //Delete Order
   Future<void> removeOrder(String orderId) {
-    return _db.collection('order').doc(orderId).delete();
+    return _db.collection('orders').doc(orderId).delete();
 
   }
 }

@@ -20,27 +20,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         appBar: Header.getAppBar(),
         body: Center(
             child: Column(
-              children: [
-                AppButton(
-          buttonText: 'CONFIRM',
-          onPressed: () {
+          children: [
+            AppButton(
+              buttonText: 'CONFIRM',
+              onPressed: () {
                 cartProvider.confirmCart();
                 orderProvider.setOrder();
-          },
-        ),
-                AppButton(
-                  buttonText: 'HOME',
-                  // Need new order creation confirmation page
-                  // that will have this button
-                  // Home button should be removed from this screen
-                  // and be added later to confirmation page
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(
-                            builder: (context) => HomeScreen()));
-                  },
-                )
-              ],
-            )));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()));
+              },
+            ),
+          ],
+        )));
   }
 }

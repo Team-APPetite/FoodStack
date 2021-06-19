@@ -18,6 +18,7 @@ class RestaurantProvider with ChangeNotifier {
   var uuid = Uuid();
 
   // Getters
+  String get restaurantId => restaurantId;
   String get restaurantName => _restaurantName;
   String get cuisineType => _cuisineType;
   double get deliveryFee => _deliveryFee;

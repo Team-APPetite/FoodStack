@@ -38,7 +38,8 @@ dependencies:
   flutter_number_picker: ^1.0.1
   numberpicker: ^2.1.1
   geoflutterfire: ^3.0.0-nullsafety.4
-  rxdart: ^0.27.1
+  rxdart: ^0.27.1 #not being used currently
+  firebase_messaging: ^10.0.2
 
 
 dev_dependencies:

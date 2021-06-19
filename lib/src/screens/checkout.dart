@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
+import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
@@ -14,7 +15,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
-
+    final orderProvider = Provider.of<OrderProvider>(context);
     return Scaffold(
         appBar: Header.getAppBar(),
         body: Center(
@@ -23,8 +24,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 AppButton(
           buttonText: 'CONFIRM',
           onPressed: () {
-                cartProvider.confirmCart();
-                // Create order here
+                //cartProvider.confirmCart();
+                orderProvider.setOrder();
           },
         ),
                 AppButton(

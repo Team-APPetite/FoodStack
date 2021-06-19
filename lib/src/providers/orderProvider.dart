@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:foodstack/src/services/firestoreOrders.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
@@ -12,7 +11,6 @@ class OrderProvider with ChangeNotifier {
   final firestoreService = FirestoreOrders();
   FirestoreUsers firestoreUser = FirestoreUsers();
 
-
    String _orderId;
    String _restaurantId;
    String _creatorId;
@@ -23,9 +21,9 @@ class OrderProvider with ChangeNotifier {
    double _totalPrice;
    String _cartId;
 
-  var uuid = Uuid();
+   var uuid = Uuid();
 
-  // Getters
+   // Getters
    String get orderId => _orderId;
    String get restaurantId => _restaurantId;
    String get creatorId => _creatorId;
@@ -36,25 +34,22 @@ class OrderProvider with ChangeNotifier {
    double get totalPrice => _totalPrice;
    String get cartId => _cartId;
 
-
-
+   
 
   // Functions
-  addOrder(Order order) {
-    if (order.orderId != null) {
-      _orderId = order.orderId;
-    } else {
-      _orderId = uuid.v1();
-    }
+  Future setOrder() async{
 
-    _restaurantId = order.restaurantId;
+    _orderId = uuid.v4();
+
+
+    _restaurantId = null;
     _creatorId = FirebaseAuth.instance.currentUser.uid;
     _paymentId = null;
     _status = Status.active;
-    _deliveryAddress = order.deliveryAddress;
-    _orderTime = order.orderTime;
-    _totalPrice = order.totalPrice;
-    _cartId = order.cartId;
+    _deliveryAddress = null;
+    _orderTime = null;
+    _totalPrice = null;
+    _cartId = null;
 
     var newOrder = Order(
         orderId: _orderId,
@@ -67,7 +62,9 @@ class OrderProvider with ChangeNotifier {
         totalPrice: _totalPrice,
         cartId: _cartId);
 
-    firestoreService.addOrder(newOrder);
+    return firestoreService.addOrder(newOrder)
+        .then((value) => print('Order Saved'))
+        .catchError((error) => print(error));
   }
 
   removeRestaurant(String orderId) {

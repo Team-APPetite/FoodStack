@@ -21,8 +21,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _email = '';
   String _password = '';
   String _passwordConfirmation = '';
-  final auth = FirebaseAuth.instance;
-  final FirestoreUsers firestoreService = FirestoreUsers();
 
   @override
   Widget build(BuildContext context) {
@@ -92,15 +90,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
         SizedBox(height: 50.0),
         AppButton(
           buttonText: 'SIGN UP',
-          onPressed: () => _signup(
+          onPressed: () => SignUpFunction().signup(
               _firstName, _lastName, _email, _password, _passwordConfirmation),
         ),
         SizedBox(height: 100.0)
       ],
     );
   }
+}
 
-  _signup(String _firstName, String _lastName, String _email, String _password,
+class SignUpFunction {
+  final auth = FirebaseAuth.instance;
+  final FirestoreUsers firestoreService = FirestoreUsers();
+
+  signup(String _firstName, String _lastName, String _email, String _password,
       String _passwordConfirmation) async {
     try {
       if (_firstName == '') {
@@ -141,8 +144,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         user.updateProfile(displayName: _diplayName);
         var currUser = Users(uid: result.user.uid, email: result.user.email, name: _diplayName);
         await firestoreService.addUser(currUser);
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => VerifyScreen()));
+        //Navigator.push(
+            //context, MaterialPageRoute(builder: (context) => VerifyScreen()));
       }
     } on FirebaseAuthException catch (error) {
       print(error);

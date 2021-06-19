@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/screens/favourites.dart';
+import 'package:foodstack/src/screens/joinOrders.dart';
 import 'package:foodstack/src/screens/newOrder.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
@@ -48,7 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       buttonText: 'Join\nOrders',
                       icon: Icons.person_add_alt_1_outlined,
                       color: ThemeColors.oranges,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => JoinOrdersScreen()));
+                      },
                     ),
                   ),
                 ]),

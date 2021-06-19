@@ -28,6 +28,8 @@ class CartProvider with ChangeNotifier {
 
   int get itemCount => _itemCount;
 
+  String get restaurantId => _restaurantId;
+
   List get cartItems => _cartItems;
 
   set joinDuration(int duration) {

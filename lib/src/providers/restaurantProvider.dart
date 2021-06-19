@@ -18,7 +18,7 @@ class RestaurantProvider with ChangeNotifier {
   var uuid = Uuid();
 
   // Getters
-  String get restaurantId => restaurantId;
+  String get restaurantId => _restaurantId;
   String get restaurantName => _restaurantName;
   String get cuisineType => _cuisineType;
   double get deliveryFee => _deliveryFee;
@@ -35,6 +35,19 @@ class RestaurantProvider with ChangeNotifier {
   }
 
   // Functions
+  Stream<List<Restaurant>> nearbyOrderRestaurantsList(Stream<List<String>> ordersList) {
+    List lst = [];
+    ordersList.listen((listOfStrings) {
+      for (int i = 0; i < listOfStrings.length; i++) {
+        lst.add(1);
+        lst[i] = listOfStrings[i];
+      }
+      return firestoreService.loadNearbyOrderRestaurants(lst);
+    });
+    return firestoreService.getNearbyOrderRestaurants();
+  }
+
+
   addRestaurant(Restaurant restaurant) {
     if (restaurant.restaurantId != null) {
       _restaurantId = restaurant.restaurantId;

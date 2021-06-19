@@ -12,31 +12,33 @@ class Order {
   final Timestamp orderTime;
   final double totalPrice;
   final String cartId;
+  final Object getCoordinates;
 
-
-  Order({this.orderId,
-    this.restaurantId,
-    this.creatorId,
-    this.paymentId,
-    this.status,
-    this.deliveryAddress,
-    this.coordinates,
-    this.orderTime,
-    this.totalPrice,
-    this.cartId});
+  Order(
+      {this.orderId,
+      this.restaurantId,
+      this.creatorId,
+      this.paymentId,
+      this.status,
+      this.deliveryAddress,
+      this.coordinates,
+      this.orderTime,
+      this.totalPrice,
+      this.cartId,
+      this.getCoordinates});
 
   Order.fromFirestore(Map<String, dynamic> firestore)
-  :orderId = firestore['orderId'],
-   restaurantId = firestore['restaurantId'],
-   creatorId = firestore['creatorId'],
-   paymentId = firestore['paymentId'],
-   status = firestore['status'],
-   deliveryAddress = firestore['deliveryAddress'],
-   coordinates = firestore['coordinates'],
-   orderTime = firestore['orderTime'],
-   totalPrice = firestore['totalPrice'],
-   cartId = firestore['cartId'];
-
+      : orderId = firestore['orderId'],
+        restaurantId = firestore['restaurantId'],
+        creatorId = firestore['creatorId'],
+        paymentId = firestore['paymentId'],
+        status = firestore['status'],
+        deliveryAddress = firestore['deliveryAddress'],
+        getCoordinates = firestore['coordinates'],
+        orderTime = firestore['orderTime'],
+        totalPrice = firestore['totalPrice'],
+        cartId = firestore['cartId'],
+        coordinates = null;
 
   Map<String, dynamic> toMap() {
     return {

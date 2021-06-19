@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
@@ -35,7 +34,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             AppButton(
               buttonText: 'CONFIRM ORDER',
               onPressed: () {
-                orderProvider.setOrder(Order(coordinates: myLocation));
+                orderProvider.setOrder(Order(restaurantId: cartProvider.restaurantId, coordinates: myLocation));
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomeScreen()));
               },

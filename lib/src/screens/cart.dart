@@ -102,7 +102,7 @@ class _CartScreenState extends State<CartScreen> {
                 AppButton(
                   buttonText: 'CONFIRM CART',
                   onPressed: () {
-                    // cartProvider.confirmCart();
+                    cartProvider.confirmCart();
                     Navigator.push(
                         context,
                         MaterialPageRoute(

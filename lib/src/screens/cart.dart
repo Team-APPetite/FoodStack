@@ -100,8 +100,9 @@ class _CartScreenState extends State<CartScreen> {
                 setJoinDuration(),
                 paymentSummary(),
                 AppButton(
-                  buttonText: 'CHECKOUT',
+                  buttonText: 'CONFIRM CART',
                   onPressed: () {
+                    // cartProvider.confirmCart();
                     Navigator.push(
                         context,
                         MaterialPageRoute(

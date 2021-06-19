@@ -17,6 +17,7 @@ class OrderProvider with ChangeNotifier {
    String _paymentId;
    String _status;
    String _deliveryAddress;
+   Object _coordinates;
    Timestamp _orderTime;
    double _totalPrice;
    String _cartId;
@@ -37,7 +38,7 @@ class OrderProvider with ChangeNotifier {
    
 
   // Functions
-   setOrder() {
+   setOrder(Order order) {
 
     _orderId = uuid.v4();
     _restaurantId = null;
@@ -45,6 +46,7 @@ class OrderProvider with ChangeNotifier {
     _paymentId = null;
     _status = Status.active.toString();
     _deliveryAddress = null;
+    _coordinates = order.coordinates;
     _orderTime = null;
     _totalPrice = null;
     _cartId = null;
@@ -56,6 +58,7 @@ class OrderProvider with ChangeNotifier {
         paymentId: _paymentId,
         status: _status,
         deliveryAddress: _deliveryAddress,
+        coordinates: _coordinates,
         orderTime: _orderTime,
         totalPrice: _totalPrice,
         cartId: _cartId);
@@ -65,7 +68,7 @@ class OrderProvider with ChangeNotifier {
         .catchError((error) => print(error));
   }
 
-  removeRestaurant(String orderId) {
-    firestoreService.removeOrder(restaurantId);
+  removeOrder(String orderId) {
+    firestoreService.removeOrder(orderId);
   }
 }

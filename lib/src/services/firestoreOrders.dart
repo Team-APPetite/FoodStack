@@ -21,7 +21,7 @@ class FirestoreOrders {
   }
 
   Stream<List<DocumentSnapshot>> getNearbyOrders(GeoFirePoint center, double radius) {
-    return geo.collection(collectionRef: _db.collection('orders'))
+    return geo.collection(collectionRef: _db.collection('orders').where('status', isEqualTo: 'Status.active'))
         .within(center: center, radius: radius, field: 'coordinates');
   }
 }

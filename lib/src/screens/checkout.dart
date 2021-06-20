@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
-import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/widgets/button.dart';
@@ -20,13 +19,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final orderProvider = Provider.of<OrderProvider>(context);
-    final restaurantProvider = Provider.of<RestaurantProvider>(context);
 
     final geo = Geoflutterfire();
     final userLocator = Provider.of<UserLocator>(context);
-    GeoFirePoint myLocation = geo.point(
-    latitude: userLocator.coordinates.latitude,
-    longitude: userLocator.coordinates.longitude);
+    GeoFirePoint userLocation = geo.point(
+        latitude: userLocator.coordinates.latitude,
+        longitude: userLocator.coordinates.longitude);
 
     return Scaffold(
         appBar: Header.getAppBar(back: false),
@@ -36,7 +34,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             AppButton(
               buttonText: 'CONFIRM ORDER',
               onPressed: () {
-                orderProvider.setOrder(Order(restaurantId: cartProvider.restaurantId, coordinates: myLocation, cartId: cartProvider.cartId, totalPrice: cartProvider.getSubtotal()));
+                orderProvider.setOrder(Order(
+                    restaurantId: cartProvider.restaurantId,
+                    coordinates: userLocation,
+                    cartId: cartProvider.cartId,
+                    totalPrice:
+                        cartProvider.getSubtotal() + cartProvider.deliveryFee));
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomeScreen()));
               },

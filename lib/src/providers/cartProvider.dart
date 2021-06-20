@@ -33,6 +33,8 @@ class CartProvider with ChangeNotifier {
 
   List get cartItems => _cartItems;
 
+  double get deliveryFee => _deliveryFee;
+
   set joinDuration(int duration) {
     _joinDuration = duration;
     notifyListeners();

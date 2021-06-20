@@ -79,7 +79,7 @@ class _MenuScreenState extends State<MenuScreen> {
     return Scaffold(
         appBar: Header.getAppBar(
           title: widget.restaurantName,
-          // alert: cartProvider.itemCount > 0 ? 'loseCart' : 'none',
+          alert: cartProvider.itemCount > 0 ? 'loseCart' : 'none',
         ),
         body: Stack(
           children: [

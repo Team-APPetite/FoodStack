@@ -40,40 +40,36 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
               .map((e) => e.restaurantId)
               .toList());
 
-      // restaurantProvider.loadNearbyOrderRestaurantsList(ordersList);
-      Stream<List<Restaurant>> stream = restaurantProvider.loadNearbyOrderRestaurantsList(ordersList);
-      // if (stream != null) {
-        return Scaffold(
-            appBar: Header.getAppBar(title: 'Join Orders'),
-            body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: StreamBuilder<List<Restaurant>>(
-                  stream: stream,
-                  builder: (context, snapshot) {
-                    if (snapshot.data == null) {
-                      return Center(
-                          child: Text(
-                              'Check another time! No nearby orders right now'));
-                    } else {
-                      return Scrollbar(
-                        child: ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              return RestaurantCard(
-                                  snapshot.data[index].restaurantId,
-                                  snapshot.data[index].restaurantName,
-                                  snapshot.data[index].cuisineType,
-                                  snapshot.data[index].deliveryFee,
-                                  snapshot.data[index].rating,
-                                  snapshot.data[index].image);
-                            }),
-                      );
-                    }
-                  }),
-            ));
-      //} else {
-      //  return Scaffold(body: Center(child: CircularProgressIndicator()));
-      //}
+      restaurantProvider.loadNearbyOrderRestaurantsList(ordersList);
+
+      return Scaffold(
+          appBar: Header.getAppBar(title: 'Join Orders'),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: StreamBuilder<List<Restaurant>>(
+                stream: restaurantProvider.nearbyOrdersRestaurantsList,
+                builder: (context, snapshot) {
+                  if (snapshot.data == null) {
+                    return Center(
+                        child: Text(
+                            'Check another time! No nearby orders right now'));
+                  } else {
+                    return Scrollbar(
+                      child: ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            return RestaurantCard(
+                                snapshot.data[index].restaurantId,
+                                snapshot.data[index].restaurantName,
+                                snapshot.data[index].cuisineType,
+                                snapshot.data[index].deliveryFee,
+                                snapshot.data[index].rating,
+                                snapshot.data[index].image);
+                          }),
+                    );
+                  }
+                }),
+          ));
     } else {
       return Scaffold(body: Center(child: CircularProgressIndicator()));
     }

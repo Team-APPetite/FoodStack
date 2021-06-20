@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:provider/provider.dart';
 
 class Header {
   static getAppBar(
@@ -48,23 +50,27 @@ class _BackArrowState extends State<BackArrow> {
   }
 
   Function loseCart() {
-    return (BuildContext context) => AlertDialog(
-          title: const Text('Lose Cart Items'),
-          content: const Text(
-              'Returning to the previous page will delete all items in your cart'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: Text('Add more items', style: TextStyles.emphasis()),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              child: Text('Empty cart', style: TextStyles.textButton()),
-            ),
-          ],
-        );
+    return (BuildContext context) {
+      final cartProvider = Provider.of<CartProvider>(context);
+      return AlertDialog(
+        title: const Text('Lose Cart Items'),
+        content: const Text(
+            'Returning to the previous page will delete all items in your cart'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: Text('Add more items', style: TextStyles.emphasis()),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              cartProvider.clearCart();
+            },
+            child: Text('Empty cart', style: TextStyles.textButton()),
+          ),
+        ],
+      );
+    };
   }
 }

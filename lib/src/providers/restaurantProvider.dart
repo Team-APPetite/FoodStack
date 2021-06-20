@@ -14,7 +14,6 @@ class RestaurantProvider with ChangeNotifier {
   double _rating;
   String _image;
   GeoPoint _coordinates;
-  Stream<List<Restaurant>>_nearbyOrderRestaurantsList;
 
   var uuid = Uuid();
 
@@ -29,7 +28,7 @@ class RestaurantProvider with ChangeNotifier {
   Stream<List<Restaurant>> get restaurantsList =>
       firestoreService.getRestaurants();
   Stream<List<Restaurant>> get nearbyOrdersRestaurantsList =>
-      _nearbyOrderRestaurantsList;
+      firestoreService.getNearbyOrderRestaurants();
 
   // Setters
   set changeRestaurantName(String restaurantName) {
@@ -38,7 +37,9 @@ class RestaurantProvider with ChangeNotifier {
   }
 
   // Functions
-  Stream<List<Restaurant>> loadNearbyOrderRestaurantsList(Stream<List<String>> ordersList) {
+  //Stream<List<Restaurant>>
+  loadNearbyOrderRestaurantsList(
+      Stream<List<String>> ordersList) {
     List lst = [];
 
     ordersList.listen((listOfStrings) {
@@ -50,9 +51,8 @@ class RestaurantProvider with ChangeNotifier {
         firestoreService.loadNearbyOrderRestaurants(lst);
       }
     });
-    return firestoreService.getNearbyOrderRestaurants();
+    //return firestoreService.getNearbyOrderRestaurants();
   }
-
 
   addRestaurant(Restaurant restaurant) {
     if (restaurant.restaurantId != null) {

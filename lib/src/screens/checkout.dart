@@ -39,7 +39,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     coordinates: userLocation,
                     cartId: cartProvider.cartId,
                     totalPrice:
-                        cartProvider.getSubtotal() + cartProvider.deliveryFee));
+                        cartProvider.getSubtotal() + cartProvider.deliveryFee,
+                    deliveryAddress: userLocator.deliveryAddress.addressLine));
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomeScreen()));
               },

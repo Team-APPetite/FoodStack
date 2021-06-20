@@ -47,7 +47,7 @@ class OrderProvider with ChangeNotifier {
     _creatorId = FirebaseAuth.instance.currentUser.uid;
     _paymentId = null;
     _status = Status.active.toString();
-    _deliveryAddress = null;
+    _deliveryAddress = order.deliveryAddress;
     _coordinates = order.coordinates;
     _orderTime = Timestamp.now();
     _totalPrice = order.totalPrice;

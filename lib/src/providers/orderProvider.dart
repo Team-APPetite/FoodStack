@@ -49,9 +49,9 @@ class OrderProvider with ChangeNotifier {
     _status = Status.active.toString();
     _deliveryAddress = null;
     _coordinates = order.coordinates;
-    _orderTime = null;
-    _totalPrice = null;
-    _cartId = null;
+    _orderTime = Timestamp.now();
+    _totalPrice = order.totalPrice;
+    _cartId = order.cartId;
 
     var newOrder = Order(
         orderId: _orderId,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/widgets/button.dart';
@@ -19,6 +20,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final orderProvider = Provider.of<OrderProvider>(context);
+    final restaurantProvider = Provider.of<RestaurantProvider>(context);
 
     final geo = Geoflutterfire();
     final userLocator = Provider.of<UserLocator>(context);
@@ -34,7 +36,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             AppButton(
               buttonText: 'CONFIRM ORDER',
               onPressed: () {
-                orderProvider.setOrder(Order(restaurantId: cartProvider.restaurantId, coordinates: myLocation));
+                orderProvider.setOrder(Order(restaurantId: cartProvider.restaurantId, coordinates: myLocation, cartId: cartProvider.cartId, totalPrice: cartProvider.getSubtotal()));
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomeScreen()));
               },

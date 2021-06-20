@@ -24,6 +24,7 @@ class CartProvider with ChangeNotifier {
   String _userId;
   double _deliveryFee;
 
+  String get cartId => _cartId;
   int get joinDuration => _joinDuration;
 
   int get itemCount => _itemCount;

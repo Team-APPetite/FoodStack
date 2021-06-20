@@ -38,14 +38,15 @@ dependencies:
   flutter_number_picker: ^1.0.1
   numberpicker: ^2.1.1
   geoflutterfire: ^3.0.0-nullsafety.4
-  rxdart: ^0.27.1 #not being used currently
   firebase_messaging: ^10.0.2
 
 
 dev_dependencies:
-  test: ^1.17.8
   flutter_test:
     sdk: flutter
+  test: ^1.17.8
+  mockito: ^5.0.10
+  build_runner: ^2.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

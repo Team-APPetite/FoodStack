@@ -144,8 +144,8 @@ class SignUpFunction {
         user.updateProfile(displayName: _diplayName);
         var currUser = Users(uid: result.user.uid, email: result.user.email, name: _diplayName);
         await firestoreService.addUser(currUser);
-        //Navigator.push(
-            //context, MaterialPageRoute(builder: (context) => VerifyScreen()));
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => VerifyScreen()));
       }
     } on FirebaseAuthException catch (error) {
       print(error);

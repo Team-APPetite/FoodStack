@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    // TODO Add search bar
     return Scaffold(
         body: Padding(
             padding: EdgeInsets.all(30.0),
@@ -39,7 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: ThemeColors.mint,
                       onPressed: () {
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => NewOrderScreen()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NewOrderScreen()));
                       },
                     ),
                   ),
@@ -51,7 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: ThemeColors.oranges,
                       onPressed: () {
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => JoinOrdersScreen()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => JoinOrdersScreen()));
                       },
                     ),
                   ),
@@ -66,7 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: ThemeColors.yellows,
                         onPressed: () {
                           Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => FavouritesScreen()));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FavouritesScreen()));
                         },
                       ),
                     ),

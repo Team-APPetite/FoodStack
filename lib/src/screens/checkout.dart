@@ -34,13 +34,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             AppButton(
               buttonText: 'CONFIRM ORDER',
               onPressed: () {
-                orderProvider.setOrder(Order(
-                    restaurantId: cartProvider.restaurantId,
-                    coordinates: userLocation,
-                    cartId: cartProvider.cartId,
-                    totalPrice:
-                        cartProvider.getSubtotal() + cartProvider.deliveryFee,
-                    deliveryAddress: userLocator.deliveryAddress.addressLine));
+                orderProvider.setOrder(
+                    Order(
+                        restaurantId: cartProvider.restaurantId,
+                        coordinates: userLocation,
+                        cartId: cartProvider.cartId,
+                        totalPrice: cartProvider.getSubtotal() +
+                            cartProvider.deliveryFee,
+                        deliveryAddress:
+                            userLocator.deliveryAddress.addressLine),
+                    cartProvider.joinDuration);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomeScreen()));
               },

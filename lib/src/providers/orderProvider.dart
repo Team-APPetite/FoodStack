@@ -41,7 +41,8 @@ class OrderProvider with ChangeNotifier {
       firestoreService.getNearbyOrders(center, radius);
 
   // Functions
-  setOrder(Order order) {
+  setOrder(Order order, int joinDurationMins) {
+    int noOfSecondsPerMinute = 60;
     _orderId = uuid.v4();
     _restaurantId = order.restaurantId;
     _creatorId = FirebaseAuth.instance.currentUser.uid;
@@ -49,9 +50,15 @@ class OrderProvider with ChangeNotifier {
     _status = Status.active.toString();
     _deliveryAddress = order.deliveryAddress;
     _coordinates = order.coordinates;
-    _orderTime = Timestamp.now();
     _totalPrice = order.totalPrice;
     _cartId = order.cartId;
+
+    Timestamp currentTime = Timestamp.now();
+    int seconds = currentTime.seconds + (joinDurationMins * noOfSecondsPerMinute);
+    int nanoseconds = currentTime.nanoseconds;
+    Timestamp orderCompletionTime = Timestamp(seconds, nanoseconds);
+    _orderTime = orderCompletionTime;
+    print(_orderTime);
 
     var newOrder = Order(
         orderId: _orderId,

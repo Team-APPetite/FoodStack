@@ -32,24 +32,24 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                header(),
-                loginForm(),
-                socialLogin(),
-                newUser(),
+                _header(),
+                _loginForm(),
+                _socialLogin(),
+                _newUser(),
               ]),
         ),
       ),
     );
   }
 
-  Widget header() {
+  Widget _header() {
     return Text(
       'FoodStack',
       style: TextStyles.title(),
     );
   }
 
-  Widget loginForm() {
+  Widget _loginForm() {
     return Column(children: [
       AppTextField(
           hintText: 'EMAIL',
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
     ]);
   }
 
-  Widget socialLogin() {
+  Widget _socialLogin() {
     return Column(
       children: [
         Text(
@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget newUser() {
+  Widget _newUser() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

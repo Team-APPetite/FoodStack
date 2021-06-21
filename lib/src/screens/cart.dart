@@ -2,12 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
+import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
+import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/checkout.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
@@ -20,8 +24,15 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
+    final orderProvider = Provider.of<OrderProvider>(context);
 
-    Widget setJoinDuration() {
+    final geo = Geoflutterfire();
+    final userLocator = Provider.of<UserLocator>(context);
+    GeoFirePoint userLocation = geo.point(
+        latitude: userLocator.coordinates.latitude,
+        longitude: userLocator.coordinates.longitude);
+
+    Widget _setJoinDuration() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -51,7 +62,7 @@ class _CartScreenState extends State<CartScreen> {
       );
     }
 
-    Widget paymentSummary() {
+    Widget _paymentSummary() {
       return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Table(
@@ -77,7 +88,7 @@ class _CartScreenState extends State<CartScreen> {
         );
     }
 
-    Widget createOrder() {
+    Widget _createOrder() {
       return Align(
         alignment: Alignment.bottomCenter,
         child: Container(
@@ -97,12 +108,22 @@ class _CartScreenState extends State<CartScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                setJoinDuration(),
-                paymentSummary(),
+                _setJoinDuration(),
+                _paymentSummary(),
                 AppButton(
                   buttonText: 'CONFIRM CART',
                   onPressed: () {
                     cartProvider.confirmCart();
+                    orderProvider.setOrder(
+                        Order(
+                            restaurantId: cartProvider.restaurantId,
+                            coordinates: userLocation,
+                            cartId: cartProvider.cartId,
+                            totalPrice: cartProvider.getSubtotal() +
+                                cartProvider.deliveryFee,
+                            deliveryAddress:
+                            userLocator.deliveryAddress.addressLine),
+                        cartProvider.joinDuration);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -180,7 +201,7 @@ class _CartScreenState extends State<CartScreen> {
                             );
                           })),
                 ),
-                createOrder(),
+                _createOrder(),
               ],
             ),
     );

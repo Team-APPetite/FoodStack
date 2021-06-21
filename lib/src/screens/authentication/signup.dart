@@ -34,13 +34,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            header(),
-            signupForm(),
+            _header(),
+            _signupForm(),
           ]),
         ));
   }
 
-  Widget header() {
+  Widget _header() {
     return Column(
       children: [
         Text(
@@ -52,7 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget signupForm() {
+  Widget _signupForm() {
     return Column(
       children: [
         AppTextField(
@@ -95,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         AppButton(
           buttonText: 'SIGN UP',
         onPressed: () async {
-          String state = await UserAuth(auth: auth, firestoreService: firestoreService).signup(
+          String state = await UserAuth(auth: auth).signup(
               _firstName, _lastName, _email, _password, _passwordConfirmation);
 
           if (state == "Success") {

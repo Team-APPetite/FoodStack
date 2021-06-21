@@ -17,33 +17,14 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context);
-    final orderProvider = Provider.of<OrderProvider>(context);
-
-    final geo = Geoflutterfire();
-    final userLocator = Provider.of<UserLocator>(context);
-    GeoFirePoint userLocation = geo.point(
-        latitude: userLocator.coordinates.latitude,
-        longitude: userLocator.coordinates.longitude);
-
     return Scaffold(
         appBar: Header.getAppBar(back: false),
         body: Center(
             child: Column(
           children: [
             AppButton(
-              buttonText: 'CONFIRM ORDER',
+              buttonText: 'PAY',
               onPressed: () {
-                orderProvider.setOrder(
-                    Order(
-                        restaurantId: cartProvider.restaurantId,
-                        coordinates: userLocation,
-                        cartId: cartProvider.cartId,
-                        totalPrice: cartProvider.getSubtotal() +
-                            cartProvider.deliveryFee,
-                        deliveryAddress:
-                            userLocator.deliveryAddress.addressLine),
-                    cartProvider.joinDuration);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => HomeScreen()));
               },

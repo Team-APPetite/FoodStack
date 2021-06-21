@@ -23,7 +23,6 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  var cartItems = [];
 
   // TODO Add search bar
   // TODO Add restaurant image by putting GridView in column(expanded())

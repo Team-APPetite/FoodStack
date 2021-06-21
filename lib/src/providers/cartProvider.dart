@@ -85,7 +85,7 @@ class CartProvider with ChangeNotifier {
     _cartItems.forEach((item) => cartItemsList
         .add(CartItem(item.foodId, item.quantity, item.notes).toMap()));
     var cart = Cart(_cartId, _userId, _restaurantId, cartItemsList);
-    // firestoreService.setCart(cart);
+    firestoreService.setCart(cart);
     joinTimer.startJoinTimer(_joinDuration);
     clearCart();
   }

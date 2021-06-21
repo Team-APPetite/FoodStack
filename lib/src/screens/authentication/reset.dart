@@ -24,15 +24,15 @@ class _ResetScreenState extends State<ResetScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          header(),
-          instructions(),
-          resetForm(),
+          _header(),
+          _instructions(),
+          _resetForm(),
         ]),
       ),
     );
   }
 
-  Widget header() {
+  Widget _header() {
     return Column(
       children: [
         Text(
@@ -44,7 +44,7 @@ class _ResetScreenState extends State<ResetScreen> {
     );
   }
 
-  Widget instructions() {
+  Widget _instructions() {
     return Column(
       children: [
         Text(
@@ -57,7 +57,7 @@ class _ResetScreenState extends State<ResetScreen> {
     );
   }
 
-  Widget resetForm() {
+  Widget _resetForm() {
     return Column(children: [
       AppTextField(
         hintText: 'EMAIL',

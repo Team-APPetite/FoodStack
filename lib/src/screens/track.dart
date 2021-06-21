@@ -4,6 +4,7 @@ import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/utilities/enums.dart';
 
 class TrackScreen extends StatefulWidget {
+
   @override
   _TrackScreenState createState() => _TrackScreenState();
 }

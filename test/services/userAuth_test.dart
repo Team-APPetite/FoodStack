@@ -89,5 +89,79 @@ void main() {
 
   group("Signup", () {
 
-  });
+    test("valid details", () async {
+      when(
+        mockFirebaseAuth.createUserWithEmailAndPassword(
+            email: "nicole.joseph2122@gmail.com", password: "sample123"),
+      ).thenAnswer((realInvocation) => null);
+
+      expect(await userAuth.signup("Nicole", "Joseph", "nicole.joseph2122@gmail.com", "sample123", "sample123"),
+          "Success");
+    });
+
+    test("empty form", () async {
+      when(
+        mockFirebaseAuth.createUserWithEmailAndPassword(email: "", password: ""),
+      ).thenAnswer((realInvocation) =>
+      throw FirebaseAuthException(message: "Please fill in your details"));
+
+      expect(await userAuth.signup("","","","", ""), "Please fill in your details");
+    });
+
+    test("no first name", () async  {
+      when (
+        mockFirebaseAuth.createUserWithEmailAndPassword(email: "nicole.joseph2122@gmail.com", password: "sample123"),
+      ).thenAnswer((realInvocation) =>
+      throw FirebaseAuthException(message: "Please enter your first name"));
+
+      expect(await userAuth.signup("","Joseph","nicole.joseph2122@gmail.com","sample123", "sample123"), "Please enter your first name");
+    });
+
+    test("no last name", () async  {
+      when (
+        mockFirebaseAuth.createUserWithEmailAndPassword(email: "nicole.joseph2122@gmail.com", password: "sample123"),
+      ).thenAnswer((realInvocation) =>
+      throw FirebaseAuthException(message: "Please enter your last name"));
+
+      expect(await userAuth.signup("Nicole","","nicole.joseph2122@gmail.com","sample123", "sample123"), "Please enter your last name");
+    });
+
+    test("no email", () async  {
+      when (
+        mockFirebaseAuth.createUserWithEmailAndPassword(email: "", password: "sample123"),
+      ).thenAnswer((realInvocation) =>
+      throw FirebaseAuthException(message: "Please enter your email address"));
+
+      expect(await userAuth.signup("Nicole","Joseph","","sample123", "sample123"), "Please enter your email address");
+    });
+
+    test("no password", () async  {
+      when (
+        mockFirebaseAuth.createUserWithEmailAndPassword(email: "nicole.joseph2122@gmail.com", password: ""),
+      ).thenAnswer((realInvocation) =>
+      throw FirebaseAuthException(message: "Please enter a password"));
+
+      expect(await userAuth.signup("Nicole","Joseph","nicole.joseph2122@gmail.com","", ""), "Please enter a password");
+    });
+
+    test("passwords do not match", () async  {
+      when (
+        mockFirebaseAuth.createUserWithEmailAndPassword(email: "nicole.joseph2122@gmail.com", password: "sample123"),
+      ).thenAnswer((realInvocation) =>
+      throw FirebaseAuthException(message: "Passwords do not match"));
+
+      expect(await userAuth.signup("Nicole","Joseph","nicole.joseph2122@gmail.com","sample123", "sample321"), "Passwords do not match");
+    });
+
+    test("invalid email address", () async  {
+      when (
+        mockFirebaseAuth.createUserWithEmailAndPassword(email: "appfoodstack", password: "sample123"),
+      ).thenAnswer((realInvocation) =>
+      throw FirebaseAuthException(message: "Email address is badly formatted"));
+
+      expect(await userAuth.signup("Nicole","Joseph","appfoodstack","sample123", "sample321"), "Email address is badly formatted");
+    });
+
+    }
+  );
 }

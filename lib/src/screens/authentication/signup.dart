@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/models/user.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
+import 'package:foodstack/src/services/userAuth.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/textField.dart';
@@ -21,6 +22,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _email = '';
   String _password = '';
   String _passwordConfirmation = '';
+  final auth = FirebaseAuth.instance;
+  final FirestoreUsers firestoreService = FirestoreUsers();
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +93,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
         SizedBox(height: 50.0),
         AppButton(
           buttonText: 'SIGN UP',
-          onPressed: () => SignUpFunction().signup(
-              _firstName, _lastName, _email, _password, _passwordConfirmation),
+        onPressed: () async {
+          String state = await UserAuth(auth: auth).signup(
+              _firstName, _lastName, _email, _password, _passwordConfirmation);
+          if (state == "Success") {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => VerifyScreen()));
+          } else {
+            Fluttertoast.showToast(
+              msg: '$state',
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 5,
+              backgroundColor: ThemeColors.dark,
+            );
+          }
+        }
         ),
         SizedBox(height: 100.0)
       ],
@@ -99,61 +116,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 }
 
-class SignUpFunction {
-  final auth = FirebaseAuth.instance;
-  final FirestoreUsers firestoreService = FirestoreUsers();
 
-  signup(String _firstName, String _lastName, String _email, String _password,
-      String _passwordConfirmation) async {
-    try {
-      if (_firstName == '') {
-        Fluttertoast.showToast(
-          msg: 'Please enter your first name',
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 5,
-        );
-      } else if (_lastName == '') {
-        Fluttertoast.showToast(
-          msg: 'Please enter your last name',
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 5,
-        );
-      } else if (_email == '') {
-        Fluttertoast.showToast(
-          msg: 'Please enter your email address',
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 5,
-        );
-      } else if (_password == '') {
-        Fluttertoast.showToast(
-          msg: 'Please enter a password',
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 5,
-        );
-      } else if (_password != _passwordConfirmation) {
-        Fluttertoast.showToast(
-          msg: 'Passwords do not match',
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 5,
-        );
-      } else {
-        UserCredential result = await auth.createUserWithEmailAndPassword(
-            email: _email, password: _password);
-        User user = result.user;
-        String _diplayName = _firstName + " " + _lastName;
-        user.updateProfile(displayName: _diplayName);
-        var currUser = Users(uid: result.user.uid, email: result.user.email, name: _diplayName);
-        await firestoreService.addUser(currUser);
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => VerifyScreen()));
-      }
-    } on FirebaseAuthException catch (error) {
-      print(error);
-      Fluttertoast.showToast(
-        msg: '${error.message}',
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 5,
-      );
-    }
-  }
-}
+

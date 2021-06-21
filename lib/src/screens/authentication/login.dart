@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/screens/authentication/signup.dart';
 import 'package:foodstack/src/screens/authentication/reset.dart';
+import 'package:foodstack/src/services/userAuth.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/screens/home.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/textField.dart';
@@ -27,13 +28,14 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 60.0),
-          child:
-              Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            header(),
-            loginForm(),
-            socialLogin(),
-            newUser(),
-          ]),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                header(),
+                loginForm(),
+                socialLogin(),
+                newUser(),
+              ]),
         ),
       ),
     );
@@ -76,7 +78,20 @@ class _LoginScreenState extends State<LoginScreen> {
       SizedBox(height: 15.0),
       AppButton(
         buttonText: 'LOGIN',
-        onPressed: () => _login(_email, _password),
+        onPressed: () async {
+          String state = await UserAuth(auth: auth).login(_email, _password);
+          if (state == "Success") {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          } else {
+            Fluttertoast.showToast(
+              msg: '$state',
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 5,
+              backgroundColor: ThemeColors.dark,
+            );
+          }
+        },
       ),
       SizedBox(height: 30.0),
     ]);
@@ -115,30 +130,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ],
     );
-  }
-
-  _login(String _email, String _password) async {
-    try {
-      if (_email == '') {
-        Fluttertoast.showToast(
-          msg: 'Please enter your email address',
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 5,
-        );
-      } else {
-        await auth.signInWithEmailAndPassword(
-            email: _email, password: _password);
-
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomeScreen()));
-      }
-    } on FirebaseAuthException catch (error) {
-      Fluttertoast.showToast(
-        msg: '${error.message}',
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 5,
-        backgroundColor: ThemeColors.dark,
-      );
-    }
   }
 }

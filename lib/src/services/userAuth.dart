@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodstack/src/models/user.dart';
-import 'package:foodstack/src/services/firestoreUsers.dart';
+
 
 
 class UserAuth {
   final FirebaseAuth auth;
-  final FirestoreUsers firestoreService = FirestoreUsers();
 
   UserAuth({this.auth});
 
@@ -43,11 +41,6 @@ class UserAuth {
       } else {
         UserCredential result = await auth.createUserWithEmailAndPassword(
             email: _email, password: _password);
-        User user = result.user;
-        String _displayName = _firstName + " " + _lastName;
-        user.updateDisplayName(_displayName);
-        var currUser = Users(uid: result.user.uid, email: result.user.email, name: _displayName);
-        await firestoreService.addUser(currUser);
         return "Success";
       }
     } on FirebaseAuthException catch (error) {

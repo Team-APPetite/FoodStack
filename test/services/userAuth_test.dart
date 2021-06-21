@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/services/userAuth.dart';
 import 'package:mockito/mockito.dart';
 
@@ -15,6 +16,7 @@ class MockFirebaseAuth extends Mock implements FirebaseAuth {
     ]);
   }
 }
+
 
 void main() {
   final MockFirebaseAuth mockFirebaseAuth = MockFirebaseAuth();
@@ -159,7 +161,7 @@ void main() {
       ).thenAnswer((realInvocation) =>
       throw FirebaseAuthException(message: "Email address is badly formatted"));
 
-      expect(await userAuth.signup("Nicole","Joseph","appfoodstack","sample123", "sample321"), "Email address is badly formatted");
+      expect(await userAuth.signup("Nicole","Joseph","appfoodstack","sample123", "sample123"), "Email address is badly formatted");
     });
 
     }

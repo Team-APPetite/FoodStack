@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/models/user.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/services/userAuth.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -94,9 +95,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         AppButton(
           buttonText: 'SIGN UP',
         onPressed: () async {
-          String state = await UserAuth(auth: auth).signup(
+          String state = await UserAuth(auth: auth, firestoreService: firestoreService).signup(
               _firstName, _lastName, _email, _password, _passwordConfirmation);
+
           if (state == "Success") {
+            User user = auth.currentUser;
+            String _displayName = _firstName + " " + _lastName;
+            user.updateDisplayName(_displayName);
+            var currUser = Users(uid: user.uid, email: user.email, name: _displayName);
+            await firestoreService.addUser(currUser);
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => VerifyScreen()));

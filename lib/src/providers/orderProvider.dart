@@ -70,11 +70,13 @@ class OrderProvider with ChangeNotifier {
         orderTime: _orderTime,
         totalPrice: _totalPrice,);
 
-    firestoreService.addToCart(newCartId, _orderId);
-    return firestoreService
+
+    firestoreService
         .addOrder(newOrder)
         .then((value) => print('Order Saved'))
         .catchError((error) => print(error));
+    return firestoreService
+        .addToCart(newCartId, _orderId);
   }
 
   removeOrder(String orderId) {

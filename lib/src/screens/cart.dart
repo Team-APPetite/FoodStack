@@ -118,12 +118,11 @@ class _CartScreenState extends State<CartScreen> {
                         Order(
                             restaurantId: cartProvider.restaurantId,
                             coordinates: userLocation,
-                            cartId: cartProvider.cartId,
                             totalPrice: cartProvider.getSubtotal() +
                                 cartProvider.deliveryFee,
                             deliveryAddress:
                             userLocator.deliveryAddress.addressLine),
-                        cartProvider.joinDuration);
+                        cartProvider.joinDuration, cartProvider.cartId);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -11,7 +11,7 @@ class Order {
   final GeoFirePoint coordinates;
   final Timestamp orderTime;
   final double totalPrice;
-  final String cartId;
+  final List cartId;
   final Object getCoordinates;
 
   Order(

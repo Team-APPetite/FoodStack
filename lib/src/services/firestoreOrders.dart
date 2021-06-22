@@ -26,23 +26,23 @@ class FirestoreOrders {
   }
 
   //Add cartId to orders database
-  Future<void> addToCart(String cartId, String orderId) async {
+  Future<void> addToCartsList(String cartId, String orderId) async {
     CollectionReference orders = _db.collection('orders');
     List addCart = [cartId];
     return orders
         .doc(orderId)
-        .update({'cartId': FieldValue.arrayUnion(addCart)})
+        .update({'cartIds': FieldValue.arrayUnion(addCart)})
         .then((value) => print("Order Updated"))
         .catchError((error) => print("Failed to update order: $error"));
   }
 
   //Remove cartId from orders database
-  Future<void> removeFromCart(String cartId, String orderId) async {
+  Future<void> removeFromCartsList(String cartId, String orderId) async {
     CollectionReference orders = _db.collection('orders');
     List removeCart = [cartId];
     return orders
         .doc(orderId)
-        .update({'cartId': FieldValue.arrayRemove(removeCart)})
+        .update({'cartIds': FieldValue.arrayRemove(removeCart)})
         .then((value) => print("Order Updated"))
         .catchError((error) => print("Failed to update order: $error"));
   }

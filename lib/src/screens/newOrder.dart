@@ -7,6 +7,7 @@ import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewOrderScreen extends StatefulWidget {
   @override
@@ -14,6 +15,17 @@ class NewOrderScreen extends StatefulWidget {
 }
 
 class _NewOrderScreenState extends State<NewOrderScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _setUserRole();
+  }
+
+  Future<void> _setUserRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isPooler', false);
+  }
+
   @override
   Widget build(BuildContext context) {
     final restaurantProvider = Provider.of<RestaurantProvider>(context);

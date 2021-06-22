@@ -10,6 +10,7 @@ import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:provider/provider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JoinOrdersScreen extends StatefulWidget {
   @override
@@ -17,6 +18,17 @@ class JoinOrdersScreen extends StatefulWidget {
 }
 
 class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _setUserRole();
+  }
+
+  Future<void> _setUserRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isPooler', true);
+  }
+
   @override
   Widget build(BuildContext context) {
     final orderProvider = Provider.of<OrderProvider>(context);

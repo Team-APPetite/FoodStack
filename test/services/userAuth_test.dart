@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/services/userAuth.dart';
 import 'package:mockito/mockito.dart';
 

@@ -21,7 +21,7 @@ class OrderProvider with ChangeNotifier {
   Object _coordinates;
   Timestamp _orderTime;
   double _totalPrice;
-  List _cartId;
+  List _cartIds;
 
   var uuid = Uuid();
 
@@ -34,7 +34,7 @@ class OrderProvider with ChangeNotifier {
   String get deliveryAddress => _deliveryAddress;
   Timestamp get orderTime => _orderTime;
   double get totalPrice => _totalPrice;
-  List get cartId => _cartId;
+  List get cartIds => _cartIds;
 
   Stream<List<DocumentSnapshot>> getNearbyOrdersList(
           GeoFirePoint center, double radius) =>
@@ -76,7 +76,7 @@ class OrderProvider with ChangeNotifier {
         .then((value) => print('Order Saved'))
         .catchError((error) => print(error));
     return firestoreService
-        .addToCart(newCartId, _orderId);
+        .addToCartsList(newCartId, _orderId);
   }
 
   removeOrder(String orderId) {

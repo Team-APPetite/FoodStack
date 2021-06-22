@@ -11,7 +11,7 @@ class Order {
   final GeoFirePoint coordinates;
   final Timestamp orderTime;
   final double totalPrice;
-  final List cartId;
+  final List cartIds;
   final Object getCoordinates;
 
   Order(
@@ -24,7 +24,7 @@ class Order {
       this.coordinates,
       this.orderTime,
       this.totalPrice,
-      this.cartId,
+      this.cartIds,
       this.getCoordinates});
 
   Order.fromFirestore(Map<String, dynamic> firestore)
@@ -37,7 +37,7 @@ class Order {
         getCoordinates = firestore['coordinates'],
         orderTime = firestore['orderTime'],
         totalPrice = firestore['totalPrice'],
-        cartId = firestore['cartId'],
+        cartIds = firestore['cartIds'],
         coordinates = null;
 
   Map<String, dynamic> toMap() {
@@ -51,7 +51,7 @@ class Order {
       'coordinates': coordinates.data,
       'orderTime': orderTime,
       'totalPrice': totalPrice,
-      'cartId': cartId,
+      'cartIds': cartIds,
     };
   }
 }

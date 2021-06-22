@@ -5,11 +5,13 @@ import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/models/foodItem.dart';
 import 'package:foodstack/src/screens/cart.dart';
 import 'package:foodstack/src/screens/details.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/foodCard.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuScreen extends StatefulWidget {
   final String restaurantId;
@@ -23,6 +25,30 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  DateTime _orderCompletionTime;
+  @override
+  void initState() {
+    super.initState();
+    _setOrderCompletionTime();
+  }
+
+  Future<bool> _getUserRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isPooler = prefs.getBool('isPooler');
+    // if (isPooler == null) {
+    //   return false;
+    // }
+    return isPooler;
+  }
+  Future<void> _setOrderCompletionTime() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    bool isPooler = await _getUserRole();
+
+   if (isPooler) {
+      setState(() => _orderCompletionTime = DateTime.utc(2021, 6, 23, 1, 22));
+    }
+  }
 
   // TODO Add search bar
   // TODO Add restaurant image by putting GridView in column(expanded())
@@ -91,32 +117,44 @@ class _MenuScreenState extends State<MenuScreen> {
                     return (snapshot.data == null)
                         ? Center(child: CircularProgressIndicator())
                         : Scrollbar(
-                          child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 0.8,
+                          child: Column(
+                            children: [
+                              _orderCompletionTime != null ? Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Text('Order by ${_orderCompletionTime.hour}:${_orderCompletionTime.minute}', style: TextStyles.textButton(),),
+                                ),
+                              ) : Container(),
+                              Expanded(
+                                child: GridView.builder(
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 0.8,
+                                    ),
+                                    itemCount: snapshot.data.length,
+                                    itemBuilder: (context, index) =>
+                                        ChangeNotifierProvider.value(
+                                            value: cartProvider,
+                                            child: FoodCard(
+                                                snapshot.data[index].foodId,
+                                                snapshot.data[index].foodName,
+                                                snapshot.data[index].price,
+                                                snapshot.data[index].image, () {
+                                              menuProvider.loadFoodItem(
+                                                  widget.restaurantId,
+                                                  snapshot.data[index]);
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailsScreen(
+                                                              menuProvider)));
+                                            })),
+                                  ),
                               ),
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) =>
-                                  ChangeNotifierProvider.value(
-                                      value: cartProvider,
-                                      child: FoodCard(
-                                          snapshot.data[index].foodId,
-                                          snapshot.data[index].foodName,
-                                          snapshot.data[index].price,
-                                          snapshot.data[index].image, () {
-                                        menuProvider.loadFoodItem(
-                                            widget.restaurantId,
-                                            snapshot.data[index]);
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DetailsScreen(
-                                                        menuProvider)));
-                                      })),
-                            ),
+                            ],
+                          ),
                         );
                   }),
             ),

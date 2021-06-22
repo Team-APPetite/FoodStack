@@ -53,6 +53,8 @@ class _BackArrowState extends State<BackArrow> {
     return (BuildContext context) {
       final cartProvider = Provider.of<CartProvider>(context);
       return AlertDialog(
+        buttonPadding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
         title: const Text('Lose Cart Items'),
         content: const Text(
             'Returning to the previous page will delete all items in your cart'),

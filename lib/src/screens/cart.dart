@@ -142,22 +142,26 @@ class _CartScreenState extends State<CartScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                isPooler? _displayOrderCompletionTime() : _setJoinDuration(),
+                isPooler ? _displayOrderCompletionTime() : _setJoinDuration(),
                 _paymentSummary(),
                 AppButton(
                   buttonText: 'CONFIRM CART',
                   onPressed: () {
                     cartProvider.confirmCart();
 
-                    orderProvider.setOrder(
-                        Order(
-                            restaurantId: cartProvider.restaurantId,
-                            coordinates: userLocation,
-                            totalPrice: cartProvider.getSubtotal() +
-                                cartProvider.deliveryFee,
-                            deliveryAddress:
-                            userLocator.deliveryAddress.addressLine),
-                        cartProvider.joinDuration, cartProvider.cartId);
+                    isPooler
+                        ? orderProvider.addToCartsList(
+                            cartProvider.cartId, orderProvider.orderId)
+                        : orderProvider.setOrder(
+                            Order(
+                                restaurantId: cartProvider.restaurantId,
+                                coordinates: userLocation,
+                                totalPrice: cartProvider.getSubtotal() +
+                                    cartProvider.deliveryFee,
+                                deliveryAddress:
+                                    userLocator.deliveryAddress.addressLine),
+                            cartProvider.joinDuration,
+                            cartProvider.cartId);
 
                     Navigator.push(
                         context,

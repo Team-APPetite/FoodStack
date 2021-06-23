@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/screens/menu.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:provider/provider.dart';
 
 // Will update UI and modularize later
 
@@ -13,9 +15,10 @@ class RestaurantCard extends StatefulWidget {
   final double deliveryFee;
   final double rating;
   final String image;
+  final Function onPressed;
 
   RestaurantCard(this.restaurantId, this.restaurantName, this.cuisineType,
-      this.deliveryFee, this.rating, this.image);
+      this.deliveryFee, this.rating, this.image, {this.onPressed});
 
   @override
   _RestaurantCardState createState() => _RestaurantCardState();
@@ -23,21 +26,25 @@ class RestaurantCard extends StatefulWidget {
 
 class _RestaurantCardState extends State<RestaurantCard> {
   bool _favourites = false;
+  int maxCartLength = 5;
 
   @override
   Widget build(BuildContext context) {
     final FirestoreUsers firestoreService = FirestoreUsers();
+    final orderProvider = Provider.of<OrderProvider>(context);
 
     return TextButton(
       onPressed: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MenuScreen(
-                      restaurantId: widget.restaurantId,
-                      restaurantName: widget.restaurantName,
-                      deliveryFee: widget.deliveryFee,
-                    )));
+       widget.onPressed;
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      MenuScreen(
+                        restaurantId: widget.restaurantId,
+                        restaurantName: widget.restaurantName,
+                        deliveryFee: widget.deliveryFee,
+                      )));
       },
       child: Container(
         height: 130.0,

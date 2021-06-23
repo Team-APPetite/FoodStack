@@ -9,10 +9,12 @@ import 'package:uuid/uuid.dart';
 import 'package:foodstack/src/models/order.dart';
 
 class OrderProvider with ChangeNotifier {
+  static const int NoOfMillisecondsPerSecond = 1000;
+  static const int noOfSecondsPerMinute = 60;
+  static const int maxCarts = 5;
+
   final firestoreService = FirestoreOrders();
   FirestoreUsers firestoreUser = FirestoreUsers();
-
-  int NoOfMillisecondsinSecond = 1000;
 
   String _orderId;
   String _restaurantId;
@@ -34,17 +36,16 @@ class OrderProvider with ChangeNotifier {
   String get paymentId => _paymentId;
   String get status => _status;
   String get deliveryAddress => _deliveryAddress;
-  DateTime get orderTime => DateTime.fromMillisecondsSinceEpoch(_orderTime.seconds * NoOfMillisecondsinSecond);
+  DateTime get orderTime => DateTime.fromMillisecondsSinceEpoch(_orderTime.seconds * NoOfMillisecondsPerSecond);
   double get totalPrice => _totalPrice;
   List get cartIds => _cartIds;
 
   Stream<List<DocumentSnapshot>> getNearbyOrdersList(
           GeoFirePoint center, double radius) =>
-      firestoreService.getNearbyOrders(center, radius).take(10);
+    firestoreService.getNearbyOrders(center, radius);
 
   // Functions
   setOrder(Order order, int joinDurationMins, String newCartId) {
-    int noOfSecondsPerMinute = 60;
     _orderId = uuid.v4();
     _restaurantId = order.restaurantId;
     _creatorId = FirebaseAuth.instance.currentUser.uid;
@@ -92,10 +93,19 @@ class OrderProvider with ChangeNotifier {
       _coordinates = order.coordinates;
       _orderTime = order.orderTime;
       _totalPrice = order.totalPrice;
+      _cartIds = order.cartIds;
+print(order);
     }).catchError((error) => print(error));
   }
 
   removeOrder(String orderId) {
     firestoreService.removeOrder(orderId);
+  }
+
+  addToCartsList(String cartId, String orderId) {
+    if (_cartIds.length >= maxCarts - 1) {
+      firestoreService.setStatus(Status.full.toString(), orderId);
+    }
+    firestoreService.addToCartsList(cartId, orderId);
   }
 }

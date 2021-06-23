@@ -27,8 +27,6 @@ class RestaurantProvider with ChangeNotifier {
   GeoPoint get coordinates => _coordinates;
   Stream<List<Restaurant>> get restaurantsList =>
       firestoreService.getRestaurants();
-  Stream<List<Restaurant>> get nearbyOrdersRestaurantsList =>
-      firestoreService.getNearbyOrderRestaurants();
 
   // Setters
   set changeRestaurantName(String restaurantName) {
@@ -37,23 +35,22 @@ class RestaurantProvider with ChangeNotifier {
   }
 
   // Functions
-  //Stream<List<Restaurant>>
-  loadNearbyOrderRestaurantsList(
+  Stream<List<Restaurant>> loadNearbyOrderRestaurantsList(
       Stream<List<String>> restaurantIds) {
     List listOfRestaurantIds = [];
 
     restaurantIds.listen((listOfStrings) {
       if (listOfStrings.isNotEmpty) {
         int length = listOfStrings.length < 10 ? listOfStrings.length : 10;
-
+        listOfRestaurantIds.add(1);
         for (int i = 0; i < length; i++) {
-          listOfRestaurantIds.add(1);
+          // listOfRestaurantIds.add(1);
           listOfRestaurantIds[i] = listOfStrings[i];
         }
         firestoreService.loadNearbyOrderRestaurants(listOfRestaurantIds);
       }
     });
-    //return firestoreService.getNearbyOrderRestaurants();
+    return firestoreService.getNearbyOrderRestaurants();
   }
 
   addRestaurant(Restaurant restaurant) {

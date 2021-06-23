@@ -56,4 +56,13 @@ class FirestoreOrders {
         .then((value) => print("Order Updated"))
         .catchError((error) => print("Failed to update order: $error"));
   }
+
+  Future<void> setStatus(String status, String orderId) {
+    CollectionReference users = _db.collection('orders');
+    return users
+        .doc(orderId)
+        .update({'status': status})
+        .then((value) => print("Status Updated"))
+        .catchError((error) => print("Failed to update status: $error"));
+  }
 }

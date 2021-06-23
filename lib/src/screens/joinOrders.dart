@@ -46,16 +46,14 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
           geo.point(latitude: userLatitude, longitude: userLongitude);
       double radius = 250 / 1000; // in kms
 
-      Stream<List<DocumentSnapshot<Object>>> nearbyOrders = orderProvider
-          .getNearbyOrdersList(center, radius);
+      Stream<List<DocumentSnapshot<Object>>> nearbyOrders =
+          orderProvider.getNearbyOrdersList(center, radius);
 
-      Stream<List<Order>> orders = nearbyOrders
-          .map((snapshot) => snapshot
-          .map((doc) => Order.fromFirestore(doc.data()))
-          .toList());
+      Stream<List<Order>> orders = nearbyOrders.map((snapshot) =>
+          snapshot.map((doc) => Order.fromFirestore(doc.data())).toList());
 
-      Stream<List<String>> restaurantIds = nearbyOrders
-          .map((snapshot) => snapshot
+      Stream<List<String>> restaurantIds = nearbyOrders.map((snapshot) =>
+          snapshot
               .map((doc) => Order.fromFirestore(doc.data()))
               .map((e) => e.restaurantId)
               .toList());
@@ -67,7 +65,7 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
           body: Padding(
             padding: const EdgeInsets.all(8.0),
             child: StreamBuilder<List<Restaurant>>(
-                stream: restaurantProvider.nearbyOrdersRestaurantsList,
+                stream: restaurantProvider.loadNearbyOrderRestaurantsList(restaurantIds),
                 builder: (context, snapshot) {
                   if (snapshot.data == null) {
                     return Center(
@@ -75,29 +73,34 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
                             'Check another time! No nearby orders right now'));
                   } else {
                     return Scrollbar(
-                      child: ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-
-                            orders.listen((listOfOrders) {
-                              if (listOfOrders.isNotEmpty) {
-                                for (int i = 0; i < listOfOrders.length; i++) {
-                                  if (listOfOrders[i].restaurantId == snapshot.data[index].restaurantId) {
-                                    orderProvider.getOrder(listOfOrders[i].orderId);
+                        child: ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              Function getOrder() {
+                                orders.listen((listOfOrders) {
+                                  if (listOfOrders.isNotEmpty) {
+                                    for (int i = 0;
+                                        i < listOfOrders.length;
+                                        i++) {
+                                      if (listOfOrders[i].restaurantId ==
+                                          snapshot.data[index].restaurantId) {
+                                        orderProvider
+                                            .getOrder(listOfOrders[i].orderId);
+                                      }
+                                    }
                                   }
-                                }
+                                });
                               }
-                            });
 
-                            return RestaurantCard(
-                                snapshot.data[index].restaurantId,
-                                snapshot.data[index].restaurantName,
-                                snapshot.data[index].cuisineType,
-                                snapshot.data[index].deliveryFee,
-                                snapshot.data[index].rating,
-                                snapshot.data[index].image);
-                          }),
-                    );
+                              return RestaurantCard(
+                                  snapshot.data[index].restaurantId,
+                                  snapshot.data[index].restaurantName,
+                                  snapshot.data[index].cuisineType,
+                                  snapshot.data[index].deliveryFee,
+                                  snapshot.data[index].rating,
+                                  snapshot.data[index].image,
+                                  onPressed: getOrder());
+                            }));
                   }
                 }),
           ));

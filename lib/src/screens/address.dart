@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -97,6 +98,13 @@ class _AddressScreenState extends State<AddressScreen> {
                             ),
                             AppButton(buttonText: 'DELIVER HERE', onPressed: () {
                               firestoreService.updateAddress(userLocator.deliveryAddress.addressLine);
+                              Fluttertoast.showToast(
+                                  msg: 'Address Updated',
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 3,
+                                  backgroundColor: ThemeColors.dark,
+                              );
+                              Navigator.pop(context);
                             },),
                           ],
                         ),

@@ -36,7 +36,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
                 builder: (context) => MenuScreen(
                       restaurantId: widget.restaurantId,
                       restaurantName: widget.restaurantName,
-                  deliveryFee: widget.deliveryFee,
+                      deliveryFee: widget.deliveryFee,
                     )));
       },
       child: Container(

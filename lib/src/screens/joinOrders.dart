@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -45,14 +46,21 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
           geo.point(latitude: userLatitude, longitude: userLongitude);
       double radius = 250 / 1000; // in kms
 
-      Stream<List<String>> ordersList = orderProvider
-          .getNearbyOrdersList(center, radius)
+      Stream<List<DocumentSnapshot<Object>>> nearbyOrders = orderProvider
+          .getNearbyOrdersList(center, radius);
+
+      Stream<List<Order>> orders = nearbyOrders
+          .map((snapshot) => snapshot
+          .map((doc) => Order.fromFirestore(doc.data()))
+          .toList());
+
+      Stream<List<String>> restaurantIds = nearbyOrders
           .map((snapshot) => snapshot
               .map((doc) => Order.fromFirestore(doc.data()))
               .map((e) => e.restaurantId)
               .toList());
 
-      restaurantProvider.loadNearbyOrderRestaurantsList(ordersList);
+      restaurantProvider.loadNearbyOrderRestaurantsList(restaurantIds);
 
       return Scaffold(
           appBar: Header.getAppBar(title: 'Join Orders'),
@@ -70,6 +78,17 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
                       child: ListView.builder(
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
+
+                            orders.listen((listOfOrders) {
+                              if (listOfOrders.isNotEmpty) {
+                                for (int i = 0; i < listOfOrders.length; i++) {
+                                  if (listOfOrders[i].restaurantId == snapshot.data[index].restaurantId) {
+                                    orderProvider.getOrder(listOfOrders[i].orderId);
+                                  }
+                                }
+                              }
+                            });
+
                             return RestaurantCard(
                                 snapshot.data[index].restaurantId,
                                 snapshot.data[index].restaurantName,

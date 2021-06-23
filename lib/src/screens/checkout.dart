@@ -32,7 +32,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       });
     }
     return Scaffold(
-        appBar: Header.getAppBar(title: 'Checkout'),
+        appBar: Header.getAppBar(title: 'Checkout'), // Can set back: false later to avoid going back after confirming cart
         body: (userLocator.deliveryAddress == null)
             ? Center(child: CircularProgressIndicator())
             : Padding(
@@ -61,7 +61,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                         Center(
                         child: Container(
-                          height: 500,
                           child: Icon(
                             Icons.location_pin,
                             color: ThemeColors.oranges,
@@ -72,37 +71,44 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
 
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            userLocator.deliveryAddress.addressLine,
-                            style: TextStyles.body(),
-                            textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          userLocator.deliveryAddress.addressLine,
+                          style: TextStyles.body(),
+                          textAlign: TextAlign.center,
+                        ),
+                        OutlinedButton(
+                          child: Text('Change Address',
+                              style: TextStyles.textButton()),
+                          style: OutlinedButton.styleFrom(
+                            primary: ThemeColors.oranges,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            side: BorderSide(
+                              color: ThemeColors.oranges,
+                              width: 1,
+                            )
                           ),
-                          AppButton(buttonText: 'ADD NEW ADDRESS', onPressed: () {
+                          onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => AddressScreen()));
-                            },
-                          ),
-                        ],
-                      ),
+                          },
+                        ),
+                      ],
                     ),
                   ),
-
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Payment Methods',
-                        style: TextStyles.heading2(),
-                      ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Payment Methods',
+                      style: TextStyles.heading2(),
                     ),
                   ),
-
                   Expanded(
                     child: ListView.separated(
                       itemCount: paymentLabels.length,

@@ -12,6 +12,8 @@ class OrderProvider with ChangeNotifier {
   final firestoreService = FirestoreOrders();
   FirestoreUsers firestoreUser = FirestoreUsers();
 
+  int NoOfMillisecondsinSecond = 1000;
+
   String _orderId;
   String _restaurantId;
   String _creatorId;
@@ -32,13 +34,13 @@ class OrderProvider with ChangeNotifier {
   String get paymentId => _paymentId;
   String get status => _status;
   String get deliveryAddress => _deliveryAddress;
-  Timestamp get orderTime => _orderTime;
+  DateTime get orderTime => DateTime.fromMillisecondsSinceEpoch(_orderTime.seconds * NoOfMillisecondsinSecond);
   double get totalPrice => _totalPrice;
   List get cartIds => _cartIds;
 
   Stream<List<DocumentSnapshot>> getNearbyOrdersList(
           GeoFirePoint center, double radius) =>
-      firestoreService.getNearbyOrders(center, radius);
+      firestoreService.getNearbyOrders(center, radius).take(10);
 
   // Functions
   setOrder(Order order, int joinDurationMins, String newCartId) {
@@ -53,30 +55,44 @@ class OrderProvider with ChangeNotifier {
     _totalPrice = order.totalPrice;
 
     Timestamp currentTime = Timestamp.now();
-    int seconds = currentTime.seconds + (joinDurationMins * noOfSecondsPerMinute);
+    int seconds =
+        currentTime.seconds + (joinDurationMins * noOfSecondsPerMinute);
     int nanoseconds = currentTime.nanoseconds;
     Timestamp orderCompletionTime = Timestamp(seconds, nanoseconds);
     _orderTime = orderCompletionTime;
     print(_orderTime);
 
     var newOrder = Order(
-        orderId: _orderId,
-        restaurantId: _restaurantId,
-        creatorId: _creatorId,
-        paymentId: _paymentId,
-        status: _status,
-        deliveryAddress: _deliveryAddress,
-        coordinates: _coordinates,
-        orderTime: _orderTime,
-        totalPrice: _totalPrice,);
-
+      orderId: _orderId,
+      restaurantId: _restaurantId,
+      creatorId: _creatorId,
+      paymentId: _paymentId,
+      status: _status,
+      deliveryAddress: _deliveryAddress,
+      coordinates: _coordinates,
+      orderTime: _orderTime,
+      totalPrice: _totalPrice,
+    );
 
     firestoreService
         .addOrder(newOrder)
         .then((value) => print('Order Saved'))
         .catchError((error) => print(error));
-    return firestoreService
-        .addToCartsList(newCartId, _orderId);
+    return firestoreService.addToCartsList(newCartId, _orderId);
+  }
+
+  getOrder(String orderId) {
+    firestoreService.getOrder(orderId).then((order) {
+      _orderId = order.orderId;
+      _restaurantId = order.restaurantId;
+      _creatorId = order.creatorId;
+      _paymentId = order.paymentId;
+      _status = order.status;
+      _deliveryAddress = order.deliveryAddress;
+      _coordinates = order.coordinates;
+      _orderTime = order.orderTime;
+      _totalPrice = order.totalPrice;
+    }).catchError((error) => print(error));
   }
 
   removeOrder(String orderId) {

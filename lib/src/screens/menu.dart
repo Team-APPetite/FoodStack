@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/models/foodItem.dart';
+import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/screens/cart.dart';
 import 'package:foodstack/src/screens/details.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -26,6 +27,8 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   DateTime _orderCompletionTime;
+  bool isPooler = false;
+
   @override
   void initState() {
     super.initState();
@@ -35,18 +38,16 @@ class _MenuScreenState extends State<MenuScreen> {
   Future<bool> _getUserRole() async {
     final prefs = await SharedPreferences.getInstance();
     final isPooler = prefs.getBool('isPooler');
-    // if (isPooler == null) {
-    //   return false;
-    // }
     return isPooler;
   }
-  Future<void> _setOrderCompletionTime() async {
-    final prefs = await SharedPreferences.getInstance();
 
-    bool isPooler = await _getUserRole();
+  Future<void> _setOrderCompletionTime() async {
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+
+    isPooler = await _getUserRole();
 
    if (isPooler) {
-      setState(() => _orderCompletionTime = DateTime.utc(2021, 6, 23, 1, 22));
+      setState(() => _orderCompletionTime = orderProvider.orderTime);
     }
   }
 
@@ -86,12 +87,8 @@ class _MenuScreenState extends State<MenuScreen> {
                     onPressed: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) => ChangeNotifierProvider.value(
-                              value: cartProvider,
-                              child: CartScreen(),
-                            ),
-                          ));
+                          MaterialPageRoute(builder: (context) => CartScreen()));
+
                     },
                   ),
                   cartProvider.itemQuantityIcon(),
@@ -119,7 +116,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         : Scrollbar(
                           child: Column(
                             children: [
-                              _orderCompletionTime != null ? Container(
+                              isPooler ? Container(
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 8.0),
                                   child: Text('Order by ${_orderCompletionTime.hour}:${_orderCompletionTime.minute}', style: TextStyles.textButton(),),

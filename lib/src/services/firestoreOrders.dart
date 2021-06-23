@@ -20,6 +20,16 @@ class FirestoreOrders {
     return _db.collection('orders').doc(orderId).delete();
   }
 
+  // Get order
+  Future<Order> getOrder(String orderId) {
+    return _db
+        .collection('orders')
+        .doc(orderId)
+        .get()
+        .then((snapshot) => Order.fromFirestore(snapshot.data()));
+  }
+
+  // Get list of orders near to user location
   Stream<List<DocumentSnapshot>> getNearbyOrders(GeoFirePoint center, double radius) {
     return geo.collection(collectionRef: _db.collection('orders').where('status', isEqualTo: 'Status.active').limit(10))
         .within(center: center, radius: radius, field: 'coordinates');

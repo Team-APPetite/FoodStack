@@ -14,6 +14,7 @@ import 'package:foodstack/src/widgets/header.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -21,6 +22,30 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  DateTime _orderCompletionTime;
+  bool isPooler = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _setOrderCompletionTime();
+  }
+
+  Future<bool> _getUserRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isPooler');
+  }
+
+  Future<void> _setOrderCompletionTime() async {
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+
+    isPooler = await _getUserRole();
+
+    if (isPooler) {
+      setState(() => _orderCompletionTime = orderProvider.orderTime);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
@@ -62,30 +87,39 @@ class _CartScreenState extends State<CartScreen> {
       );
     }
 
+    Widget _displayOrderCompletionTime() {
+      return Container(
+          child: Text(
+        'Confirm cart by ${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
+        style: TextStyles.textButton(),
+      ));
+    }
+
     Widget _paymentSummary() {
       return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Table(
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        child: Table(
           children: [
-            TableRow( children: [
+            TableRow(children: [
               Text('Subtotal', style: TextStyles.body()),
-              Text(cartProvider.getSubtotal().toString(), style: TextStyles.body()),
+              Text(cartProvider.getSubtotal().toString(),
+                  style: TextStyles.body()),
             ]),
-            TableRow( children: [
+            TableRow(children: [
               Text('Delivery Fee', style: TextStyles.body()),
               Text(cartProvider.deliveryFeeRange(), style: TextStyles.body()),
             ]),
-            TableRow( children: [
+            TableRow(children: [
               SizedBox(height: 10),
               SizedBox(height: 10),
             ]),
-            TableRow( children: [
+            TableRow(children: [
               Text('Your Total', style: TextStyles.heading3()),
               Text(cartProvider.totalRange(), style: TextStyles.heading2()),
             ]),
           ],
-      ),
-        );
+        ),
+      );
     }
 
     Widget _createOrder() {
@@ -108,12 +142,13 @@ class _CartScreenState extends State<CartScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _setJoinDuration(),
+                isPooler? _displayOrderCompletionTime() : _setJoinDuration(),
                 _paymentSummary(),
                 AppButton(
                   buttonText: 'CONFIRM CART',
                   onPressed: () {
                     cartProvider.confirmCart();
+
                     orderProvider.setOrder(
                         Order(
                             restaurantId: cartProvider.restaurantId,
@@ -123,14 +158,11 @@ class _CartScreenState extends State<CartScreen> {
                             deliveryAddress:
                             userLocator.deliveryAddress.addressLine),
                         cartProvider.joinDuration, cartProvider.cartId);
+
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => ChangeNotifierProvider.value(
-                            value: cartProvider,
-                            child: CheckoutScreen(),
-                          ),
-                        ));
+                            builder: (context) => CheckoutScreen()));
                   },
                 )
               ],
@@ -163,10 +195,10 @@ class _CartScreenState extends State<CartScreen> {
                   if (value == 0) {
                     Navigator.pushReplacement(
                         context,
-                        PageRouteBuilder(pageBuilder: (_, __, ___) => super.widget));
+                        PageRouteBuilder(
+                            pageBuilder: (_, __, ___) => super.widget));
                   }
                   cartProvider.updateItemQuantityOf(id, value);
-
                 },
                 initialValue: cartProvider.getItemQuantityOf(id),
                 maxValue: 20,

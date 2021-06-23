@@ -27,18 +27,20 @@ class Order {
       this.cartIds,
       this.getCoordinates});
 
-  Order.fromFirestore(Map<String, dynamic> firestore)
-      : orderId = firestore['orderId'],
-        restaurantId = firestore['restaurantId'],
-        creatorId = firestore['creatorId'],
-        paymentId = firestore['paymentId'],
-        status = firestore['status'],
-        deliveryAddress = firestore['deliveryAddress'],
-        getCoordinates = firestore['coordinates'],
-        orderTime = firestore['orderTime'],
-        totalPrice = firestore['totalPrice'],
-        cartIds = firestore['cartIds'],
-        coordinates = null;
+  factory Order.fromFirestore(Map<String, dynamic> firestore) {
+    return Order(
+        orderId: firestore['orderId'],
+        restaurantId: firestore['restaurantId'],
+        creatorId: firestore['creatorId'],
+        paymentId: firestore['paymentId'],
+        status: firestore['status'],
+        deliveryAddress: firestore['deliveryAddress'],
+        getCoordinates: firestore['coordinates'],
+        orderTime: firestore['orderTime'],
+        totalPrice: firestore['totalPrice'],
+        cartIds: firestore['cartIds'],
+        coordinates: null);
+  }
 
   Map<String, dynamic> toMap() {
     return {

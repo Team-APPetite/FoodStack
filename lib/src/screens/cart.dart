@@ -7,8 +7,11 @@ import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/checkout.dart';
+import 'package:foodstack/src/screens/track.dart';
+import 'package:foodstack/src/screens/wait.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/utilities/statusEnums.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
@@ -44,6 +47,11 @@ class _CartScreenState extends State<CartScreen> {
     if (isPooler) {
       setState(() => _orderCompletionTime = orderProvider.orderTime);
     }
+  }
+
+  Future<void> _setUserOrderStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('status', Status.active.toString());
   }
 
   @override
@@ -148,7 +156,7 @@ class _CartScreenState extends State<CartScreen> {
                   buttonText: 'CONFIRM CART',
                   onPressed: () {
                     cartProvider.confirmCart();
-
+                    _setUserOrderStatus();
                     isPooler
                         ? orderProvider.addToCartsList(
                             cartProvider.cartId, orderProvider.orderId)

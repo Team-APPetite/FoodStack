@@ -5,6 +5,8 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 class FirestoreOrders {
   FirebaseFirestore _db = FirebaseFirestore.instance;
   final geo = Geoflutterfire();
+  GeoFirePoint userLocation;
+  double ordersRadius;
 
   //Add Order
   Future<void> addOrder(Order order) {
@@ -30,9 +32,29 @@ class FirestoreOrders {
   }
 
   // Get list of orders near to user location
-  Stream<List<DocumentSnapshot>> getNearbyOrders(GeoFirePoint center, double radius) {
-    return geo.collection(collectionRef: _db.collection('orders').where('status', isEqualTo: 'Status.active').limit(10))
+  Stream<List<DocumentSnapshot>> getNearbyOrders(
+      GeoFirePoint center, double radius) {
+    userLocation = center;
+    ordersRadius = radius;
+    return geo
+        .collection(
+            collectionRef: _db
+                .collection('orders')
+                .where('status', isEqualTo: 'Status.active')
+                .limit(10))
         .within(center: center, radius: radius, field: 'coordinates');
+  }
+
+  Future<Order> getNearbyOrder(String restaurantId) {
+    return geo
+        .collection(
+            collectionRef: _db
+                .collection('orders')
+                .where('status', isEqualTo: 'Status.active')
+                .where('restaurantId', isEqualTo: restaurantId))
+        .within(center: userLocation, radius: ordersRadius, field: 'coordinates')
+        .map((snapshot) =>
+            snapshot.map((doc) => Order.fromFirestore(doc.data())).first).first;
   }
 
   //Add cartId to orders database

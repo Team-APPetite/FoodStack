@@ -26,7 +26,7 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  DateTime _orderCompletionTime;
+  DateTime _orderCompletionTime = DateTime.now();
   bool isPooler = false;
 
   @override
@@ -43,11 +43,13 @@ class _MenuScreenState extends State<MenuScreen> {
 
   Future<void> _setOrderCompletionTime() async {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-
     isPooler = await _getUserRole();
 
-   if (isPooler) {
-      setState(() => _orderCompletionTime = orderProvider.orderTime);
+    if (isPooler) {
+      await orderProvider.getOrder(widget.restaurantId);
+      setState(() {
+        _orderCompletionTime = orderProvider.orderTime;
+      });
     }
   }
 
@@ -87,8 +89,8 @@ class _MenuScreenState extends State<MenuScreen> {
                     onPressed: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => CartScreen()));
-
+                          MaterialPageRoute(
+                              builder: (context) => CartScreen()));
                     },
                   ),
                   cartProvider.itemQuantityIcon(),
@@ -114,16 +116,22 @@ class _MenuScreenState extends State<MenuScreen> {
                     return (snapshot.data == null)
                         ? Center(child: CircularProgressIndicator())
                         : Scrollbar(
-                          child: Column(
-                            children: [
-                              isPooler ? Container(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Text('Order by ${_orderCompletionTime.hour}:${_orderCompletionTime.minute}', style: TextStyles.textButton(),),
-                                ),
-                              ) : Container(),
-                              Expanded(
-                                child: GridView.builder(
+                            child: Column(
+                              children: [
+                                isPooler
+                                    ? Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          child: Text(
+                                            'Order by ${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
+                                            style: TextStyles.textButton(),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                                Expanded(
+                                  child: GridView.builder(
                                     gridDelegate:
                                         const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
@@ -149,10 +157,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                                               menuProvider)));
                                             })),
                                   ),
-                              ),
-                            ],
-                          ),
-                        );
+                                ),
+                              ],
+                            ),
+                          );
                   }),
             ),
             viewCart(),

@@ -28,6 +28,7 @@ class OrderProvider with ChangeNotifier {
   List _cartIds;
 
   var uuid = Uuid();
+  Stream<List<DocumentSnapshot>> nearbyOrdersList;
 
   // Getters
   String get orderId => _orderId;
@@ -36,13 +37,23 @@ class OrderProvider with ChangeNotifier {
   String get paymentId => _paymentId;
   String get status => _status;
   String get deliveryAddress => _deliveryAddress;
-  DateTime get orderTime => DateTime.fromMillisecondsSinceEpoch(_orderTime.seconds * NoOfMillisecondsPerSecond);
+  DateTime get orderTime => _orderTime != null
+      ? DateTime.fromMillisecondsSinceEpoch(
+          _orderTime.seconds * NoOfMillisecondsPerSecond)
+      : null;
   double get totalPrice => _totalPrice;
   List get cartIds => _cartIds;
 
+  set orderId(String orderId) {
+    _orderId = orderId;
+    notifyListeners();
+  }
+
   Stream<List<DocumentSnapshot>> getNearbyOrdersList(
-          GeoFirePoint center, double radius) =>
-    firestoreService.getNearbyOrders(center, radius);
+          GeoFirePoint center, double radius) {
+    nearbyOrdersList = firestoreService.getNearbyOrders(center, radius);
+      return firestoreService.getNearbyOrders(center, radius);
+  }
 
   // Functions
   setOrder(Order order, int joinDurationMins, String newCartId) {
@@ -82,8 +93,8 @@ class OrderProvider with ChangeNotifier {
     return firestoreService.addToCartsList(newCartId, _orderId);
   }
 
-  getOrder(String orderId) {
-    firestoreService.getOrder(orderId).then((order) {
+  getOrder(String restaurantId) async {
+    Order order = await firestoreService.getNearbyOrder(restaurantId);
       _orderId = order.orderId;
       _restaurantId = order.restaurantId;
       _creatorId = order.creatorId;
@@ -94,12 +105,24 @@ class OrderProvider with ChangeNotifier {
       _orderTime = order.orderTime;
       _totalPrice = order.totalPrice;
       _cartIds = order.cartIds;
-print(order);
-    }).catchError((error) => print(error));
+      print(order.orderId);
   }
 
   removeOrder(String orderId) {
     firestoreService.removeOrder(orderId);
+  }
+
+  clearOrder() {
+    _orderId = null;
+    _restaurantId = null;
+    _creatorId = null;
+    _paymentId = null;
+    _status = null;
+    _deliveryAddress = null;
+    _coordinates = null;
+    _orderTime = null;
+    _totalPrice = null;
+    _cartIds = null;
   }
 
   addToCartsList(String cartId, String orderId) {

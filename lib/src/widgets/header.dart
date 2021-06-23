@@ -43,6 +43,7 @@ class _BackArrowState extends State<BackArrow> {
                   break;
                 case 'loseCart':
                   showDialog<String>(context: context, builder: Alerts.loseCart());
+                  break;
               }
             })
         : Container();

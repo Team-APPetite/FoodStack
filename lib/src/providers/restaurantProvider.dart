@@ -44,7 +44,7 @@ class RestaurantProvider with ChangeNotifier {
         int length = listOfStrings.length < 10 ? listOfStrings.length : 10;
         listOfRestaurantIds.add(1);
         for (int i = 0; i < length; i++) {
-          // listOfRestaurantIds.add(1);
+          listOfRestaurantIds.add(1);
           listOfRestaurantIds[i] = listOfStrings[i];
         }
         firestoreService.loadNearbyOrderRestaurants(listOfRestaurantIds);

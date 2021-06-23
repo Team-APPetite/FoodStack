@@ -8,6 +8,7 @@ import 'package:foodstack/src/widgets/bigButton.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/utilities/enums.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,6 +16,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserOrderStatus();
+  }
+
+  Future<String> _getUserOrderStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('status');
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO Add search bar

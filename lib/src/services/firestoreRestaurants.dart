@@ -12,7 +12,6 @@ class FirestoreRestaurants {
   }
 
   void loadNearbyOrderRestaurants(List nearbyOrders) {
-    print(nearbyOrders);
      nearbyOrderRestaurants = _db.collection('restaurants').where('restaurantId', whereIn: nearbyOrders).snapshots().map((snapshot) =>
         snapshot.docs.map((doc) => Restaurant.fromJson(doc.data())).toList());
   }

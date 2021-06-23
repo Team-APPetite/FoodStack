@@ -3,6 +3,7 @@ import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/address.dart';
 import 'package:foodstack/src/screens/home.dart';
+import 'package:foodstack/src/screens/wait.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -28,28 +29,39 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   void initState() {
     super.initState();
-    _setOrderCompletionTime();
+    _getUserRole();
+    _checkIfOrderComplete();
   }
 
   Future<bool> _getUserRole() async {
     final prefs = await SharedPreferences.getInstance();
-    final isPooler = prefs.getBool('isPooler');
+    isPooler = prefs.getBool('isPooler');
     return isPooler;
   }
 
   Future<void> _setOrderCompletionTime() async {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-
-    isPooler = await _getUserRole();
-
-    if (isPooler) {
       setState(() => _orderCompletionTime = orderProvider.orderTime);
+  }
+
+  Future<void> _checkIfOrderComplete() async {
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    DateTime currentTime = DateTime.now();
+
+    await _setOrderCompletionTime();
+
+    if (currentTime.compareTo(_orderCompletionTime) < 0) {
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => WaitScreen()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final userLocator = Provider.of<UserLocator>(context);
+    final orderProvider = Provider.of<OrderProvider>(context);
     LatLng userCoordinates = userLocator.coordinates;
     GoogleMapController _mapController;
 
@@ -182,6 +194,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             AppButton(
                               buttonText: 'PAY',
                               onPressed: () {
+                                orderProvider.clearOrder();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

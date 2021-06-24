@@ -56,7 +56,7 @@ class OrderProvider with ChangeNotifier {
   }
 
   // Functions
-  setOrder(Order order, int joinDurationMins, String newCartId) {
+  setOrder(Order order, int joinDurationMins) {
     _orderId = uuid.v4();
     _restaurantId = order.restaurantId;
     _creatorId = FirebaseAuth.instance.currentUser.uid;
@@ -65,6 +65,7 @@ class OrderProvider with ChangeNotifier {
     _deliveryAddress = order.deliveryAddress;
     _coordinates = order.coordinates;
     _totalPrice = order.totalPrice;
+    _cartIds = order.cartIds;
 
     Timestamp currentTime = Timestamp.now();
     int seconds =
@@ -84,13 +85,14 @@ class OrderProvider with ChangeNotifier {
       coordinates: _coordinates,
       orderTime: _orderTime,
       totalPrice: _totalPrice,
+      cartIds: _cartIds,
     );
 
-    firestoreService
+    return firestoreService
         .addOrder(newOrder)
         .then((value) => print('Order Saved'))
         .catchError((error) => print(error));
-    return firestoreService.addToCartsList(newCartId, _orderId);
+
   }
 
   getOrder(String restaurantId) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/timerProvider.dart';
 import 'package:foodstack/src/screens/checkout.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -49,6 +50,8 @@ class _WaitScreenState extends State<WaitScreen> {
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
     final orderProvider = Provider.of<OrderProvider>(context);
+
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(30.0),
@@ -60,9 +63,9 @@ class _WaitScreenState extends State<WaitScreen> {
                 style: TextStyles.heading2(),
               ),
 
-               // Text('${orderProvider.cartIds.length}',
-               //   style: TextStyles.heading1(),
-               // ),
+               Text('${orderProvider.cartIds.length}',
+                 style: TextStyles.heading1(),
+               ),
 
               Text(
                 'People have joined your order',

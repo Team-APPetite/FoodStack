@@ -167,9 +167,9 @@ class _CartScreenState extends State<CartScreen> {
                                 totalPrice: cartProvider.getSubtotal() +
                                     cartProvider.deliveryFee,
                                 deliveryAddress:
-                                    userLocator.deliveryAddress.addressLine),
-                            cartProvider.joinDuration,
-                            cartProvider.cartId);
+                                    userLocator.deliveryAddress.addressLine,
+                                cartIds: [cartProvider.cartId]),
+                            cartProvider.joinDuration);
 
                     Navigator.push(
                         context,

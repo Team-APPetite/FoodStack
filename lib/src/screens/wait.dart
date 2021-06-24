@@ -53,6 +53,7 @@ class _WaitScreenState extends State<WaitScreen> {
 
 
     return Scaffold(
+      appBar: Header.getAppBar(),
       body: Padding(
         padding: EdgeInsets.all(30.0),
         child: Column(

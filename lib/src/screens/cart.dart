@@ -159,7 +159,7 @@ class _CartScreenState extends State<CartScreen> {
                     _setUserOrderStatus();
                     isPooler
                         ? orderProvider.addToCartsList(
-                            cartProvider.cartId, orderProvider.orderId)
+                            cartProvider.cartId, orderProvider.orderId) // Need to update total price as well
                         : orderProvider.setOrder(
                             Order(
                                 restaurantId: cartProvider.restaurantId,

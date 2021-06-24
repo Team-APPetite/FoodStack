@@ -105,7 +105,6 @@ class OrderProvider with ChangeNotifier {
       _orderTime = order.orderTime;
       _totalPrice = order.totalPrice;
       _cartIds = order.cartIds;
-      print(order.orderId);
   }
 
   removeOrder(String orderId) {

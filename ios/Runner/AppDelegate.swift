@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import GoogleMaps
+import Braintree
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -10,6 +11,7 @@ import GoogleMaps
   ) -> Bool {
     GMSServices.provideAPIKey("AIzaSyAIB_jrdSCoM7SB_AixhfGycL7Tyd_8oqk")
     GeneratedPluginRegistrant.register(with: self)
+    BTAppSwitch.setReturnURLScheme("com.charismakausar.foodstack.payments")
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

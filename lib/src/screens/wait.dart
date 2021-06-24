@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/timerProvider.dart';
@@ -46,10 +47,38 @@ class _WaitScreenState extends State<WaitScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
     final orderProvider = Provider.of<OrderProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+
+    Widget _cartItem(String id, String name, String price, String image) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          children: [
+            Expanded(flex: 1, child: Image.network(image)),
+            SizedBox(width: 10),
+            Expanded(
+              flex: 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(name, style: TextStyles.heading3()),
+                  SizedBox(height: 10.0),
+                  Text(price, style: TextStyles.emphasis()),
+                ],
+              ),
+            ),
+
+            Text('${cartProvider.getItemQuantityOf(id)}',
+                style: TextStyles.heading3()),
+          ],
+        ),
+      );
+    }
 
 
     return Scaffold(
@@ -63,14 +92,37 @@ class _WaitScreenState extends State<WaitScreen> {
                 style: TextStyles.heading2(),
               ),
 
-               Text('${orderProvider.cartIds.length}',
-                 style: TextStyles.heading1(),
-               ),
-
-              Text(
-                'People have joined your order',
-                style: TextStyles.body(),
+              Table(
+                children: [
+                  TableRow(children: [
+                    Center(
+                      child: Text('${orderProvider.cartIds.length}',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 35.0,
+                          fontWeight: FontWeight.bold,
+                          color: ThemeColors.oranges,
+                        ),
+                      ),
+                    ),
+                  ]),
+                  TableRow(children: [
+                    Center(
+                      child:
+                  (orderProvider.cartIds.length == 1)
+                      ?Text(
+                        'Person has joined the order',
+                        style: TextStyles.heading3(),
+                      )
+                      :Text(
+                        'People have joined the order',
+                         style: TextStyles.heading3(),
+                       ),
+                    ),
+                  ]),
+                ],
               ),
+
 
               Table(
                 children: [
@@ -97,7 +149,7 @@ class _WaitScreenState extends State<WaitScreen> {
                   ]),
                   TableRow(children: [
                     Center(
-                      child: Text('${timerProvider.joinDuration} minutes remaining',
+                      child: Text('${timerProvider.timer} minutes remaining',
                         style: TextStyles.heading3(),
                       ),
                     ),
@@ -108,6 +160,7 @@ class _WaitScreenState extends State<WaitScreen> {
 
 
 
+
               Text('Your Cart',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
@@ -115,10 +168,21 @@ class _WaitScreenState extends State<WaitScreen> {
                   fontWeight: FontWeight.bold,
                   color: ThemeColors.oranges,
                 ),
-              )
+              ),
 
-
-
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: cartProvider.cartItems.length,
+                  itemBuilder: (context, index) {
+                    return _cartItem(
+                      cartProvider.cartItems[index].foodId,
+                      cartProvider.cartItems[index].foodName,
+                      '\$' +
+                          cartProvider.cartItems[index].price
+                              .toString(),
+                      cartProvider.cartItems[index].image,
+                    );
+                  }),
 
             ],
           ),

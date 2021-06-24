@@ -7,6 +7,7 @@ class TimerProvider with ChangeNotifier {
   Duration _joinDuration;
 
   Duration get joinDuration => _joinDuration;
+  Timer get timer => _timer;
 
   void startJoinTimer(int joinDuration) {
     _joinDuration = Duration(seconds: joinDuration); // change to minutes later

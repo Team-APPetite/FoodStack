@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		699AB8F839D4B7A8EA0E24ED /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B8F21FB106D015B0B3DA67C /* Pods_Runner.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		C7ACD49D265AAA2600A11E9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7ACD49C265AAA2600A11E9D /* GoogleService-Info.plist */; };
+		D53CA1F4D338E155EC8BCC47 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6175AD97CAE208F4088AD86B /* Pods_Runner.framework */; };
+		FCF09C1DBBD21ED4124AE338 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6502DD33EAEA579E2FA7C1C4 /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,7 +38,8 @@
 		35C397E4902CAB3388C481DE /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		3B5C8451B77CECBCC092DDDD /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		5B8F21FB106D015B0B3DA67C /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6175AD97CAE208F4088AD86B /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Runner.framework; path = "/Users/charismak/AndroidStudioProjects/foodstack/ios/../../../Library/Developer/Xcode/DerivedData/Runner-axdofuglyxnxskacxhzvmwwxsfjh/Build/Products/Debug-iphoneos/Pods_Runner.framework"; sourceTree = "<absolute>"; };
+		6502DD33EAEA579E2FA7C1C4 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
@@ -56,7 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				699AB8F839D4B7A8EA0E24ED /* Pods_Runner.framework in Frameworks */,
+				D53CA1F4D338E155EC8BCC47 /* Pods_Runner.framework in Frameworks */,
+				FCF09C1DBBD21ED4124AE338 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +125,8 @@
 		EF2D296A87FB7905B00D2586 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5B8F21FB106D015B0B3DA67C /* Pods_Runner.framework */,
+				6175AD97CAE208F4088AD86B /* Pods_Runner.framework */,
+				6502DD33EAEA579E2FA7C1C4 /* Pods_Runner.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

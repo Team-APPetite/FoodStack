@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.charismakausar.foodstack">
+    package="com.charismakausar.foodstack"
+    xmlns:tools="http://schemas.android.com/tools">
    <application
         android:label="FoodStack"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        tools:replace="android:label">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

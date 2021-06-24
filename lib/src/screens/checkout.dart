@@ -73,12 +73,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     return Scaffold(
         appBar: Header.getAppBar(
-            title:
-                'Checkout'), // Can set back: false later to avoid going back after confirming cart
+        title:
+        'Checkout'), // Can set back: false later to avoid going back after confirming cart
         body: (userLocator.deliveryAddress == null)
             ? Center(child: CircularProgressIndicator())
             : Padding(
-                padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

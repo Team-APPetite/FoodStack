@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.charismakausar.foodstack">
+    package="com.charismakausar.foodstack"
+    xmlns:tools="http://schemas.android.com/tools">
    <application
         android:label="FoodStack"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        tools:replace="android:label">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -32,6 +34,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+       <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+           android:launchMode="singleTask">
+           <intent-filter>
+               <action android:name="android.intent.action.VIEW" />
+               <category android:name="android.intent.category.DEFAULT" />
+               <category android:name="android.intent.category.BROWSABLE" />
+               <data android:scheme="${applicationId}.braintree" />
+           </intent-filter>
+       </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
@@ -39,6 +50,7 @@
             android:value="2" />
        <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyAIB_jrdSCoM7SB_AixhfGycL7Tyd_8oqk"/>
+       <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 </manifest>

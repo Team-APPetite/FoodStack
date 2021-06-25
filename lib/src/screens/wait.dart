@@ -47,6 +47,18 @@ class _WaitScreenState extends State<WaitScreen> {
     }
   }
 
+    int _minutesRemaining() {
+    DateTime currentTime = DateTime.now();
+    int minutes;
+    if (_orderCompletionTime.hour > currentTime.hour){
+      minutes = 60 -(currentTime.minute - _orderCompletionTime.minute);
+    } else{
+      minutes = _orderCompletionTime.minute - currentTime.minute;
+    }
+    return minutes;
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +71,7 @@ class _WaitScreenState extends State<WaitScreen> {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           children: [
-            Expanded(flex: 1, child: Image.network(image)),
+            //Expanded(flex: 1, child: Image.network(image)),
             SizedBox(width: 10),
             Expanded(
               flex: 2,
@@ -67,13 +79,13 @@ class _WaitScreenState extends State<WaitScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(name, style: TextStyles.heading3()),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: 5.0),
                   Text(price, style: TextStyles.emphasis()),
                 ],
               ),
             ),
 
-            Text('${cartProvider.getItemQuantityOf(id)}',
+            Text('x ${cartProvider.getItemQuantityOf(id)}',
                 style: TextStyles.heading3()),
           ],
         ),
@@ -86,10 +98,18 @@ class _WaitScreenState extends State<WaitScreen> {
         padding: EdgeInsets.all(30.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(
+                height: 75.0,
+              ),
               Text(
                 'Wait while others join the order',
                 style: TextStyles.heading2(),
+              ),
+
+              SizedBox(
+                height: 75.0,
               ),
 
               Table(
@@ -99,7 +119,7 @@ class _WaitScreenState extends State<WaitScreen> {
                       child: Text('${orderProvider.cartIds.length}',
                         style: TextStyle(
                           fontFamily: 'Montserrat',
-                          fontSize: 35.0,
+                          fontSize: 40.0,
                           fontWeight: FontWeight.bold,
                           color: ThemeColors.oranges,
                         ),
@@ -123,6 +143,10 @@ class _WaitScreenState extends State<WaitScreen> {
                 ],
               ),
 
+              SizedBox(
+                height: 75.0,
+              ),
+
 
               Table(
                 children: [
@@ -140,7 +164,7 @@ class _WaitScreenState extends State<WaitScreen> {
                         '${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
                         style: TextStyle(
                           fontFamily: 'Montserrat',
-                          fontSize: 35.0,
+                          fontSize: 40.0,
                           fontWeight: FontWeight.bold,
                           color: ThemeColors.oranges,
                         ),
@@ -149,7 +173,7 @@ class _WaitScreenState extends State<WaitScreen> {
                   ]),
                   TableRow(children: [
                     Center(
-                      child: Text('${timerProvider.timer} minutes remaining',
+                      child: Text('${_minutesRemaining()} minutes remaining',
                         style: TextStyles.heading3(),
                       ),
                     ),
@@ -158,7 +182,9 @@ class _WaitScreenState extends State<WaitScreen> {
                 ],
               ),
 
-
+            SizedBox(
+              height: 75.0,
+            ),
 
 
               Text('Your Cart',
@@ -170,19 +196,34 @@ class _WaitScreenState extends State<WaitScreen> {
                 ),
               ),
 
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: cartProvider.cartItems.length,
-                  itemBuilder: (context, index) {
-                    return _cartItem(
-                      cartProvider.cartItems[index].foodId,
-                      cartProvider.cartItems[index].foodName,
-                      '\$' +
-                          cartProvider.cartItems[index].price
-                              .toString(),
-                      cartProvider.cartItems[index].image,
-                    );
-                  }),
+              Scrollbar(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: cartProvider.cartItems.length,
+                    itemBuilder: (context, index) {
+                      return _cartItem(
+                        cartProvider.cartItems[index].foodId,
+                        cartProvider.cartItems[index].foodName,
+                        '\$' +
+                            cartProvider.cartItems[index].price
+                                .toString(),
+                        cartProvider.cartItems[index].image,
+                      );
+                    }),
+                ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text('Subtotal', style: TextStyles.heading3())
+                    ),
+                    Text('\$${cartProvider.getSubtotal()}',
+                        style: TextStyles.emphasis()),
+                  ],
+                ),
+              ),
 
             ],
           ),

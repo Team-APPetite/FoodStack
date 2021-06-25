@@ -87,7 +87,6 @@ class CartProvider with ChangeNotifier {
     var cart = Cart(_cartId, _userId, _restaurantId, cartItemsList);
     firestoreService.setCart(cart);
     joinTimer.startJoinTimer(_joinDuration);
-    clearCart();
   }
 
   deleteCart(String cartId) {

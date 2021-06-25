@@ -40,10 +40,10 @@ class _WaitScreenState extends State<WaitScreen> {
     await _setOrderCompletionTime();
 
     if (currentTime.compareTo(_orderCompletionTime) > 0) {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => CheckoutScreen()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CheckoutScreen()));
     }
   }
 
@@ -65,6 +65,8 @@ class _WaitScreenState extends State<WaitScreen> {
     final timerProvider = Provider.of<TimerProvider>(context);
     final orderProvider = Provider.of<OrderProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
+
+    _checkIfOrderComplete();
 
     Widget _cartItem(String id, String name, String price, String image) {
       return Padding(
@@ -109,7 +111,7 @@ class _WaitScreenState extends State<WaitScreen> {
               ),
 
               SizedBox(
-                height: 75.0,
+                height: 50.0,
               ),
 
               Table(
@@ -196,21 +198,23 @@ class _WaitScreenState extends State<WaitScreen> {
                 ),
               ),
 
-              Scrollbar(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: cartProvider.cartItems.length,
-                    itemBuilder: (context, index) {
-                      return _cartItem(
-                        cartProvider.cartItems[index].foodId,
-                        cartProvider.cartItems[index].foodName,
-                        '\$' +
-                            cartProvider.cartItems[index].price
-                                .toString(),
-                        cartProvider.cartItems[index].image,
-                      );
-                    }),
-                ),
+              Expanded(
+                child: Scrollbar(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: cartProvider.cartItems.length,
+                      itemBuilder: (context, index) {
+                        return _cartItem(
+                          cartProvider.cartItems[index].foodId,
+                          cartProvider.cartItems[index].foodName,
+                          '\$' +
+                              cartProvider.cartItems[index].price
+                                  .toString(),
+                          cartProvider.cartItems[index].image,
+                        );
+                      }),
+                  ),
+              ),
 
               Padding(
                 padding: const EdgeInsets.all(8.0),

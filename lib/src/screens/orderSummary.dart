@@ -54,7 +54,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
     Widget _paymentSummary() {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        padding: const EdgeInsets.symmetric(horizontal: 0.0),
         child: Table(
           children: [
             TableRow(children: [
@@ -68,7 +68,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
             ]),
             TableRow(children: [
               Text('Delivery Fee', style: TextStyles.body()),
-              Text('${restaurantProvider.deliveryFee}', style: TextStyles.body()),
+              Text('${cartProvider.deliveryFeeRange()}', style: TextStyles.body()),
             ]),
             TableRow(children: [
               Text('Total', style: TextStyles.heading3()),

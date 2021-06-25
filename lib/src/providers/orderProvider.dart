@@ -127,7 +127,12 @@ class OrderProvider with ChangeNotifier {
   }
 
   addToCartsList(String cartId, String orderId) {
-    if (_cartIds.length >= maxCarts - 1) {
+    int length = _cartIds.length;
+    _cartIds.add(1);
+    _cartIds[length] = cartId;
+    length++;
+
+    if (length >= maxCarts) {
       firestoreService.setStatus(Status.full.toString(), orderId);
     }
     firestoreService.addToCartsList(cartId, orderId);

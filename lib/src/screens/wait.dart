@@ -5,6 +5,7 @@ import 'package:foodstack/src/providers/timerProvider.dart';
 import 'package:foodstack/src/screens/checkout.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -116,10 +117,13 @@ class _WaitScreenState extends State<WaitScreen> {
                   fontWeight: FontWeight.bold,
                   color: ThemeColors.oranges,
                 ),
-              )
-
-
-
+              ),
+              AppButton(buttonText: 'CHECKOUT',
+                onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CheckoutScreen()));})
 
             ],
           ),

@@ -4,7 +4,7 @@ import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/address.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/screens/wait.dart';
-import 'package:foodstack/src/services/braintreeServices.dart';
+import 'package:foodstack/src/services/braintreeService.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -196,13 +196,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               buttonText: 'PAY',
                               onPressed: () {
                                 if (value == 0) {
-                                  BraintreeServices.makePayment(orderProvider
-                                      .totalPrice, orderProvider.restaurantId);
+                                  BraintreeService.makePayment(orderProvider
+                                      .totalPrice, 'FoodStack');
                                 }
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => HomeScreen()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()));
                                 // cartProvider.clearCart();
                                 // orderProvider.clearOrder();
                               },

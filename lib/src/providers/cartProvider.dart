@@ -111,6 +111,7 @@ class CartProvider with ChangeNotifier {
     }
   }
 
+
   updateItemQuantityOf(String foodId, int quantity) {
     CurrentCartItem exists = _cartItems
         .firstWhere((item) => item.foodId == foodId, orElse: () => null);

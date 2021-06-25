@@ -6,6 +6,7 @@ import 'package:foodstack/src/providers/timerProvider.dart';
 import 'package:foodstack/src/screens/checkout.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,9 +17,9 @@ class WaitScreen extends StatefulWidget {
 }
 
 class _WaitScreenState extends State<WaitScreen> {
-
   DateTime _orderCompletionTime;
   bool isPooler = false;
+  bool enableCheckoutButton = false;
 
   @override
   void initState() {
@@ -30,7 +31,8 @@ class _WaitScreenState extends State<WaitScreen> {
     final prefs = await SharedPreferences.getInstance();
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
 
-    await prefs.setInt('orderCompletionTime', orderProvider.orderTime.millisecondsSinceEpoch);
+    await prefs.setInt(
+        'orderCompletionTime', orderProvider.orderTime.millisecondsSinceEpoch);
     setState(() => _orderCompletionTime = orderProvider.orderTime);
   }
 
@@ -40,31 +42,28 @@ class _WaitScreenState extends State<WaitScreen> {
     await _setOrderCompletionTime();
 
     if (currentTime.compareTo(_orderCompletionTime) > 0) {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => CheckoutScreen()));
+      enableCheckoutButton = true;
     }
   }
 
-    int _minutesRemaining() {
+  int _minutesRemaining() {
     DateTime currentTime = DateTime.now();
     int minutes;
-    if (_orderCompletionTime.hour > currentTime.hour){
-      minutes = 60 -(currentTime.minute - _orderCompletionTime.minute);
-    } else{
+    if (_orderCompletionTime.hour > currentTime.hour) {
+      minutes = 60 - (currentTime.minute - _orderCompletionTime.minute);
+    } else {
       minutes = _orderCompletionTime.minute - currentTime.minute;
     }
     return minutes;
-
   }
-
 
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
     final orderProvider = Provider.of<OrderProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
+
+    _checkIfOrderComplete();
 
     Widget _cartItem(String id, String name, String price, String image) {
       return Padding(
@@ -80,6 +79,7 @@ class _WaitScreenState extends State<WaitScreen> {
                 children: [
                   Text(name, style: TextStyles.heading3()),
                   SizedBox(height: 5.0),
+
                   Text(price, style: TextStyles.emphasis()),
                 ],
               ),
@@ -92,143 +92,159 @@ class _WaitScreenState extends State<WaitScreen> {
       );
     }
 
-
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(30.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 75.0,
-              ),
-              Text(
-                'Wait while others join the order',
-                style: TextStyles.heading2(),
-              ),
-
-              SizedBox(
-                height: 75.0,
-              ),
-
-              Table(
-                children: [
-                  TableRow(children: [
-                    Center(
-                      child: Text('${orderProvider.cartIds.length}',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.bold,
-                          color: ThemeColors.oranges,
-                        ),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    Center(
-                      child:
-                  (orderProvider.cartIds.length == 1)
-                      ?Text(
-                        'Person has joined the order',
-                        style: TextStyles.heading3(),
-                      )
-                      :Text(
-                        'People have joined the order',
-                         style: TextStyles.heading3(),
-                       ),
-                    ),
-                  ]),
-                ],
-              ),
-
-              SizedBox(
-                height: 75.0,
-              ),
-
-
-              Table(
-                children: [
-                  TableRow(children: [
-                    Center(
-                      child: Text(
-                        'Order completes at',
-                        style: TextStyles.heading3(),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    Center(
-                      child: Text(
-                        '${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.bold,
-                          color: ThemeColors.oranges,
-                        ),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    Center(
-                      child: Text('${_minutesRemaining()} minutes remaining',
-                        style: TextStyles.heading3(),
-                      ),
-                    ),
-
-                  ]),
-                ],
-              ),
-
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
             SizedBox(
               height: 75.0,
             ),
-
-
-              Text('Your Cart',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 35.0,
-                  fontWeight: FontWeight.bold,
-                  color: ThemeColors.oranges,
-                ),
+            Text(
+              'Wait while others join the order',
+              style: TextStyles.heading2(),
+            ),
+            SizedBox(
+              height: 50.0,
+            ),
+            Table(
+              children: [
+                TableRow(children: [
+                  Center(
+                    child: Text(
+                      '${orderProvider.cartIds.length}',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                        color: ThemeColors.oranges,
+                      ),
+                    ),
+                  ),
+                ]),
+                TableRow(children: [
+                  Center(
+                    child: (orderProvider.cartIds.length == 1)
+                        ? Text(
+                      'Person has joined the order',
+                      style: TextStyles.heading3(),
+                    )
+                        : Text(
+                      'People have joined the order',
+                      style: TextStyles.heading3(),
+                    ),
+                  ),
+                ]),
+              ],
+            ),
+            SizedBox(
+              height: 75.0,
+            ),
+            Table(
+              children: [
+                TableRow(children: [
+                  Center(
+                    child: Text(
+                      'Order completes at',
+                      style: TextStyles.heading3(),
+                    ),
+                  ),
+                ]),
+                TableRow(children: [
+                  Center(
+                    child: Text(
+                      '${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
+                      style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                        color: ThemeColors.oranges,
+                      ),
+                    ),
+                  ),
+                ]),
+                TableRow(children: [
+                  Center(
+                    child: (_minutesRemaining() == 1)
+                        ? Text(
+                      '${_minutesRemaining()} minutes remaining',
+                      style: TextStyles.heading3(),)
+                        :Text(
+                          '${_minutesRemaining()} minutes remaining',
+                          style: TextStyles.heading3(),),
+                    ),
+                ]),
+              ],
+            ),
+            SizedBox(
+              height: 50.0,
+            ),
+            Text(
+              'Your Cart',
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 35.0,
+                fontWeight: FontWeight.bold,
+                color: ThemeColors.oranges,
               ),
-
-              Scrollbar(
-                  child: ListView.builder(
+            ),
+            Expanded(
+              child: Scrollbar(
+                child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: cartProvider.cartItems.length,
                     itemBuilder: (context, index) {
                       return _cartItem(
                         cartProvider.cartItems[index].foodId,
                         cartProvider.cartItems[index].foodName,
-                        '\$' +
-                            cartProvider.cartItems[index].price
-                                .toString(),
+                        '\$' + cartProvider.cartItems[index].price.toString(),
                         cartProvider.cartItems[index].image,
                       );
                     }),
-                ),
-
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Text('Subtotal', style: TextStyles.heading3())
-                    ),
-                    Text('\$${cartProvider.getSubtotal()}',
-                        style: TextStyles.emphasis()),
-                  ],
-                ),
               ),
-
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Text('Subtotal', style: TextStyles.heading3())),
+                  Text('\$${cartProvider.getSubtotal()}',
+                      style: TextStyles.emphasis()),
+                ],
+              ),
+            ),
+            enableCheckoutButton
+                ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppButton(
+                      buttonText: 'CHECKOUT',
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CheckoutScreen()));
+                      }),
+                    ],
+                  ),
+                )
+                : Padding(
+                  padding:const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(height: 16.0,),
+                    ],
+                  ),
+                )
+          ],
+        ),
       ),
-
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/address.dart';
 import 'package:foodstack/src/screens/home.dart';
+import 'package:foodstack/src/screens/orderSummary.dart';
 import 'package:foodstack/src/screens/wait.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -51,10 +52,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     await _setOrderCompletionTime();
 
     if (currentTime.compareTo(_orderCompletionTime) < 0) {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => WaitScreen()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => WaitScreen()));
     }
   }
 
@@ -194,11 +195,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             AppButton(
                               buttonText: 'PAY',
                               onPressed: () {
-                                orderProvider.clearOrder();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => HomeScreen()));
+                                        builder: (context) => SummaryScreen()));
                               },
                             ),
                           ],

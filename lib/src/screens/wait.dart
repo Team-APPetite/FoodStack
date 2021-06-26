@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
-import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/timerProvider.dart';
 import 'package:foodstack/src/screens/checkout.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -18,7 +17,7 @@ class WaitScreen extends StatefulWidget {
 
 class _WaitScreenState extends State<WaitScreen> {
   DateTime _orderCompletionTime;
-  bool isPooler = false;
+  bool isPooler = true; // Change to false after testing
 
   @override
   void initState() {

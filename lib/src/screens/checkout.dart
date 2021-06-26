@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/address.dart';
@@ -42,7 +43,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   Future<void> _setOrderCompletionTime() async {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-      setState(() => _orderCompletionTime = orderProvider.orderTime);
+    setState(() => _orderCompletionTime = orderProvider.orderTime);
   }
 
   Future<void> _checkIfOrderComplete() async {
@@ -74,12 +75,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     return Scaffold(
         appBar: Header.getAppBar(
-        title:
-        'Checkout'), // Can set back: false later to avoid going back after confirming cart
+            title:
+                'Checkout'), // Can set back: false later to avoid going back after confirming cart
         body: (userLocator.deliveryAddress == null)
             ? Center(child: CircularProgressIndicator())
             : Padding(
-            padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -194,15 +195,27 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           children: [
                             AppButton(
                               buttonText: 'PAY',
-                              onPressed: () {
+                              onPressed: () async {
                                 if (value == 0) {
-                                  BraintreeService.makePayment(orderProvider
-                                      .totalPrice, 'FoodStack');
+                                  String result =
+                                      await BraintreeService.makePayment(
+                                          orderProvider.totalPrice,
+                                          'FoodStack');
+                                  if (result == "Payment successful!") {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen()));
+                                  } else {
+                                    Fluttertoast.showToast(
+                                      msg: result,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 5,
+                                      backgroundColor: ThemeColors.dark,
+                                    );
+                                  }
                                 }
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeScreen()));
                                 // cartProvider.clearCart();
                                 // orderProvider.clearOrder();
                               },

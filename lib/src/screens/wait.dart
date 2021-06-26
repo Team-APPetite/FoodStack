@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/timerProvider.dart';
 import 'package:foodstack/src/screens/checkout.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -78,6 +79,7 @@ class _WaitScreenState extends State<WaitScreen> {
                 children: [
                   Text(name, style: TextStyles.heading3()),
                   SizedBox(height: 5.0),
+
                   Text(price, style: TextStyles.emphasis()),
                 ],
               ),
@@ -126,13 +128,13 @@ class _WaitScreenState extends State<WaitScreen> {
                   Center(
                     child: (orderProvider.cartIds.length == 1)
                         ? Text(
-                            'Person has joined the order',
-                            style: TextStyles.heading3(),
-                          )
+                      'Person has joined the order',
+                      style: TextStyles.heading3(),
+                    )
                         : Text(
-                            'People have joined the order',
-                            style: TextStyles.heading3(),
-                          ),
+                      'People have joined the order',
+                      style: TextStyles.heading3(),
+                    ),
                   ),
                 ]),
               ],
@@ -165,16 +167,19 @@ class _WaitScreenState extends State<WaitScreen> {
                 ]),
                 TableRow(children: [
                   Center(
-                    child: Text(
+                    child: (_minutesRemaining() == 1)
+                        ? Text(
                       '${_minutesRemaining()} minutes remaining',
-                      style: TextStyles.heading3(),
+                      style: TextStyles.heading3(),)
+                        :Text(
+                          '${_minutesRemaining()} minutes remaining',
+                          style: TextStyles.heading3(),),
                     ),
-                  ),
                 ]),
               ],
             ),
             SizedBox(
-              height: 75.0,
+              height: 50.0,
             ),
             Text(
               'Your Cart',
@@ -212,15 +217,31 @@ class _WaitScreenState extends State<WaitScreen> {
               ),
             ),
             enableCheckoutButton
-                ? AppButton(
-                    buttonText: 'CHECKOUT',
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CheckoutScreen()));
-                    })
-                : Container()
+                ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppButton(
+                      buttonText: 'CHECKOUT',
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CheckoutScreen()));
+                      }),
+                    ],
+                  ),
+                )
+                : Padding(
+                  padding:const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(height: 16.0,),
+                    ],
+                  ),
+                )
           ],
         ),
       ),

@@ -44,6 +44,8 @@ class OrderProvider with ChangeNotifier {
   double get totalPrice => _totalPrice;
   List get cartIds => _cartIds;
 
+
+
   set orderId(String orderId) {
     _orderId = orderId;
     notifyListeners();
@@ -136,6 +138,10 @@ class OrderProvider with ChangeNotifier {
       firestoreService.setStatus(Status.full.toString(), orderId);
     }
     firestoreService.addToCartsList(cartId, orderId);
+  }
+
+  int getNumofUsers (){
+    return _cartIds.length;
   }
 
 }

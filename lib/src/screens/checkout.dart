@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/address.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/screens/orderSummary.dart';
 import 'package:foodstack/src/screens/wait.dart';
-import 'package:foodstack/src/services/braintreeService.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -44,7 +42,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   Future<void> _setOrderCompletionTime() async {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    setState(() => _orderCompletionTime = orderProvider.orderTime);
+      setState(() => _orderCompletionTime = orderProvider.orderTime);
   }
 
   Future<void> _checkIfOrderComplete() async {
@@ -76,12 +74,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     return Scaffold(
         appBar: Header.getAppBar(
-            title:
-                'Checkout'), // Can set back: false later to avoid going back after confirming cart
+        title:
+        'Checkout'), // Can set back: false later to avoid going back after confirming cart
         body: (userLocator.deliveryAddress == null)
             ? Center(child: CircularProgressIndicator())
             : Padding(
-                padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -196,33 +194,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           children: [
                             AppButton(
                               buttonText: 'PAY',
-                              onPressed: () async {
-                                if (value == 0) {
-                                  String result =
-                                      await BraintreeService.makePayment(
-                                          orderProvider.totalPrice,
-                                          'FoodStack');
-                                  if (result == "Payment successful!") {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                HomeScreen()));
-                                  } else {
-                                    Fluttertoast.showToast(
-                                      msg: result,
-                                      gravity: ToastGravity.TOP,
-                                      timeInSecForIosWeb: 5,
-                                      backgroundColor: ThemeColors.dark,
-                                    );
-                                  }
-                                }
+                              onPressed: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => SummaryScreen()));
-                                // cartProvider.clearCart();
-                                // orderProvider.clearOrder();
                               },
                             ),
                           ],

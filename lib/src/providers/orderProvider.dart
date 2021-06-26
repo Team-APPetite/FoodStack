@@ -123,9 +123,9 @@ class OrderProvider with ChangeNotifier {
     _status = null;
     _deliveryAddress = null;
     _coordinates = null;
-    _orderTime = null;
-    _totalPrice = null;
-    _cartIds = null;
+    _orderTime = Timestamp(0, 0);
+    _totalPrice = 0;
+    _cartIds = [null];
   }
 
   addToCartsList(String cartId, String orderId) {

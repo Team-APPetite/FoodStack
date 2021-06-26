@@ -19,7 +19,7 @@ class WaitScreen extends StatefulWidget {
 class _WaitScreenState extends State<WaitScreen> {
   DateTime _orderCompletionTime;
   bool isPooler = false;
-  bool enableCheckoutButton = false;
+  bool enableCheckout = true; // Change to false later
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _WaitScreenState extends State<WaitScreen> {
     await _setOrderCompletionTime();
 
     if (currentTime.compareTo(_orderCompletionTime) > 0) {
-      enableCheckoutButton = true;
+      enableCheckout = true;
     }
   }
 
@@ -59,7 +59,6 @@ class _WaitScreenState extends State<WaitScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final timerProvider = Provider.of<TimerProvider>(context);
     final orderProvider = Provider.of<OrderProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
 
@@ -70,7 +69,6 @@ class _WaitScreenState extends State<WaitScreen> {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           children: [
-            //Expanded(flex: 1, child: Image.network(image)),
             SizedBox(width: 10),
             Expanded(
               flex: 2,
@@ -79,12 +77,10 @@ class _WaitScreenState extends State<WaitScreen> {
                 children: [
                   Text(name, style: TextStyles.heading3()),
                   SizedBox(height: 5.0),
-
                   Text(price, style: TextStyles.emphasis()),
                 ],
               ),
             ),
-
             Text('x ${cartProvider.getItemQuantityOf(id)}',
                 style: TextStyles.heading3()),
           ],
@@ -102,13 +98,21 @@ class _WaitScreenState extends State<WaitScreen> {
             SizedBox(
               height: 75.0,
             ),
-            Text(
-              'Wait while others join the order',
-              style: TextStyles.heading2(),
-            ),
-            SizedBox(
-              height: 50.0,
-            ),
+            enableCheckout
+                ? Container()
+                : Column(
+                  children: [
+                    Text(
+                        'Wait while others join the order',
+                        style: TextStyles.heading2(),
+                        textAlign: TextAlign.center,
+                      ),
+                    SizedBox(
+                      height: 50.0,
+                    ),
+                  ],
+                ),
+
             Table(
               children: [
                 TableRow(children: [
@@ -128,13 +132,13 @@ class _WaitScreenState extends State<WaitScreen> {
                   Center(
                     child: (orderProvider.cartIds.length == 1)
                         ? Text(
-                      'Person has joined the order',
-                      style: TextStyles.heading3(),
-                    )
+                            'Person has joined the order',
+                            style: TextStyles.heading3(),
+                          )
                         : Text(
-                      'People have joined the order',
-                      style: TextStyles.heading3(),
-                    ),
+                            'People have joined the order',
+                            style: TextStyles.heading3(),
+                          ),
                   ),
                 ]),
               ],
@@ -169,12 +173,14 @@ class _WaitScreenState extends State<WaitScreen> {
                   Center(
                     child: (_minutesRemaining() == 1)
                         ? Text(
-                      '${_minutesRemaining()} minutes remaining',
-                      style: TextStyles.heading3(),)
-                        :Text(
-                          '${_minutesRemaining()} minutes remaining',
-                          style: TextStyles.heading3(),),
-                    ),
+                            '${_minutesRemaining()} minutes remaining',
+                            style: TextStyles.heading3(),
+                          )
+                        : Text(
+                            '${_minutesRemaining()} minutes remaining',
+                            style: TextStyles.heading3(),
+                          ),
+                  ),
                 ]),
               ],
             ),
@@ -216,32 +222,34 @@ class _WaitScreenState extends State<WaitScreen> {
                 ],
               ),
             ),
-            enableCheckoutButton
+            enableCheckout
                 ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppButton(
-                      buttonText: 'CHECKOUT',
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CheckoutScreen()));
-                      }),
-                    ],
-                  ),
-                )
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AppButton(
+                            buttonText: 'CHECKOUT',
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CheckoutScreen()));
+                            }),
+                      ],
+                    ),
+                  )
                 : Padding(
-                  padding:const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(height: 16.0,),
-                    ],
-                  ),
-                )
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 16.0,
+                        ),
+                      ],
+                    ),
+                  )
           ],
         ),
       ),

@@ -5,6 +5,7 @@ import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/providers/timerProvider.dart';
 import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
+import 'package:foodstack/src/utilities/numbers.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:provider/provider.dart';
@@ -95,6 +96,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
             Text(
               'Your order has been confirmed!',
               style: TextStyles.heading2(),
+              textAlign: TextAlign.center,
             ),
 
             SizedBox(
@@ -125,11 +127,11 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
             _paymentSummary('Subtotal', '\$${_subtotal}'),
             _paymentSummary('Number of people in the order', '${_numOfUsers}'),
-            _paymentSummary('Delivery Fee', '\$${_deliveryFee} \/ ${_numOfUsers} = \$${_finalDeliveryFee}'),
-            _paymentSummary('Total', '\$${_total}'),
+            _paymentSummary('Delivery Fee', '\$${_deliveryFee} \/ ${_numOfUsers} = \$${Numbers.roundTo2d(_finalDeliveryFee)}'),
+            _paymentSummary('Total', '\$${Numbers.roundTo2d(_total)}'),
             SizedBox(height: 75.0,),
             _paymentSummary('Payment method', ''),
-            _paymentSummary('Amount paid', '\$${_total}'),
+            _paymentSummary('Amount paid', '\$${Numbers.roundTo2d(_total)}'),
 
             SizedBox(height: 50.0,),
 
@@ -142,6 +144,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   AppButton(
                     buttonText: 'TRACK ORDER',
                     onPressed: () {
+                      cartProvider.clearCart();
                       orderProvider.clearOrder();
                       Navigator.push(
                           context,

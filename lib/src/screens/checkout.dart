@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/address.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/screens/orderSummary.dart';
 import 'package:foodstack/src/screens/wait.dart';
+import 'package:foodstack/src/services/braintreeService.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -21,17 +23,15 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  FirestoreUsers firestoreService = FirestoreUsers();
   int value = 0;
-
-  DateTime _orderCompletionTime;
   bool isPooler = false;
+
+  FirestoreUsers firestoreService = FirestoreUsers();
 
   @override
   void initState() {
     super.initState();
     _getUserRole();
-    _checkIfOrderComplete();
   }
 
   Future<bool> _getUserRole() async {
@@ -40,29 +40,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return isPooler;
   }
 
-  Future<void> _setOrderCompletionTime() async {
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-      setState(() => _orderCompletionTime = orderProvider.orderTime);
-  }
-
-  Future<void> _checkIfOrderComplete() async {
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    DateTime currentTime = DateTime.now();
-
-    await _setOrderCompletionTime();
-
-    if (currentTime.compareTo(_orderCompletionTime) < 0) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => WaitScreen()));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final userLocator = Provider.of<UserLocator>(context);
     final orderProvider = Provider.of<OrderProvider>(context);
+    final userLocator = Provider.of<UserLocator>(context);
     LatLng userCoordinates = userLocator.coordinates;
     GoogleMapController _mapController;
 
@@ -73,13 +54,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
 
     return Scaffold(
-        appBar: Header.getAppBar(
-        title:
-        'Checkout'), // Can set back: false later to avoid going back after confirming cart
+        // Can set back: false later to avoid going back
+        // after confirming cart
+        appBar: Header.getAppBar(title: 'Checkout'),
         body: (userLocator.deliveryAddress == null)
             ? Center(child: CircularProgressIndicator())
             : Padding(
-            padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -193,14 +174,35 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppButton(
-                              buttonText: 'PAY',
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SummaryScreen()));
-                              },
-                            ),
+                                buttonText: 'PAY',
+                                onPressed: () async {
+                                  if (value == 0) {
+                                    String result =
+                                        await BraintreeService.makePayment(
+                                            orderProvider.totalPrice,
+                                            'FoodStack');
+                                    if (result == "Payment successful!") {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SummaryScreen()));
+                                    } else {
+                                      Fluttertoast.showToast(
+                                        msg: result,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 5,
+                                        backgroundColor: ThemeColors.dark,
+                                      );
+                                    }
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SummaryScreen()));
+                                  }
+                                }),
                           ],
                         ),
                       ))

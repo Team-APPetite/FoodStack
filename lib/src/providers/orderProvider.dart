@@ -144,4 +144,27 @@ class OrderProvider with ChangeNotifier {
     return _cartIds.length;
   }
 
+  updateOrderAddress(String address, Object geoCoordinates) {
+    _deliveryAddress = address;
+    _coordinates = geoCoordinates;
+
+    var newOrder = Order(
+      orderId: _orderId,
+      restaurantId: _restaurantId,
+      creatorId: _creatorId,
+      paymentId: _paymentId,
+      status: _status,
+      deliveryAddress: _deliveryAddress,
+      coordinates: _coordinates,
+      orderTime: _orderTime,
+      totalPrice: _totalPrice,
+      cartIds: _cartIds,
+    );
+
+    return firestoreService
+        .addOrder(newOrder)
+        .then((value) => print('Order Saved'))
+        .catchError((error) => print(error));
+  }
+
 }

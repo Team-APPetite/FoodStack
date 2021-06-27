@@ -146,7 +146,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       Align(
                         alignment: Alignment.topLeft,
                         child: Text(
-                          isPooler ? 'Pay creator' : 'Payment Methods',
+                          'Payment Methods',
                           style: TextStyles.heading2(),
                         ),
                       ),

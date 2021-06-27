@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddressScreen extends StatefulWidget {
   @override
@@ -16,12 +19,35 @@ class AddressScreen extends StatefulWidget {
 }
 
 class _AddressScreenState extends State<AddressScreen> {
+  int value = 0;
+  bool isPooler = false;
+
   FirestoreUsers firestoreService = FirestoreUsers();
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserRole();
+  }
+
+  Future<bool> _getUserRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    isPooler = prefs.getBool('isPooler');
+    return isPooler;
+  }
+
   @override
   Widget build(BuildContext context) {
     final userLocator = Provider.of<UserLocator>(context);
     LatLng userCoordinates = userLocator.coordinates;
     GoogleMapController _mapController;
+
+    final orderProvider = Provider.of<OrderProvider>(context);
+
+    final geo = Geoflutterfire();
+    GeoFirePoint userLocation = geo.point(
+        latitude: userCoordinates.latitude,
+        longitude: userCoordinates.longitude);
 
     void whenMapCreated(GoogleMapController _controller) {
       setState(() {
@@ -98,6 +124,9 @@ class _AddressScreenState extends State<AddressScreen> {
                             ),
                             AppButton(buttonText: 'DELIVER HERE', onPressed: () {
                               firestoreService.updateAddress(userLocator.deliveryAddress.addressLine);
+                              if (!isPooler) {
+                                orderProvider.updateOrderAddress(userLocator.deliveryAddress.addressLine, userLocation);
+                              }
                               Fluttertoast.showToast(
                                   msg: 'Address Updated',
                                   gravity: ToastGravity.TOP,

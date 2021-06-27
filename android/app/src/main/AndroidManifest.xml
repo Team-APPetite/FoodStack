@@ -52,5 +52,6 @@
            android:value="AIzaSyAIB_jrdSCoM7SB_AixhfGycL7Tyd_8oqk"/>
        <meta-data android:name="com.google.android.gms.wallet.api.enabled" android:value="true"/>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

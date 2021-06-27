@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/favourites.dart';
 import 'package:foodstack/src/screens/joinOrders.dart';
 import 'package:foodstack/src/screens/newOrder.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
+import 'package:foodstack/src/utilities/alerts.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/utilities/enums.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,6 +23,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    final userLocator = Provider.of<UserLocator>(context, listen: false);
+
+    if (userLocator.deliveryAddress != null) {
+      Fluttertoast.showToast(
+        msg: 'Delivering at ${userLocator.deliveryAddress.addressLine}',
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 5,
+        backgroundColor: ThemeColors.dark,
+      );
+    }
+
     super.initState();
     _getUserOrderStatus();
   }

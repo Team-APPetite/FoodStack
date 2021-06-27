@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/models/restaurant.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/restaurantCard.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
@@ -40,11 +42,11 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
               stream: restaurantProvider.restaurantsList,
               builder: (context, snapshot) {
                 if (snapshot.data == null ||
-                    userLocator.currentLocation == null) {
+                    userLocator.coordinates == null) {
                   return Center(child: CircularProgressIndicator());
                 } else {
-                  final userLatitude = userLocator.currentLocation.latitude;
-                  final userLongitude = userLocator.currentLocation.longitude;
+                  final userLatitude = userLocator.coordinates.latitude;
+                  final userLongitude = userLocator.coordinates.longitude;
                   snapshot.data.sort((a, b) => Geolocator.distanceBetween(
                           a.coordinates.latitude,
                           a.coordinates.longitude,

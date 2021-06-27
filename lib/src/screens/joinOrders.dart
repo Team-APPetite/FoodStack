@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/restaurantCard.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
@@ -36,12 +38,11 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
     final userLocator = Provider.of<UserLocator>(context);
     final geo = Geoflutterfire();
-    String orderId;
 
     // TODO Add search bar
-    if (userLocator.currentLocation != null) {
-      final userLatitude = userLocator.currentLocation.latitude;
-      final userLongitude = userLocator.currentLocation.longitude;
+    if (userLocator.coordinates != null) {
+      final userLatitude = userLocator.coordinates.latitude;
+      final userLongitude = userLocator.coordinates.longitude;
 
       GeoFirePoint center =
           geo.point(latitude: userLatitude, longitude: userLongitude);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/address.dart';
@@ -42,10 +43,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final orderProvider = Provider.of<OrderProvider>(context);
     final userLocator = Provider.of<UserLocator>(context);
     LatLng userCoordinates = userLocator.coordinates;
     GoogleMapController _mapController;
+
+    final orderProvider = Provider.of<OrderProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+    final double _subtotal = cartProvider.getSubtotal();
+    final double _deliveryFee = cartProvider.deliveryFee;
+    final int _numOfUsers = orderProvider.cartIds.length;
+    final double _finalDeliveryFee = _deliveryFee/_numOfUsers;
+    final double _total = _subtotal + _finalDeliveryFee;
 
     void whenMapCreated(GoogleMapController _controller) {
       setState(() {
@@ -179,7 +187,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   if (value == 0) {
                                     String result =
                                         await BraintreeService.makePayment(
-                                            orderProvider.totalPrice,
+                                            _total,
                                             'FoodStack');
                                     if (result == "Payment successful!") {
                                       Navigator.push(

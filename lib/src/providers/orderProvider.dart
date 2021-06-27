@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 import 'package:foodstack/src/models/order.dart';
 
 class OrderProvider with ChangeNotifier {
-  static const int NoOfMillisecondsPerSecond = 1000;
+  static const int noOfMillisecondsPerSecond = 1000;
   static const int noOfSecondsPerMinute = 60;
   static const int maxCarts = 5;
 
@@ -39,7 +39,7 @@ class OrderProvider with ChangeNotifier {
   String get deliveryAddress => _deliveryAddress;
   DateTime get orderTime => _orderTime != null
       ? DateTime.fromMillisecondsSinceEpoch(
-          _orderTime.seconds * NoOfMillisecondsPerSecond)
+          _orderTime.seconds * noOfMillisecondsPerSecond)
       : null;
   double get totalPrice => _totalPrice;
   List get cartIds => _cartIds;
@@ -155,7 +155,7 @@ class OrderProvider with ChangeNotifier {
     firestoreService.addToCartsList(cartId, orderId);
   }
 
-  int getNumofUsers (){
+  int getNumberOfUsers (){
     return _cartIds.length;
   }
 
@@ -180,6 +180,10 @@ class OrderProvider with ChangeNotifier {
         .addOrder(newOrder)
         .then((value) => print('Order Saved'))
         .catchError((error) => print(error));
+  }
+
+  completeOrder() {
+    firestoreService.setStatus(Status.completed.toString(), orderId);
   }
 
 }

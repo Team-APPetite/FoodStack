@@ -35,6 +35,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     super.initState();
     orderProvider.getOrder(orderProvider.orderId);
+    orderProvider.completeOrder();
     _getUserRole();
   }
 
@@ -65,8 +66,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
 
     return Scaffold(
-        // Can set back: false later to avoid going back
-        // after confirming cart
         appBar: Header.getAppBar(title: 'Checkout'),
         body: (userLocator.deliveryAddress == null)
             ? Center(child: CircularProgressIndicator())
@@ -120,29 +119,29 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               style: TextStyles.body(),
                               textAlign: TextAlign.center,
                             ),
-                            isPooler
-                                ? Container()
-                                : OutlinedButton(
-                                    child: Text('Change Address',
-                                        style: TextStyles.textButton()),
-                                    style: OutlinedButton.styleFrom(
-                                        primary: ThemeColors.oranges,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30.0),
-                                        ),
-                                        side: BorderSide(
-                                          color: ThemeColors.oranges,
-                                          width: 1,
-                                        )),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddressScreen()));
-                                    },
-                                  ),
+                            // isPooler
+                            //     ? Container()
+                            //     : OutlinedButton(
+                            //         child: Text('Change Address',
+                            //             style: TextStyles.textButton()),
+                            //         style: OutlinedButton.styleFrom(
+                            //             primary: ThemeColors.oranges,
+                            //             shape: RoundedRectangleBorder(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(30.0),
+                            //             ),
+                            //             side: BorderSide(
+                            //               color: ThemeColors.oranges,
+                            //               width: 1,
+                            //             )),
+                            //         onPressed: () {
+                            //           Navigator.push(
+                            //               context,
+                            //               MaterialPageRoute(
+                            //                   builder: (context) =>
+                            //                       AddressScreen()));
+                            //         },
+                            //       ),
                           ],
                         ),
                       ),

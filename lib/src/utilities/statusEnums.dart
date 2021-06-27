@@ -1,1 +1,1 @@
-enum Status {active, full, paid, prepared, delivered}
+enum Status {active, full, completed, paid, prepared, delivered}

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
-import 'package:foodstack/src/styles/themeColors.dart';
-import 'package:foodstack/src/providers/timerProvider.dart';
 import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/utilities/numbers.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SummaryScreen extends StatefulWidget {
   @override
@@ -17,11 +14,6 @@ class SummaryScreen extends StatefulWidget {
 }
 
 class _SummaryScreenState extends State<SummaryScreen> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +24,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
     final int _numOfUsers = orderProvider.cartIds.length;
     final double _finalDeliveryFee = _deliveryFee/_numOfUsers;
     final double _total = _subtotal + _finalDeliveryFee;
-
-
 
     Widget _cartItem(String id, String name, String price, String image) {
       return Padding(
@@ -83,7 +73,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
       );
     }
 
-
     return Scaffold(
       appBar: Header.getAppBar(title: 'Order Summary'),
       body: Padding(
@@ -121,10 +110,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
               ),
             ),
 
-
-
-
-
             _paymentSummary('Subtotal', '\$${_subtotal}'),
             _paymentSummary('Number of people in the order', '${_numOfUsers}'),
             _paymentSummary('Delivery Fee', '\$${_deliveryFee} \/ ${_numOfUsers} = \$${Numbers.roundTo2d(_finalDeliveryFee)}'),
@@ -134,7 +119,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
             _paymentSummary('Amount paid', '\$${Numbers.roundTo2d(_total)}'),
 
             SizedBox(height: 50.0,),
-
 
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),

@@ -46,7 +46,7 @@ class _MenuScreenState extends State<MenuScreen> {
     isPooler = await _getUserRole();
 
     if (isPooler) {
-      await orderProvider.getOrder(widget.restaurantId);
+      await orderProvider.getNearbyOrder(widget.restaurantId);
       setState(() {
         _orderCompletionTime = orderProvider.orderTime;
       });

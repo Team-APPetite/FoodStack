@@ -97,7 +97,22 @@ class OrderProvider with ChangeNotifier {
 
   }
 
-  getOrder(String restaurantId) async {
+  getOrder(String orderId) async {
+    Order order = await firestoreService.getOrder(orderId);
+    _orderId = order.orderId;
+    _restaurantId = order.restaurantId;
+    _creatorId = order.creatorId;
+    _paymentId = order.paymentId;
+    _status = order.status;
+    _deliveryAddress = order.deliveryAddress;
+    _coordinates = order.coordinates;
+    _orderTime = order.orderTime;
+    _totalPrice = order.totalPrice;
+    _cartIds = order.cartIds;
+    notifyListeners();
+  }
+
+  getNearbyOrder(String restaurantId) async {
     Order order = await firestoreService.getNearbyOrder(restaurantId);
       _orderId = order.orderId;
       _restaurantId = order.restaurantId;

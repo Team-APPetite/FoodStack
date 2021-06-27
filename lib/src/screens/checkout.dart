@@ -31,7 +31,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   void initState() {
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+
     super.initState();
+    orderProvider.getOrder(orderProvider.orderId);
     _getUserRole();
   }
 

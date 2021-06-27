@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
@@ -18,11 +20,17 @@ class _WaitScreenState extends State<WaitScreen> {
   DateTime _orderCompletionTime;
   bool isPooler = false;
   bool enableCheckout = false;
+  Timer timer;
 
   @override
   void initState() {
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+
     super.initState();
     _checkIfOrderComplete();
+    timer = Timer.periodic(Duration(minutes: 1), (timer) {
+      orderProvider.getOrder(orderProvider.orderId);
+    });
   }
 
   Future<void> _setOrderCompletionTime() async {

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/models/order.dart';
-import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/screens/menu.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
-import 'package:provider/provider.dart';
 
 // Will update UI and modularize later
 
@@ -31,7 +28,6 @@ class _RestaurantCardState extends State<RestaurantCard> {
   @override
   Widget build(BuildContext context) {
     final FirestoreUsers firestoreService = FirestoreUsers();
-    final orderProvider = Provider.of<OrderProvider>(context);
 
     return TextButton(
       onPressed: () {

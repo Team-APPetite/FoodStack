@@ -43,11 +43,14 @@ class _AddressScreenState extends State<AddressScreen> {
     GoogleMapController _mapController;
 
     final orderProvider = Provider.of<OrderProvider>(context);
-
     final geo = Geoflutterfire();
-    GeoFirePoint userLocation = geo.point(
-        latitude: userCoordinates.latitude,
-        longitude: userCoordinates.longitude);
+    GeoFirePoint userLocation;
+
+    if (userCoordinates != null) {
+      userLocation = geo.point(
+          latitude: userCoordinates.latitude,
+          longitude: userCoordinates.longitude);
+    }
 
     void whenMapCreated(GoogleMapController _controller) {
       setState(() {

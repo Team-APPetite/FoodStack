@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodstack/src/screens/address.dart';
 import 'package:foodstack/src/screens/welcome.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
-import 'package:foodstack/src/utilities/alerts.dart';
 import 'package:foodstack/src/widgets/header.dart';
-import 'package:foodstack/src/screens/home.dart';
 import 'dart:async';
-
-import 'package:geocoder/geocoder.dart';
 
 class VerifyScreen extends StatefulWidget {
   @override

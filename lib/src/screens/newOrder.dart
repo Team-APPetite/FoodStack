@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/models/restaurant.dart';
-import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/restaurantCard.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';

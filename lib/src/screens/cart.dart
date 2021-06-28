@@ -6,8 +6,6 @@ import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
-import 'package:foodstack/src/screens/checkout.dart';
-import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/screens/wait.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';

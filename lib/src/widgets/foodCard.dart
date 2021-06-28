@@ -13,15 +13,14 @@ class FoodCard extends StatefulWidget {
   final String image;
   final void Function() onPressedDetails;
 
-  FoodCard(this.foodId, this.foodName, this.price, this.image, this.onPressedDetails);
+  FoodCard(this.foodId, this.foodName, this.price, this.image,
+      this.onPressedDetails);
 
   @override
   _FoodCardState createState() => _FoodCardState();
 }
 
 class _FoodCardState extends State<FoodCard> {
-
-
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
@@ -96,7 +95,19 @@ class _FoodCardState extends State<FoodCard> {
           padding: const EdgeInsets.only(top: 20, left: 15),
           child: Align(
             alignment: Alignment.topLeft,
-            child: Text(quantity > 0 ? ' x' + quantity.toString() : '', style: TextStyles.textButton(),),
+            child: quantity > 0
+                ? Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        ' x' + quantity.toString(),
+                        style: TextStyles.textButton(),
+                      ),
+                    ))
+                : Container(),
           ),
         )
       ],

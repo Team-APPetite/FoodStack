@@ -23,9 +23,9 @@ class OrderProvider with ChangeNotifier {
   String _status;
   String _deliveryAddress;
   Object _coordinates;
-  Timestamp _orderTime;
-  double _totalPrice;
-  List _cartIds;
+  Timestamp _orderTime = Timestamp(0, 0);
+  double _totalPrice = 0;
+  List _cartIds = [null];
 
   var uuid = Uuid();
   Stream<List<DocumentSnapshot>> nearbyOrdersList;

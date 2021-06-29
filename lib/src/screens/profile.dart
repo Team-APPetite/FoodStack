@@ -5,6 +5,7 @@ import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../src/utilities/enums.dart';
 import 'authentication/login.dart';
 import 'address.dart';
@@ -114,9 +115,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: EdgeInsets.all(20),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  // color: Color(0XFFF56f9),
                   color: ThemeColors.light,
-                  onPressed: () {
+                  onPressed: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.remove('email');
                     auth.signOut();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginScreen()));

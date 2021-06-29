@@ -11,6 +11,7 @@ import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/textField.dart';
 import 'package:foodstack/src/screens/authentication/verify.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -103,7 +104,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             String _displayName = _firstName + " " + _lastName;
             user.updateDisplayName(_displayName);
             var currUser = Users(uid: user.uid, email: user.email, name: _displayName);
-            await firestoreService.addUser(currUser);
+            await firestoreService.addUser(currUser).then((value) async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setString('email', user.email);
+            });
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => VerifyScreen()));

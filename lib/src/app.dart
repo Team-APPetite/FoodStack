@@ -8,6 +8,9 @@ import 'package:foodstack/src/screens/authentication/login.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
+  final StatefulWidget home;
+
+  const App({this.home});
   @override
   _AppState createState() => _AppState();
 }
@@ -25,7 +28,7 @@ class _AppState extends State<App> {
       ],
       child: MaterialApp(
         title: 'FoodStack',
-        home: LoginScreen(),
+        home: widget.home,
       ),
     );
   }

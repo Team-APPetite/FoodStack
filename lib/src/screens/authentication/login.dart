@@ -11,6 +11,7 @@ import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/textField.dart';
 import 'package:foodstack/src/widgets/socialButton.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,7 +21,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String _email = '', _password = '';
   final auth = FirebaseAuth.instance;
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
         buttonText: 'LOGIN',
         onPressed: () async {
           String state = await UserAuth(auth: auth).login(_email, _password);
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('email', _email);
           if (state == "Success") {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HomeScreen()));

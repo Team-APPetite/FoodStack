@@ -1,39 +1,60 @@
 class CartItem {
-  final String foodId;
-  final int quantity;
-  final String notes;
+  String foodId;
+  String foodName;
+  String image;
+  double price;
+  int quantity;
+  String notes;
 
-  CartItem(this.foodId, this.quantity, this.notes);
+  CartItem(
+      {this.foodId,
+      this.foodName,
+      this.image,
+      this.price,
+      this.quantity,
+      this.notes});
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
     return CartItem(
-      json['foodId'],
-      json['quantity'],
-      json['notes'],
+      foodId: json['foodId'],
+      foodName: json['foodName'],
+      image: json['image'],
+      price: json['price'],
+      quantity: json['quantity'],
+      notes: json['notes'],
     );
   }
 
-  Map<String, dynamic> toMap() =>
-      {"foodId": this.foodId, "quantity": this.quantity, "notes": this.notes};
+  Map<String, dynamic> toMap() => {
+        "foodId": this.foodId,
+        "foodName": foodName,
+        "image": image,
+        "price": price,
+        "quantity": this.quantity,
+        "notes": this.notes
+      };
 }
 
 class Cart {
   String cartId;
   String userId;
   String restaurantId;
+  double subtotal;
   List<dynamic> cartItems = [];
 
-  Cart(this.cartId, this.userId, this.restaurantId, this.cartItems);
+  Cart(this.cartId, this.userId, this.restaurantId, this.subtotal,
+      this.cartItems);
 
   factory Cart.fromJson(Map<String, dynamic> json) {
     return Cart(json['cartId'], json['userId'], json['restaurantId'],
-        json['cartItems']);
+        json['subtotal'], json['cartItems']);
   }
 
   Map<String, dynamic> toMap() => {
         "cartId": this.cartId,
         "userId": this.userId,
         "restaurantId": this.restaurantId,
+        "subtotal": this.subtotal,
         "cartItems": this.cartItems
       };
 }

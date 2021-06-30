@@ -21,6 +21,7 @@ class CartProvider with ChangeNotifier {
   String _restaurantId;
   String _userId;
   double _deliveryFee;
+  double _subtotal = 0;
 
   String get cartId => _cartId;
   int get joinDuration => _joinDuration;
@@ -46,8 +47,8 @@ class CartProvider with ChangeNotifier {
     _restaurantId = id;
   }
 
-  addToCart(CurrentCartItem cartItem) {
-    CurrentCartItem exists = _cartItems.firstWhere(
+  addToCart(CartItem cartItem) {
+    CartItem exists = _cartItems.firstWhere(
         (item) => item.foodId == cartItem.foodId,
         orElse: () => null);
 
@@ -80,9 +81,8 @@ class CartProvider with ChangeNotifier {
 
     List<dynamic> cartItemsList = [];
 
-    _cartItems.forEach((item) => cartItemsList
-        .add(CartItem(item.foodId, item.quantity, item.notes).toMap()));
-    var cart = Cart(_cartId, _userId, _restaurantId, cartItemsList);
+    _cartItems.forEach((item) => cartItemsList.add(item.toMap()));
+    var cart = Cart(_cartId, _userId, _restaurantId, getSubtotal(), cartItemsList);
     firestoreService.setCart(cart);
   }
 
@@ -97,8 +97,8 @@ class CartProvider with ChangeNotifier {
   }
 
   int getItemQuantityOf(String foodId) {
-    CurrentCartItem exists = _cartItems
-        .firstWhere((item) => item.foodId == foodId, orElse: () => null);
+    CartItem exists = _cartItems.firstWhere((item) => item.foodId == foodId,
+        orElse: () => null);
 
     if (exists == null) {
       return 0;
@@ -108,10 +108,9 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-
   updateItemQuantityOf(String foodId, int quantity) {
-    CurrentCartItem exists = _cartItems
-        .firstWhere((item) => item.foodId == foodId, orElse: () => null);
+    CartItem exists = _cartItems.firstWhere((item) => item.foodId == foodId,
+        orElse: () => null);
 
     if (exists != null) {
       int updateIndex = _cartItems.indexOf(exists);
@@ -146,11 +145,11 @@ class CartProvider with ChangeNotifier {
   }
 
   double getSubtotal() {
-    double subtotal = 0;
+    _subtotal = 0;
     for (int i = 0; i < _cartItems.length; i++) {
-      subtotal += (_cartItems[i].price * _cartItems[i].quantity);
+      _subtotal += (_cartItems[i].price * _cartItems[i].quantity);
     }
-    return Numbers.roundTo2d(subtotal);
+    return Numbers.roundTo2d(_subtotal);
   }
 
   String deliveryFeeRange() {

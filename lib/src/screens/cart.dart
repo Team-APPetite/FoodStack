@@ -69,7 +69,7 @@ class _CartScreenState extends State<CartScreen> {
         children: [
           Text('Wait  ', style: TextStyles.heading3()),
           NumberPicker(
-            minValue: 5,
+            minValue: 0, // can change to 5: Design decision
             maxValue: 60,
             step: 5,
             value: cartProvider.joinDuration,

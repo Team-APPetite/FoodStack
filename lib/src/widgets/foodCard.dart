@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/models/currentCartItem.dart';
+import 'package:foodstack/src/models/cart.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -81,7 +81,7 @@ class _FoodCardState extends State<FoodCard> {
               elevation: 0,
               heroTag: null,
               onPressed: () {
-                cartProvider.addToCart(CurrentCartItem(
+                cartProvider.addToCart(CartItem(
                     foodId: widget.foodId,
                     foodName: widget.foodName,
                     image: widget.image,

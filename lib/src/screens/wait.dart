@@ -16,7 +16,7 @@ class WaitScreen extends StatefulWidget {
 }
 
 class _WaitScreenState extends State<WaitScreen> {
-  DateTime _orderCompletionTime;
+  DateTime _orderCompletionTime = DateTime.now();
   bool isPooler = false;
   bool enableCheckout = false;
   Timer timer;
@@ -24,30 +24,34 @@ class _WaitScreenState extends State<WaitScreen> {
   @override
   void initState() {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-
     super.initState();
     _checkIfOrderComplete();
-    timer = Timer.periodic(Duration(minutes: 1), (timer) {
-      orderProvider.getOrder(orderProvider.orderId);
-    });
   }
 
   Future<void> _setOrderCompletionTime() async {
     final prefs = await SharedPreferences.getInstance();
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-
-    await prefs.setInt(
-        'orderCompletionTime', orderProvider.orderTime.millisecondsSinceEpoch);
+    String orderId = prefs.getString('orderId');
+    orderProvider.getOrder(orderId);
     setState(() => _orderCompletionTime = orderProvider.orderTime);
+
+    timer = Timer.periodic(Duration(minutes: 1), (timer) {
+      orderProvider.getOrder(orderProvider.orderId);
+    });
   }
 
   Future<void> _checkIfOrderComplete() async {
     DateTime currentTime = DateTime.now();
 
     await _setOrderCompletionTime();
-
     if (currentTime.compareTo(_orderCompletionTime) > 0) {
-      enableCheckout = true;
+      setState(() {
+        enableCheckout = true;
+      });
+    } else {
+      setState(() {
+        enableCheckout = false;
+      });
     }
   }
 
@@ -204,21 +208,21 @@ class _WaitScreenState extends State<WaitScreen> {
                   color: ThemeColors.oranges,
                 ),
               ),
-              Expanded(
-                child: Scrollbar(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: cartProvider.cartItems.length,
-                      itemBuilder: (context, index) {
-                        return _cartItem(
-                          cartProvider.cartItems[index].foodId,
-                          cartProvider.cartItems[index].foodName,
-                          '\$' + cartProvider.cartItems[index].price.toString(),
-                          cartProvider.cartItems[index].image,
-                        );
-                      }),
-                ),
-              ),
+              // Expanded(
+              //   child: Scrollbar(
+              //     child: ListView.builder(
+              //         shrinkWrap: true,
+              //         itemCount: cartProvider.cartItems.length,
+              //         itemBuilder: (context, index) {
+              //           return _cartItem(
+              //             cartProvider.cartItems[index].foodId,
+              //             cartProvider.cartItems[index].foodName,
+              //             '\$' + cartProvider.cartItems[index].price.toString(),
+              //             cartProvider.cartItems[index].image,
+              //           );
+              //         }),
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -242,7 +246,8 @@ class _WaitScreenState extends State<WaitScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CheckoutScreen()));
+                                        builder: (context) =>
+                                            CheckoutScreen()));
                               }),
                         ],
                       ),

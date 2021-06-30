@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/services/firestoreOrders.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/utilities/statusEnums.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:foodstack/src/models/order.dart';
 
@@ -44,21 +47,19 @@ class OrderProvider with ChangeNotifier {
   double get totalPrice => _totalPrice;
   List get cartIds => _cartIds;
 
-
-
   set orderId(String orderId) {
     _orderId = orderId;
     notifyListeners();
   }
 
   Stream<List<DocumentSnapshot>> getNearbyOrdersList(
-          GeoFirePoint center, double radius) {
+      GeoFirePoint center, double radius) {
     nearbyOrdersList = firestoreService.getNearbyOrders(center, radius);
-      return firestoreService.getNearbyOrders(center, radius);
+    return firestoreService.getNearbyOrders(center, radius);
   }
 
   // Functions
-  setOrder(Order order, int joinDurationMins) {
+  setOrder(Order order, int joinDurationMins) async {
     _orderId = uuid.v4();
     _restaurantId = order.restaurantId;
     _creatorId = FirebaseAuth.instance.currentUser.uid;
@@ -69,13 +70,16 @@ class OrderProvider with ChangeNotifier {
     _totalPrice = order.totalPrice;
     _cartIds = order.cartIds;
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('orderId', _orderId);
+    prefs.setString('orderStatus', Status.active.toString());
+
     Timestamp currentTime = Timestamp.now();
     int seconds =
         currentTime.seconds + (joinDurationMins * noOfSecondsPerMinute);
     int nanoseconds = currentTime.nanoseconds;
     Timestamp orderCompletionTime = Timestamp(seconds, nanoseconds);
     _orderTime = orderCompletionTime;
-    print(_orderTime);
 
     var newOrder = Order(
       orderId: _orderId,
@@ -94,7 +98,6 @@ class OrderProvider with ChangeNotifier {
         .addOrder(newOrder)
         .then((value) => print('Order Saved'))
         .catchError((error) => print(error));
-
   }
 
   getOrder(String orderId) async {
@@ -114,16 +117,16 @@ class OrderProvider with ChangeNotifier {
 
   getNearbyOrder(String restaurantId) async {
     Order order = await firestoreService.getNearbyOrder(restaurantId);
-      _orderId = order.orderId;
-      _restaurantId = order.restaurantId;
-      _creatorId = order.creatorId;
-      _paymentId = order.paymentId;
-      _status = order.status;
-      _deliveryAddress = order.deliveryAddress;
-      _coordinates = order.coordinates;
-      _orderTime = order.orderTime;
-      _totalPrice = order.totalPrice;
-      _cartIds = order.cartIds;
+    _orderId = order.orderId;
+    _restaurantId = order.restaurantId;
+    _creatorId = order.creatorId;
+    _paymentId = order.paymentId;
+    _status = order.status;
+    _deliveryAddress = order.deliveryAddress;
+    _coordinates = order.coordinates;
+    _orderTime = order.orderTime;
+    _totalPrice = order.totalPrice;
+    _cartIds = order.cartIds;
   }
 
   removeOrder(String orderId) {
@@ -143,7 +146,11 @@ class OrderProvider with ChangeNotifier {
     _cartIds = [null];
   }
 
-  addToCartsList(String cartId, String orderId) {
+  addToCartsList(String cartId, String orderId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('orderId', _orderId);
+    prefs.setString('orderStatus', Status.active.toString());
+
     int length = _cartIds.length;
     _cartIds.add(1);
     _cartIds[length] = cartId;
@@ -152,10 +159,11 @@ class OrderProvider with ChangeNotifier {
     if (length >= maxCarts) {
       firestoreService.setStatus(Status.full.toString(), orderId);
     }
+
     firestoreService.addToCartsList(cartId, orderId);
   }
 
-  int getNumberOfUsers (){
+  int getNumberOfUsers() {
     return _cartIds.length;
   }
 
@@ -186,4 +194,27 @@ class OrderProvider with ChangeNotifier {
     firestoreService.setStatus(Status.completed.toString(), orderId);
   }
 
+  setStatusAsPaid() {
+    firestoreService.setStatus(Status.paid.toString(), orderId);
+  }
+
+  getRestaurantsfromOrders(LatLng coordinates) {
+    final geo = Geoflutterfire();
+    final userLatitude = coordinates.latitude;
+    final userLongitude = coordinates.longitude;
+
+    GeoFirePoint center =
+        geo.point(latitude: userLatitude, longitude: userLongitude);
+    double radius = 250 / 1000; // in kms
+
+    Stream<List<DocumentSnapshot<Object>>> nearbyOrders =
+        getNearbyOrdersList(center, radius);
+
+    Stream<List<String>> restaurantIds = nearbyOrders.map((snapshot) => snapshot
+        .map((doc) => Order.fromFirestore(doc.data()))
+        .map((e) => e.restaurantId)
+        .toList());
+
+    return restaurantIds;
+  }
 }

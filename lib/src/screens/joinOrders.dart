@@ -19,10 +19,13 @@ class JoinOrdersScreen extends StatefulWidget {
 }
 
 class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
+  bool loading = false;
+
   @override
   void initState() {
     super.initState();
     _setUserRole();
+    _getNearbyOrders();
   }
 
   Future<void> _setUserRole() async {
@@ -30,43 +33,31 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
     await prefs.setBool('isPooler', true);
   }
 
+  Future<void> _getNearbyOrders() async {
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
+    final userLocator = Provider.of<UserLocator>(context, listen: false);
+
+    if (userLocator.coordinates != null) {
+      await restaurantProvider.loadNearbyOrdersRestaurantsList(
+          orderProvider.getRestaurantsfromOrders(userLocator.coordinates));
+    } else {
+      loading = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final orderProvider = Provider.of<OrderProvider>(context);
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
-    final userLocator = Provider.of<UserLocator>(context);
-    final geo = Geoflutterfire();
-
-    // TODO Add search bar
-    if (userLocator.coordinates != null) {
-      final userLatitude = userLocator.coordinates.latitude;
-      final userLongitude = userLocator.coordinates.longitude;
-
-      GeoFirePoint center =
-          geo.point(latitude: userLatitude, longitude: userLongitude);
-      double radius = 250 / 1000; // in kms
-
-      Stream<List<DocumentSnapshot<Object>>> nearbyOrders =
-          orderProvider.getNearbyOrdersList(center, radius);
-
-      Stream<List<Order>> orders = nearbyOrders.map((snapshot) =>
-          snapshot.map((doc) => Order.fromFirestore(doc.data())).toList());
-
-      Stream<List<String>> restaurantIds = nearbyOrders.map((snapshot) =>
-          snapshot
-              .map((doc) => Order.fromFirestore(doc.data()))
-              .map((e) => e.restaurantId)
-              .toList());
-
-      restaurantProvider.loadNearbyOrderRestaurantsList(restaurantIds);
-
+    if (!loading) {
+      // TODO Add search bar
       return Scaffold(
           appBar: Header.getAppBar(title: 'Join Orders'),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
             child: StreamBuilder<List<Restaurant>>(
-                stream: restaurantProvider
-                    .loadNearbyOrderRestaurantsList(restaurantIds),
+                stream: restaurantProvider.getNearbyOrdersRestaurantsList(),
                 builder: (context, snapshot) {
                   if (snapshot.data == null) {
                     return Center(

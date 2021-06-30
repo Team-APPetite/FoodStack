@@ -17,9 +17,6 @@ class BraintreeService {
     BraintreeDropInResult result = await BraintreeDropIn.start(request);
 
     if (result != null) {
-      print(result.paymentMethodNonce.description);
-      print(result.paymentMethodNonce.nonce);
-
       final http.Response response = await http.post(Uri.tryParse(
           '$url?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}'));
 

@@ -5,6 +5,7 @@ import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/favourites.dart';
 import 'package:foodstack/src/screens/joinOrders.dart';
 import 'package:foodstack/src/screens/newOrder.dart';
+import 'package:foodstack/src/screens/recentOrders.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
@@ -110,7 +111,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         buttonText: 'Recent\nOrders',
                         icon: Icons.access_time_outlined,
                         color: ThemeColors.teals,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RecentOrdersScreen()));
+                        },
                       ),
                     ),
                   ],

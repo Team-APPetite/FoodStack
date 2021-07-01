@@ -4,6 +4,8 @@ import 'package:foodstack/src/models/restaurant.dart';
 class FirestoreRestaurants {
   FirebaseFirestore _db = FirebaseFirestore.instance;
   Stream<List<Restaurant>> nearbyOrderRestaurants;
+  Stream<List<Restaurant>> pastOrderRestaurants;
+
 
   // Read
   Stream<List<Restaurant>> getRestaurants() {
@@ -16,8 +18,17 @@ class FirestoreRestaurants {
         snapshot.docs.map((doc) => Restaurant.fromJson(doc.data())).toList());
   }
 
+  void loadPastOrders(List pastOrders) {
+    pastOrderRestaurants = _db.collection('restaurants').where('restaurantId', whereIn: pastOrders).snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => Restaurant.fromJson(doc.data())).toList());
+  }
+
   Stream<List<Restaurant>> getNearbyOrderRestaurants() {
     return nearbyOrderRestaurants;
+  }
+
+  Stream<List<Restaurant>> getPastOrderRestaurants() {
+    return pastOrderRestaurants;
   }
 
   // Create and Update

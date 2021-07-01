@@ -55,6 +55,27 @@ class RestaurantProvider with ChangeNotifier {
     return firestoreService.getNearbyOrderRestaurants();
   }
 
+  Stream<List<Restaurant>> loadPastOrdersRestaurantsList(
+      Stream<List<String>> restaurantIds) {
+    List listOfRestaurantIds = [];
+    restaurantIdsList = restaurantIds;
+    restaurantIds.listen((listOfStrings) {
+      if (listOfStrings.isNotEmpty) {
+        int length = listOfStrings.length < 10 ? listOfStrings.length : 10;
+        for (int i = 0; i < length; i++) {
+          listOfRestaurantIds.add(1);
+          listOfRestaurantIds[i] = listOfStrings[i];
+        }
+        firestoreService.loadPastOrders(listOfRestaurantIds);
+      }
+    });
+    return firestoreService.getPastOrderRestaurants();
+  }
+
+  Stream<List<Restaurant>> getPastOrdersRestaurantsList() {
+    return loadPastOrdersRestaurantsList(restaurantIdsList);
+  }
+
   Stream<List<Restaurant>> getNearbyOrdersRestaurantsList() {
     return loadNearbyOrdersRestaurantsList(restaurantIdsList);
   }

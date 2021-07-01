@@ -51,8 +51,7 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<List<DocumentSnapshot>> getNearbyOrdersList(
-      GeoFirePoint center, double radius) {
+  Stream<List<DocumentSnapshot>> getNearbyOrdersList(GeoFirePoint center, double radius) {
     nearbyOrdersList = firestoreService.getNearbyOrders(center, radius);
     return firestoreService.getNearbyOrders(center, radius);
   }

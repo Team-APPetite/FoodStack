@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +11,6 @@ import 'package:uuid/uuid.dart';
 class CartProvider with ChangeNotifier {
   final firestoreService = FirestoreCarts();
   FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Stream<List<DocumentSnapshot>> pastOrdersList;
 
   int _joinDuration = 20;
   int _itemCount = 0;
@@ -142,19 +139,9 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  getPastOrder(String restaurantId) async {
-    Cart cart = await firestoreService.getPastOrder(restaurantId);
-    _cartId = cart.cartId;
-    _restaurantId = cart.restaurantId;
-    _userId = cart.userId;
-  }
-
-  Stream<List<DocumentSnapshot>> getPastOrdersList(String uid) {
-    pastOrdersList = firestoreService.getPastOrders(uid);
+  Stream<List<Cart>> getPastOrdersList(String uid) {
     return firestoreService.getPastOrders(uid);
   }
-
-
 
   Widget itemQuantityIcon() {
     return Stack(
@@ -193,16 +180,5 @@ class CartProvider with ChangeNotifier {
     double min = Numbers.roundTo2d(_deliveryFee / 5 + subtotal);
     double max = Numbers.roundTo2d(_deliveryFee + subtotal);
     return '\$$min - \$$max';
-  }
-
-  getRestaurantsfromPastOrders(String uid) {
-    Stream<List<DocumentSnapshot<Object>>> pastOrders =
-    getPastOrdersList(uid);
-
-    Stream<List<String>> restaurantIds = pastOrders.map((snapshot) => snapshot
-        .map((doc) => Cart.fromJson(doc.data()))
-        .map((e) => e.restaurantId)
-        .toList());
-    return restaurantIds;
   }
 }

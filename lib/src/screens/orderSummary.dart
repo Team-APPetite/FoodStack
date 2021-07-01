@@ -120,11 +120,11 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       }),
                 ),
               ),
-              _paymentSummary('Subtotal', '\$${_subtotal}'),
+              _paymentSummary('Subtotal', '\$$_subtotal'),
               _paymentSummary(
-                  'Number of people in the order', '${_numOfUsers}'),
+                  'Number of people in the order', '$_numOfUsers'),
               _paymentSummary('Delivery Fee',
-                  '\$${_deliveryFee} \/ ${_numOfUsers} = \$${Numbers.roundTo2d(_finalDeliveryFee)}'),
+                  '\$$_deliveryFee \/ $_numOfUsers = \$${Numbers.roundTo2d(_finalDeliveryFee)}'),
               _paymentSummary('Total', '\$${Numbers.roundTo2d(_total)}'),
               SizedBox(
                 height: 75.0,

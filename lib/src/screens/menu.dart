@@ -53,7 +53,6 @@ class _MenuScreenState extends State<MenuScreen> {
     }
   }
 
-  // TODO Add search bar
   // TODO Add restaurant image by putting GridView in column(expanded())
   @override
   Widget build(BuildContext context) {

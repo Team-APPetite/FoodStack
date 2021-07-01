@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:foodstack/src/models/cart.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/widgets/header.dart';
+import 'package:foodstack/src/widgets/pastOrderCard.dart';
 import 'package:provider/provider.dart';
 
 class RecentOrdersScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
 
     if (!loading) {
       return Scaffold(
-          appBar: Header.getAppBar(title: 'Recent Orders'),
+          appBar: Header.getAppBar(title: 'Place Orders Again'),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
             child: StreamBuilder<List<Cart>>(
@@ -41,7 +42,8 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
                         child: ListView.builder(
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
-                              return Text("It works!");
+                              Cart cart = snapshot.data[index];
+                              return PastOrderCard(cart.cartId, cart.cartItems, cart.restaurantId, cart.subtotal);
                             }));
                   }
                 }),

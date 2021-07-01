@@ -45,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO Add search bar
     return Scaffold(
         body: Padding(
             padding: EdgeInsets.all(30.0),
@@ -56,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Hungry? Order Now',
                   style: TextStyles.heading1(),
                 ),
-                // TODO Search for restaurants
+                // TODO Search bar (Full-text / Restaurants only)
                 CupertinoSearchTextField(
                   padding: EdgeInsets.all(15.0),
                 ),
@@ -108,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(width: 10),
                     Expanded(
                       child: BigButton(
-                        buttonText: 'Recent\nOrders',
+                        buttonText: 'Order\nAgain',
                         icon: Icons.access_time_outlined,
                         color: ThemeColors.teals,
                         onPressed: () {

@@ -57,6 +57,7 @@ class FirestoreOrders {
             snapshot.map((doc) => Order.fromFirestore(doc.data())).first).first;
   }
 
+
   //Add cartId to orders database
   Future<void> addToCartsList(String cartId, String orderId) async {
     CollectionReference orders = _db.collection('orders');

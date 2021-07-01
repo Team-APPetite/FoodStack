@@ -24,6 +24,7 @@ class _MockDataState extends State<MockData> {
 
     // 1)
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
+    // ignore: missing_required_param
     restaurantProvider.addRestaurant(Restaurant(
         restaurantName: 'Fat Boy\'s The Burger Bar',
         cuisineType: 'Fast Food',
@@ -37,6 +38,7 @@ class _MockDataState extends State<MockData> {
     final menuProvider = Provider.of<MenuProvider>(context);
     menuProvider.addFoodItem(
         widget.restaurantId,
+        // ignore: missing_required_param
         FoodItem(
             foodName: 'Chicken McNuggets (20pc)',
             description: '20 crispy chicken nuggets fried in sunflower oil.',

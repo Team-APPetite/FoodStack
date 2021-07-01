@@ -53,8 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 textInputAction: TextInputAction.newline,
                 onFieldSubmitted: (term){
-                  auth.currentUser.updateProfile(
-                    displayName: _displayName,);
+                  auth.currentUser.updateDisplayName(_displayName,);
                   _firestoreService.updateName(_displayName);
                 },
               ),

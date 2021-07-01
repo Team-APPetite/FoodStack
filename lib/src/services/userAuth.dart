@@ -39,7 +39,7 @@ class UserAuth {
       } else if (_password != _passwordConfirmation) {
         return 'Passwords do not match';
       } else {
-        UserCredential result = await auth.createUserWithEmailAndPassword(
+        await auth.createUserWithEmailAndPassword(
             email: _email, password: _password);
         return "Success";
       }

@@ -23,7 +23,6 @@ class _WaitScreenState extends State<WaitScreen> {
 
   @override
   void initState() {
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
     super.initState();
     _checkIfOrderComplete();
   }

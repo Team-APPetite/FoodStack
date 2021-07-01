@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/cart.dart';
-import 'package:foodstack/src/models/currentCartItem.dart';
 import 'package:foodstack/src/services/firestoreCarts.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/numbers.dart';

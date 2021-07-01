@@ -4,7 +4,6 @@ import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
-import 'package:foodstack/src/screens/authentication/login.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {

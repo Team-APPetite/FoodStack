@@ -1,14 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/restaurantCard.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:provider/provider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,7 +37,7 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
     final userLocator = Provider.of<UserLocator>(context, listen: false);
 
     if (userLocator.coordinates != null) {
-      await restaurantProvider.loadNearbyOrdersRestaurantsList(
+      restaurantProvider.loadNearbyOrdersRestaurantsList(
           orderProvider.getRestaurantsfromOrders(userLocator.coordinates));
     } else {
       loading = true;

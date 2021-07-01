@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/orderSummary.dart';
 import 'package:foodstack/src/services/braintreeService.dart';
@@ -50,11 +51,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     final orderProvider = Provider.of<OrderProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
+    final restaurantProvider = Provider.of<RestaurantProvider>(context);
     final double _subtotal = cartProvider.getSubtotal();
-    // final double _deliveryFee = cartProvider.deliveryFee;
+    final double _deliveryFee = restaurantProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
-    // final double _finalDeliveryFee = _deliveryFee/_numOfUsers;
-    // final double _total = _subtotal + _finalDeliveryFee;
+    final double _finalDeliveryFee = _deliveryFee / _numOfUsers;
+    final double _total = _subtotal + _finalDeliveryFee;
 
     void whenMapCreated(GoogleMapController _controller) {
       setState(() {
@@ -186,8 +188,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   if (value == 0) {
                                     String result =
                                         await BraintreeService.makePayment(
-                                            10.00, // _total,
-                                            'FoodStack');
+                                            _total, 'FoodStack');
                                     if (result == "Payment successful!") {
                                       Navigator.push(
                                           context,

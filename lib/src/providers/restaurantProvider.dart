@@ -84,6 +84,17 @@ class RestaurantProvider with ChangeNotifier {
     firestoreService.setRestaurant(newRestaurant);
   }
 
+  getRestaurant(String restaurantId) async {
+    Restaurant restaurant = await firestoreService.getRestaurant(restaurantId);
+    _restaurantId = restaurant.restaurantId;
+    _restaurantName = restaurant.restaurantName;
+    _cuisineType = restaurant.cuisineType;
+    _deliveryFee = restaurant.deliveryFee;
+    _rating = restaurant.rating;
+    _image = restaurant.image;
+    _coordinates = restaurant.coordinates;
+  }
+
   removeRestaurant(String restaurantId) {
     firestoreService.removeRestaurant(restaurantId);
   }

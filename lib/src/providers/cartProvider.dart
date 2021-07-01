@@ -5,6 +5,7 @@ import 'package:foodstack/src/models/cart.dart';
 import 'package:foodstack/src/services/firestoreCarts.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/numbers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class CartProvider with ChangeNotifier {
@@ -73,16 +74,30 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  confirmCart() {
+  confirmCart() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     var uuid = Uuid();
     _cartId = uuid.v1();
+    prefs.setString('cartId', _cartId);
+
     _userId = _auth.currentUser.uid;
 
     List<dynamic> cartItemsList = [];
 
     _cartItems.forEach((item) => cartItemsList.add(item.toMap()));
-    var cart = Cart(_cartId, _userId, _restaurantId, getSubtotal(), cartItemsList);
+    var cart = Cart(_cartId, _userId, _restaurantId, _subtotal, cartItemsList);
     firestoreService.setCart(cart);
+  }
+
+  getCart(String cartId) async {
+    Cart cart = await firestoreService.getCart(cartId);
+    _cartId = cart.cartId;
+    _userId = cart.userId;
+    _restaurantId = cart.restaurantId;
+    _subtotal = cart.subtotal;
+    _cartItems = [];
+    cart.cartItems.forEach((item) => _cartItems.add(CartItem.fromJson(item)));
   }
 
   deleteCart(String cartId) {
@@ -148,7 +163,8 @@ class CartProvider with ChangeNotifier {
     for (int i = 0; i < _cartItems.length; i++) {
       _subtotal += (_cartItems[i].price * _cartItems[i].quantity);
     }
-    return Numbers.roundTo2d(_subtotal);
+    _subtotal = Numbers.roundTo2d(_subtotal);
+    return _subtotal;
   }
 
   String deliveryFeeRange() {

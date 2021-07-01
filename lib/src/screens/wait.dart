@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/screens/checkout.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -25,13 +26,25 @@ class _WaitScreenState extends State<WaitScreen> {
   void initState() {
     super.initState();
     _checkIfOrderComplete();
+    _getOrderInfo();
+  }
+
+  Future<void> _getOrderInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    String orderId = prefs.getString('orderId');
+    String cartId = prefs.getString('cartId');
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
+    await orderProvider.getOrder(orderId);
+    cartProvider.getCart(cartId);
+    restaurantProvider.getRestaurant(orderProvider.restaurantId);
   }
 
   Future<void> _setOrderCompletionTime() async {
-    final prefs = await SharedPreferences.getInstance();
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    String orderId = prefs.getString('orderId');
-    orderProvider.getOrder(orderId);
+
     setState(() => _orderCompletionTime = orderProvider.orderTime);
 
     timer = Timer.periodic(Duration(minutes: 1), (timer) {
@@ -207,21 +220,21 @@ class _WaitScreenState extends State<WaitScreen> {
                   color: ThemeColors.oranges,
                 ),
               ),
-              // Expanded(
-              //   child: Scrollbar(
-              //     child: ListView.builder(
-              //         shrinkWrap: true,
-              //         itemCount: cartProvider.cartItems.length,
-              //         itemBuilder: (context, index) {
-              //           return _cartItem(
-              //             cartProvider.cartItems[index].foodId,
-              //             cartProvider.cartItems[index].foodName,
-              //             '\$' + cartProvider.cartItems[index].price.toString(),
-              //             cartProvider.cartItems[index].image,
-              //           );
-              //         }),
-              //   ),
-              // ),
+              Expanded(
+                child: Scrollbar(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: cartProvider.cartItems.length,
+                      itemBuilder: (context, index) {
+                        return _cartItem(
+                          cartProvider.cartItems[index].foodId,
+                          cartProvider.cartItems[index].foodName,
+                          '\$' + cartProvider.cartItems[index].price.toString(),
+                          cartProvider.cartItems[index].image,
+                        );
+                      }),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(

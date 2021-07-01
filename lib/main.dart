@@ -15,7 +15,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(App(
       home: email != null
-          ? (orderStatus == 'Status.none')
+          ? (orderStatus == 'Status.none' || orderStatus == 'Status.delivered')
               ? HomeScreen()
               : (orderStatus == 'Status.active' ||
                       orderStatus == 'Status.full' ||

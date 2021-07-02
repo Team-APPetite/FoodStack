@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/cart.dart';
-import 'package:foodstack/src/models/foodItem.dart';
-import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
-import 'package:foodstack/src/screens/menu.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:provider/provider.dart';
@@ -30,8 +27,6 @@ class PastOrderCard extends StatefulWidget {
 }
 
 class _PastOrderCardState extends State<PastOrderCard> {
-  Restaurant _currRestaurant;
-
   @override
   void initState() {
     super.initState();
@@ -41,8 +36,6 @@ class _PastOrderCardState extends State<PastOrderCard> {
   Future<void> _getRestaurantInfo() async {
     final restaurantProvider =
         Provider.of<RestaurantProvider>(context, listen: false);
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    await cartProvider.getCart(widget.cartId);
     await restaurantProvider.getRestaurant(widget.restaurantId);
     setState(() {
        widget.restaurantName = restaurantProvider.restaurantName;
@@ -53,7 +46,6 @@ class _PastOrderCardState extends State<PastOrderCard> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
-    final restaurantProvider = Provider.of<RestaurantProvider>(context);
 
     Widget _cartItem(String id, String name, String price, int quantity) {
       return Padding(

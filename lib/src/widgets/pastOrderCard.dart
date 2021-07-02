@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/cart.dart';
+import 'package:foodstack/src/models/foodItem.dart';
+import 'package:foodstack/src/models/restaurant.dart';
+import 'package:foodstack/src/providers/cartProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
+import 'package:foodstack/src/screens/menu.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class PastOrderCard extends StatefulWidget {
@@ -9,6 +15,8 @@ class PastOrderCard extends StatefulWidget {
   List<CartItem> cartItems = [];
   String restaurantId;
   double subtotal;
+
+
 
   PastOrderCard(String id, List list, String rstId, double price) {
     cartId = id;
@@ -22,20 +30,28 @@ class PastOrderCard extends StatefulWidget {
 }
 
 class _PastOrderCardState extends State<PastOrderCard> {
+  Restaurant _currRestaurant;
+
   @override
   void initState() {
     super.initState();
     _getRestaurantInfo();
   }
 
-  _getRestaurantInfo() async {
-
-    // restaurant provider
-
+  Future<void> _getRestaurantInfo() async {
+    final restaurantProvider = Provider.of<RestaurantProvider>(context,listen: false);
+    final cartProvider = Provider.of<CartProvider>(context,listen: false);
+    await cartProvider.getCart(widget.cartId);
+    await restaurantProvider.getRestaurant(cartProvider.restaurantId);
   }
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final restaurantProvider = Provider.of<RestaurantProvider>(context);
+
+
+
     Widget _cartItem(String id, String name, String price, int quantity) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -60,9 +76,28 @@ class _PastOrderCardState extends State<PastOrderCard> {
 
     return TextButton(
         onPressed: () {
-          // cartProvider.getCart(widget.cartId);
-          // navigate to menu of restaurant
-          // (these cartItems will already be there in the cart)
+          // List cartItems = widget.cartItems;
+          // for (int i = 0; i < cartItems.length; i++) {
+          //   CartItem currCartItem = cartItems[i];
+          //   cartProvider.addToCart(CartItem(
+          //       foodId: currCartItem.foodId,
+          //       foodName: currCartItem.foodName,
+          //       image: currCartItem.image,
+          //       price: currCartItem.price,
+          //       notes: 'none'));
+          //   // (these cartItems will already be there in the cart)
+          // }
+
+
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MenuScreen(
+                      restaurantId: restaurantProvider.restaurantId,
+                      restaurantName: restaurantProvider.restaurantName,
+                      deliveryFee: restaurantProvider.deliveryFee,
+                    )));
+
         },
         child: Container(
             decoration: BoxDecoration(
@@ -77,9 +112,7 @@ class _PastOrderCardState extends State<PastOrderCard> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-
-                  // restaurant name
-
+                  Text(restaurantProvider.restaurantName, style: TextStyles.heading2()),
                   ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -94,9 +127,37 @@ class _PastOrderCardState extends State<PastOrderCard> {
                       }),
 
                   // subtotal
-
                   // restaurant delivery fee (full) 
                   // (with the delivery bike icon)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              'Subtotal: \$ ${widget.subtotal}',
+                              style: TextStyles.details(),
+                            ),
+                          ],
+                        ),
+                      ),
+
+
+                      Icon(
+                        Icons.delivery_dining,
+                        color: ThemeColors.teals,
+                        size: 20,
+                      ),
+                      Text(
+                        '\$${restaurantProvider.deliveryFee}',
+                        style: TextStyles.details(),
+                      ),
+                    ],
+                  ),
 
                   // (no total)
 

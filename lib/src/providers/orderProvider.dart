@@ -51,7 +51,8 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<List<DocumentSnapshot>> getNearbyOrdersList(GeoFirePoint center, double radius) {
+  Stream<List<DocumentSnapshot>> getNearbyOrdersList(
+      GeoFirePoint center, double radius) {
     nearbyOrdersList = firestoreService.getNearbyOrders(center, radius);
     return firestoreService.getNearbyOrders(center, radius);
   }
@@ -127,7 +128,11 @@ class OrderProvider with ChangeNotifier {
     _cartIds = order.cartIds;
   }
 
-  removeOrder(String orderId) {
+  removeOrder(String orderId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('orderStatus', Status.none.toString());
+
+    clearOrder();
     firestoreService.removeOrder(orderId);
   }
 
@@ -159,6 +164,15 @@ class OrderProvider with ChangeNotifier {
     }
 
     firestoreService.addToCartsList(cartId, orderId);
+  }
+
+  removeFromCartsList(String cartId, String orderId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('orderStatus', Status.none.toString());
+
+    _cartIds.removeWhere((element) => element == cartId);
+
+    firestoreService.removeFromCartsList(cartId, orderId);
   }
 
   int getNumberOfUsers() {

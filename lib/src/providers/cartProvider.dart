@@ -34,6 +34,8 @@ class CartProvider with ChangeNotifier {
 
   double get deliveryFee => _deliveryFee;
 
+  double get subtotal => _subtotal;
+
   set joinDuration(int duration) {
     _joinDuration = duration;
     notifyListeners();
@@ -101,6 +103,7 @@ class CartProvider with ChangeNotifier {
   }
 
   deleteCart(String cartId) {
+    clearCart();
     firestoreService.deleteCart(cartId);
   }
 

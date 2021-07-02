@@ -151,9 +151,9 @@ class _CartScreenState extends State<CartScreen> {
                 _paymentSummary(),
                 AppButton(
                   buttonText: 'CONFIRM CART',
-                  onPressed: () {
-                    cartProvider.confirmCart();
-                    _setUserOrderStatus();
+                  onPressed: () async {
+                    await cartProvider.confirmCart();
+                    await _setUserOrderStatus();
                     isPooler
                         ? orderProvider.addToCartsList(
                             cartProvider.cartId, orderProvider.orderId) // Need to update total price as well

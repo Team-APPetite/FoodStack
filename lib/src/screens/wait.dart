@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/utilities/numbers.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,26 +21,22 @@ class _WaitScreenState extends State<WaitScreen> {
   DateTime _orderCompletionTime = DateTime.now();
   bool isPooler = false;
   bool enableCheckout = false;
+  double deliveryFee = 0;
+  double total = 0;
   Timer timer;
 
   @override
   void initState() {
     super.initState();
+    _getUserRole();
     _checkIfOrderComplete();
     _getOrderInfo();
   }
 
-  Future<void> _getOrderInfo() async {
+  Future<bool> _getUserRole() async {
     final prefs = await SharedPreferences.getInstance();
-    String orderId = prefs.getString('orderId');
-    String cartId = prefs.getString('cartId');
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final restaurantProvider =
-        Provider.of<RestaurantProvider>(context, listen: false);
-    await orderProvider.getOrder(orderId);
-    cartProvider.getCart(cartId);
-    restaurantProvider.getRestaurant(orderProvider.restaurantId);
+    isPooler = prefs.getBool('isPooler');
+    return isPooler;
   }
 
   Future<void> _setOrderCompletionTime() async {
@@ -54,9 +52,17 @@ class _WaitScreenState extends State<WaitScreen> {
   Future<void> _checkIfOrderComplete() async {
     DateTime currentTime = DateTime.now();
 
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
+
     await _setOrderCompletionTime();
     if (currentTime.compareTo(_orderCompletionTime) > 0) {
       setState(() {
+        deliveryFee = Numbers.roundTo2d(
+            restaurantProvider.deliveryFee / orderProvider.cartIds.length);
+        total = Numbers.roundTo2d(cartProvider.subtotal + deliveryFee);
         enableCheckout = true;
       });
     } else {
@@ -64,6 +70,19 @@ class _WaitScreenState extends State<WaitScreen> {
         enableCheckout = false;
       });
     }
+  }
+
+  Future<void> _getOrderInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    String orderId = prefs.getString('orderId');
+    String cartId = prefs.getString('cartId');
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
+    await orderProvider.getOrder(orderId);
+    cartProvider.getCart(cartId);
+    restaurantProvider.getRestaurant(orderProvider.restaurantId);
   }
 
   int _minutesRemaining() {
@@ -117,9 +136,6 @@ class _WaitScreenState extends State<WaitScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 75.0,
-              ),
               enableCheckout
                   ? Container()
                   : Column(
@@ -129,119 +145,133 @@ class _WaitScreenState extends State<WaitScreen> {
                           style: TextStyles.heading2(),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(
-                          height: 50.0,
-                        ),
                       ],
                     ),
-              Table(
+              Column(
                 children: [
-                  TableRow(children: [
-                    Center(
-                      child: Text(
-                        '${orderProvider.cartIds.length}',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.bold,
-                          color: ThemeColors.oranges,
-                        ),
-                      ),
+                  Text(
+                    '${orderProvider.cartIds.length}',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
+                      color: ThemeColors.oranges,
                     ),
-                  ]),
-                  TableRow(children: [
-                    Center(
-                      child: (orderProvider.cartIds.length == 1)
+                  ),
+                  (orderProvider.cartIds.length == 1)
+                      ? Text(
+                          'Person has joined the order',
+                          style: TextStyles.heading3(),
+                        )
+                      : Text(
+                          'People have joined the order',
+                          style: TextStyles.heading3(),
+                        ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    'Order completes at',
+                    style: TextStyles.heading3(),
+                  ),
+                  Text(
+                    '${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
+                      color: ThemeColors.oranges,
+                    ),
+                  ),
+                  enableCheckout
+                      ? Container()
+                      : (_minutesRemaining() == 1)
                           ? Text(
-                              'Person has joined the order',
+                              '${_minutesRemaining()} minute remaining',
                               style: TextStyles.heading3(),
                             )
                           : Text(
-                              'People have joined the order',
+                              '${_minutesRemaining()} minutes remaining',
                               style: TextStyles.heading3(),
                             ),
-                    ),
-                  ]),
                 ],
               ),
-              SizedBox(
-                height: 75.0,
-              ),
-              Table(
+              Column(
                 children: [
-                  TableRow(children: [
-                    Center(
-                      child: Text(
-                        'Order completes at',
-                        style: TextStyles.heading3(),
+                  Text(
+                    'Your Cart',
+                    style: TextStyles.heading2(),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24.0),
+                      border: Border.all(
+                        color: ThemeColors.light,
+                        width: 1,
+                      ),
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Scrollbar(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: cartProvider.cartItems.length,
+                            itemBuilder: (context, index) {
+                              return _cartItem(
+                                cartProvider.cartItems[index].foodId,
+                                cartProvider.cartItems[index].foodName,
+                                '\$' +
+                                    cartProvider.cartItems[index].price
+                                        .toString(),
+                                cartProvider.cartItems[index].image,
+                              );
+                            }),
                       ),
                     ),
-                  ]),
-                  TableRow(children: [
-                    Center(
-                      child: Text(
-                        '${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.bold,
-                          color: ThemeColors.oranges,
-                        ),
-                      ),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    Center(
-                      child: enableCheckout
-                          ? Container()
-                          : (_minutesRemaining() == 1)
-                              ? Text(
-                                  '${_minutesRemaining()} minute remaining',
-                                  style: TextStyles.heading3(),
-                                )
-                              : Text(
-                                  '${_minutesRemaining()} minutes remaining',
-                                  style: TextStyles.heading3(),
-                                ),
-                    ),
-                  ]),
+                  ),
                 ],
-              ),
-              SizedBox(
-                height: 50.0,
-              ),
-              Text(
-                'Your Cart',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 35.0,
-                  fontWeight: FontWeight.bold,
-                  color: ThemeColors.oranges,
-                ),
-              ),
-              Expanded(
-                child: Scrollbar(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: cartProvider.cartItems.length,
-                      itemBuilder: (context, index) {
-                        return _cartItem(
-                          cartProvider.cartItems[index].foodId,
-                          cartProvider.cartItems[index].foodName,
-                          '\$' + cartProvider.cartItems[index].price.toString(),
-                          cartProvider.cartItems[index].image,
-                        );
-                      }),
-                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
+                child: Column(
                   children: [
-                    Expanded(
-                        child: Text('Subtotal', style: TextStyles.heading3())),
-                    Text('\$${cartProvider.getSubtotal()}',
-                        style: TextStyles.emphasis()),
+                    Row(
+                      children: [
+                        Expanded(
+                            child:
+                                Text('Subtotal', style: TextStyles.heading3())),
+                        Text('\$${cartProvider.getSubtotal()}',
+                            style: TextStyles.emphasis()),
+                      ],
+                    ),
+                    enableCheckout
+                        ? Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text('Delivery Fee',
+                                          style: TextStyles.heading3())),
+                                  Text('\$$deliveryFee',
+                                      style: TextStyles.emphasis()),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text('Total',
+                                          style: TextStyles.heading3())),
+                                  Text('\$$total',
+                                      style: TextStyles.emphasis()),
+                                ],
+                              ),
+                            ],
+                          )
+                        : Container(),
                   ],
                 ),
               ),
@@ -254,23 +284,30 @@ class _WaitScreenState extends State<WaitScreen> {
                           AppButton(
                               buttonText: 'CHECKOUT',
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/checkout');
+                                Navigator.pushNamed(context, '/checkout');
                               }),
                         ],
                       ),
                     )
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 16.0,
-                          ),
-                        ],
+                  : TextButton(
+                      child: Text(
+                        'Cancel Order',
+                        style: TextStyles.textButton(),
                       ),
-                    )
+                      onPressed: () async {
+                        // Alert
+                        if (orderProvider.cartIds.length > 1) {
+                          await orderProvider.removeFromCartsList(
+                              cartProvider.cartId, orderProvider.orderId);
+                        } else {
+                          await orderProvider
+                              .removeOrder(orderProvider.orderId);
+                        }
+                        await cartProvider.deleteCart(cartProvider.cartId);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/home', (r) => false);
+                      },
+                    ),
             ],
           ),
         ),

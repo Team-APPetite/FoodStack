@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/utilities/numbers.dart';
@@ -34,10 +35,11 @@ class _SummaryScreenState extends State<SummaryScreen> {
   Widget build(BuildContext context) {
     final orderProvider = Provider.of<OrderProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
+    final restaurantProvider = Provider.of<RestaurantProvider>(context);
     final double _subtotal = cartProvider.getSubtotal();
-    final double _deliveryFee = cartProvider.deliveryFee;
+    final double _deliveryFee = restaurantProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
-    final double _finalDeliveryFee = _deliveryFee/_numOfUsers;
+    final double _finalDeliveryFee = _deliveryFee / _numOfUsers;
     final double _total = _subtotal + _finalDeliveryFee;
 
     Widget _cartItem(String id, String name, String price, String image) {
@@ -57,7 +59,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ],
               ),
             ),
-
             Text('x ${cartProvider.getItemQuantityOf(id)}',
                 style: TextStyles.heading3()),
           ],
@@ -80,9 +81,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ],
               ),
             ),
-
-            Text(input,
-                style: TextStyles.heading3()),
+            Text(input, style: TextStyles.heading3()),
           ],
         ),
       );
@@ -98,17 +97,14 @@ class _SummaryScreenState extends State<SummaryScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
               Text(
                 'Your order has been confirmed!',
                 style: TextStyles.heading2(),
                 textAlign: TextAlign.center,
               ),
-
               SizedBox(
                 height: 30.0,
               ),
-
               Expanded(
                 child: Scrollbar(
                   child: ListView.builder(
@@ -118,25 +114,26 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         return _cartItem(
                           cartProvider.cartItems[index].foodId,
                           cartProvider.cartItems[index].foodName,
-                          '\$' +
-                              cartProvider.cartItems[index].price
-                                  .toString(),
+                          '\$' + cartProvider.cartItems[index].price.toString(),
                           cartProvider.cartItems[index].image,
                         );
                       }),
                 ),
               ),
-
-              _paymentSummary('Subtotal', '\$${_subtotal}'),
-              _paymentSummary('Number of people in the order', '${_numOfUsers}'),
-              _paymentSummary('Delivery Fee', '\$${_deliveryFee} \/ ${_numOfUsers} = \$${Numbers.roundTo2d(_finalDeliveryFee)}'),
+              _paymentSummary('Subtotal', '\$$_subtotal'),
+              _paymentSummary(
+                  'Number of people in the order', '$_numOfUsers'),
+              _paymentSummary('Delivery Fee',
+                  '\$$_deliveryFee \/ $_numOfUsers = \$${Numbers.roundTo2d(_finalDeliveryFee)}'),
               _paymentSummary('Total', '\$${Numbers.roundTo2d(_total)}'),
-              SizedBox(height: 75.0,),
+              SizedBox(
+                height: 75.0,
+              ),
               _paymentSummary('Payment method', ''),
               _paymentSummary('Amount paid', '\$${Numbers.roundTo2d(_total)}'),
-
-              SizedBox(height: 50.0,),
-
+              SizedBox(
+                height: 50.0,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Column(
@@ -156,12 +153,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   ],
                 ),
               )
-
-
             ],
           ),
         ),
-
       ),
     );
   }

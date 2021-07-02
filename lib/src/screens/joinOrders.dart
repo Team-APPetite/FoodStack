@@ -48,7 +48,6 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
   Widget build(BuildContext context) {
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
     if (!loading) {
-      // TODO Add search bar
       return Scaffold(
           appBar: Header.getAppBar(title: 'Join Orders'),
           body: Padding(

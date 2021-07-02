@@ -59,7 +59,6 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                     child: ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
-                          // TODO Update restaurant card
                           return RestaurantCard(
                               snapshot.data[index].restaurantId,
                               snapshot.data[index].restaurantName,

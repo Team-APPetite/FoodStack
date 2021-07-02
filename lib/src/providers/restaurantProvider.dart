@@ -55,27 +55,6 @@ class RestaurantProvider with ChangeNotifier {
     return firestoreService.getNearbyOrderRestaurants();
   }
 
-  Stream<List<Restaurant>> loadPastOrdersRestaurantsList(
-      Stream<List<String>> restaurantIds) {
-    List listOfRestaurantIds = [];
-    restaurantIdsList = restaurantIds;
-    restaurantIds.listen((listOfStrings) {
-      if (listOfStrings.isNotEmpty) {
-        int length = listOfStrings.length < 10 ? listOfStrings.length : 10;
-        for (int i = 0; i < length; i++) {
-          listOfRestaurantIds.add(1);
-          listOfRestaurantIds[i] = listOfStrings[i];
-        }
-        firestoreService.loadPastOrders(listOfRestaurantIds);
-      }
-    });
-    return firestoreService.getPastOrderRestaurants();
-  }
-
-  Stream<List<Restaurant>> getPastOrdersRestaurantsList() {
-    return loadPastOrdersRestaurantsList(restaurantIdsList);
-  }
-
   Stream<List<Restaurant>> getNearbyOrdersRestaurantsList() {
     return loadNearbyOrdersRestaurantsList(restaurantIdsList);
   }
@@ -103,6 +82,17 @@ class RestaurantProvider with ChangeNotifier {
         image: _image,
         coordinates: _coordinates);
     firestoreService.setRestaurant(newRestaurant);
+  }
+
+  getRestaurant(String restaurantId) async {
+    Restaurant restaurant = await firestoreService.getRestaurant(restaurantId);
+    _restaurantId = restaurant.restaurantId;
+    _restaurantName = restaurant.restaurantName;
+    _cuisineType = restaurant.cuisineType;
+    _deliveryFee = restaurant.deliveryFee;
+    _rating = restaurant.rating;
+    _image = restaurant.image;
+    _coordinates = restaurant.coordinates;
   }
 
   removeRestaurant(String restaurantId) {

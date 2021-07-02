@@ -4,8 +4,6 @@ import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/models/foodItem.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
-import 'package:foodstack/src/screens/cart.dart';
-import 'package:foodstack/src/screens/details.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
@@ -15,12 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuScreen extends StatefulWidget {
-  final String restaurantId;
-  final String restaurantName;
-  final double deliveryFee;
-
-  MenuScreen({this.restaurantId, this.restaurantName, this.deliveryFee});
-
   @override
   _MenuScreenState createState() => _MenuScreenState();
 }
@@ -28,6 +20,10 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   DateTime _orderCompletionTime = DateTime.now();
   bool isPooler = false;
+
+  String restaurantId;
+  String restaurantName;
+  double deliveryFee;
 
   @override
   void initState() {
@@ -46,7 +42,7 @@ class _MenuScreenState extends State<MenuScreen> {
     isPooler = await _getUserRole();
 
     if (isPooler) {
-      await orderProvider.getNearbyOrder(widget.restaurantId);
+      await orderProvider.getNearbyOrder(restaurantId);
       setState(() {
         _orderCompletionTime = orderProvider.orderTime;
       });
@@ -56,12 +52,20 @@ class _MenuScreenState extends State<MenuScreen> {
   // TODO Add restaurant image by putting GridView in column(expanded())
   @override
   Widget build(BuildContext context) {
+    final arguments = ModalRoute.of(context).settings.arguments as Map;
+
+    if (arguments != null) {
+      restaurantId = arguments['restaurantId'];
+      restaurantName = arguments['restaurantName'];
+      deliveryFee = arguments['deliveryFee'];
+    }
+
     final menuProvider = Provider.of<MenuProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
 
-    menuProvider.selectRestaurant = widget.restaurantId;
-    cartProvider.deliveryFee = widget.deliveryFee;
-    cartProvider.restaurantId = widget.restaurantId;
+    menuProvider.selectRestaurant = restaurantId;
+    cartProvider.deliveryFee = deliveryFee;
+    cartProvider.restaurantId = restaurantId;
 
     Widget viewCart() {
       return Align(
@@ -86,10 +90,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   AppButton(
                     buttonText: 'VIEW CART',
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CartScreen()));
+                      Navigator.pushNamed(context, '/cart');
                     },
                   ),
                   cartProvider.itemQuantityIcon(),
@@ -101,7 +102,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
     return Scaffold(
         appBar: Header.getAppBar(
-          title: widget.restaurantName,
+          title: restaurantName,
           alert: cartProvider.itemCount > 0 ? 'loseCart' : 'none',
         ),
         body: Stack(
@@ -146,14 +147,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                                 snapshot.data[index].price,
                                                 snapshot.data[index].image, () {
                                               menuProvider.loadFoodItem(
-                                                  widget.restaurantId,
+                                                  restaurantId,
                                                   snapshot.data[index]);
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailsScreen(
-                                                              menuProvider)));
+                                              Navigator.pushNamed(
+                                                  context, '/details');
                                             })),
                                   ),
                                 ),

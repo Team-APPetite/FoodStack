@@ -2,11 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodstack/src/screens/authentication/signup.dart';
-import 'package:foodstack/src/screens/authentication/reset.dart';
 import 'package:foodstack/src/services/userAuth.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
-import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/textField.dart';
@@ -73,8 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyles.link(),
         ),
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ResetScreen()));
+          Navigator.pushNamed(
+              context, '/resetPassword');
         },
       ),
       SizedBox(height: 15.0),
@@ -85,8 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('email', _email);
           if (state == "Success") {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+            Navigator.pushNamed(
+                context, '/home');
           } else {
             Fluttertoast.showToast(
               msg: '$state',
@@ -128,8 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
             style: TextStyles.textButton(),
           ),
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SignUpScreen()));
+            Navigator.pushNamed(context, '/signup');
           },
         ),
       ],

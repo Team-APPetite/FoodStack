@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/screens/menu.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -31,14 +30,11 @@ class _RestaurantCardState extends State<RestaurantCard> {
 
     return TextButton(
       onPressed: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MenuScreen(
-                      restaurantId: widget.restaurantId,
-                      restaurantName: widget.restaurantName,
-                      deliveryFee: widget.deliveryFee,
-                    )));
+        Navigator.pushNamed(context, '/menu', arguments: {
+          'restaurantId': widget.restaurantId,
+          'restaurantName': widget.restaurantName,
+          'deliveryFee': widget.deliveryFee,
+        });
       },
       child: Container(
         height: 130.0,

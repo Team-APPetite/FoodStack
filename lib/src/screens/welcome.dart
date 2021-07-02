@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/screens/address.dart';
-import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
@@ -30,10 +28,8 @@ class WelcomeScreen extends StatelessWidget {
             AppButton(
                 buttonText: 'PICK ADDRESS',
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddressScreen()));
+                  Navigator.pushNamed(context, '/home');
+                  Navigator.pushNamed(context, '/pickAddress');
                 }),
             SizedBox(height: 100.0)
           ],

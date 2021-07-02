@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
-import 'package:foodstack/src/screens/checkout.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
@@ -255,11 +254,8 @@ class _WaitScreenState extends State<WaitScreen> {
                           AppButton(
                               buttonText: 'CHECKOUT',
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            CheckoutScreen()));
+                                Navigator.pushNamed(
+                                    context, '/checkout');
                               }),
                         ],
                       ),

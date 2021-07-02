@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/utilities/enums.dart';
-import 'package:foodstack/src/screens/home.dart';
-import 'package:foodstack/src/screens/profile.dart';
-import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
 class CustomBottomNavBar extends StatelessWidget{
@@ -38,8 +35,7 @@ class CustomBottomNavBar extends StatelessWidget{
                     color: MenuState.order == selectedMenu
                         ? ThemeColors.oranges
                         : inActiveIconColor),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen())),
+                onPressed: () => Navigator.pushNamed(context, '/home'),
               ),
               IconButton(
                 icon: Icon(Icons.location_on_outlined,
@@ -47,8 +43,7 @@ class CustomBottomNavBar extends StatelessWidget{
                     color: MenuState.track == selectedMenu
                         ? ThemeColors.oranges
                         : inActiveIconColor),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TrackScreen())),
+                onPressed: () => Navigator.pushNamed(context, '/trackOrder'),
               ),
               IconButton(
                 icon: Icon(Icons.person,
@@ -56,8 +51,7 @@ class CustomBottomNavBar extends StatelessWidget{
                     color: MenuState.profile == selectedMenu
                         ? ThemeColors.oranges
                         : inActiveIconColor),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfilePage())),
+                onPressed: () => Navigator.pushNamed(context, '/profile'),
               )
             ])));
   }

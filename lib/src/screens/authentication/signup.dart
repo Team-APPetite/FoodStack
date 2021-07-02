@@ -10,7 +10,6 @@ import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/textField.dart';
-import 'package:foodstack/src/screens/authentication/verify.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -108,9 +107,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.setString('email', user.email);
             });
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => VerifyScreen()));
+            Navigator.pushNamed(
+                context, '/verifyEmail');
           } else {
             Fluttertoast.showToast(
               msg: '$state',

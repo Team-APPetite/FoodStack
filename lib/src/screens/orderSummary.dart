@@ -3,7 +3,6 @@ import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/paymentProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
-import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/utilities/numbers.dart';
 import 'package:foodstack/src/utilities/statusEnums.dart';
@@ -146,10 +145,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       onPressed: () {
                         cartProvider.clearCart();
                         orderProvider.clearOrder();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TrackScreen()));
+                        Navigator.pushNamed(
+                            context, '/trackOrder');
                       },
                     ),
                   ],

@@ -6,7 +6,6 @@ import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
-import 'package:foodstack/src/screens/wait.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/statusEnums.dart';
@@ -169,10 +168,8 @@ class _CartScreenState extends State<CartScreen> {
                                 cartIds: [cartProvider.cartId]),
                             cartProvider.joinDuration);
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => WaitScreen()));
+                    Navigator.pushNamed(
+                        context, '/wait');
                   },
                 )
               ],

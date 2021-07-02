@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/paymentProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -36,6 +37,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
     final orderProvider = Provider.of<OrderProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
+    final paymentProvider = Provider.of<PaymentProvider>(context);
+
     final double _subtotal = cartProvider.getSubtotal();
     final double _deliveryFee = restaurantProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
@@ -121,15 +124,14 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ),
               ),
               _paymentSummary('Subtotal', '\$$_subtotal'),
-              _paymentSummary(
-                  'Number of people in the order', '$_numOfUsers'),
+              _paymentSummary('Number of people in the order', '$_numOfUsers'),
               _paymentSummary('Delivery Fee',
                   '\$$_deliveryFee \/ $_numOfUsers = \$${Numbers.roundTo2d(_finalDeliveryFee)}'),
               _paymentSummary('Total', '\$${Numbers.roundTo2d(_total)}'),
               SizedBox(
                 height: 75.0,
               ),
-              _paymentSummary('Payment method', ''),
+              _paymentSummary('Payment method', paymentProvider.paymentMethod),
               _paymentSummary('Amount paid', '\$${Numbers.roundTo2d(_total)}'),
               SizedBox(
                 height: 50.0,

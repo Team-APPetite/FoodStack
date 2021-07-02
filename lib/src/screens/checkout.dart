@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/paymentProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/orderSummary.dart';
@@ -52,6 +53,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final orderProvider = Provider.of<OrderProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
+    final paymentProvider = Provider.of<PaymentProvider>(context);
+
     final double _subtotal = cartProvider.getSubtotal();
     final double _deliveryFee = restaurantProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
@@ -190,6 +193,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         await BraintreeService.makePayment(
                                             _total, 'FoodStack');
                                     if (result == "Payment successful!") {
+                                      paymentProvider.addPayment(
+                                          orderProvider.orderId,
+                                          _total,
+                                          paymentLabels[value]);
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -204,6 +211,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       );
                                     }
                                   } else {
+                                    paymentProvider.addPayment(
+                                        orderProvider.orderId,
+                                        _total,
+                                        paymentLabels[value]);
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(

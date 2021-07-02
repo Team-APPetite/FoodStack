@@ -145,8 +145,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       onPressed: () {
                         cartProvider.clearCart();
                         orderProvider.clearOrder();
-                        Navigator.pushNamed(
-                            context, '/trackOrder');
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/trackOrder', (r) => false);
                       },
                     ),
                   ],

@@ -14,9 +14,9 @@ class PastOrderCard extends StatefulWidget {
   String cartId;
   List<CartItem> cartItems = [];
   String restaurantId;
+  String restaurantName = 'Restaurant';
+  double deliveryFee = 0.0;
   double subtotal;
-
-
 
   PastOrderCard(String id, List list, String rstId, double price) {
     cartId = id;
@@ -39,18 +39,21 @@ class _PastOrderCardState extends State<PastOrderCard> {
   }
 
   Future<void> _getRestaurantInfo() async {
-    final restaurantProvider = Provider.of<RestaurantProvider>(context,listen: false);
-    final cartProvider = Provider.of<CartProvider>(context,listen: false);
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
     await cartProvider.getCart(widget.cartId);
-    await restaurantProvider.getRestaurant(cartProvider.restaurantId);
+    await restaurantProvider.getRestaurant(widget.restaurantId);
+    setState(() {
+       widget.restaurantName = restaurantProvider.restaurantName;
+       widget.deliveryFee = restaurantProvider.deliveryFee;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
-
-
 
     Widget _cartItem(String id, String name, String price, int quantity) {
       return Padding(
@@ -76,28 +79,23 @@ class _PastOrderCardState extends State<PastOrderCard> {
 
     return TextButton(
         onPressed: () {
-          // List cartItems = widget.cartItems;
-          // for (int i = 0; i < cartItems.length; i++) {
-          //   CartItem currCartItem = cartItems[i];
-          //   cartProvider.addToCart(CartItem(
-          //       foodId: currCartItem.foodId,
-          //       foodName: currCartItem.foodName,
-          //       image: currCartItem.image,
-          //       price: currCartItem.price,
-          //       notes: 'none'));
-          //   // (these cartItems will already be there in the cart)
-          // }
+          List cartItems = widget.cartItems;
+          for (int i = 0; i < cartItems.length; i++) {
+            CartItem currCartItem = cartItems[i];
+            cartProvider.addToCart(CartItem(
+                foodId: currCartItem.foodId,
+                foodName: currCartItem.foodName,
+                image: currCartItem.image,
+                price: currCartItem.price,
+                notes: 'none'));
+            // (these cartItems will already be there in the cart)
+          }
 
-
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MenuScreen(
-                      restaurantId: restaurantProvider.restaurantId,
-                      restaurantName: restaurantProvider.restaurantName,
-                      deliveryFee: restaurantProvider.deliveryFee,
-                    )));
-
+          Navigator.pushNamed(context, '/menu', arguments: {
+            'restaurantId': widget.restaurantId,
+            'restaurantName': widget.restaurantName,
+            'deliveryFee': widget.deliveryFee,
+          });
         },
         child: Container(
             decoration: BoxDecoration(
@@ -112,7 +110,8 @@ class _PastOrderCardState extends State<PastOrderCard> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Text(restaurantProvider.restaurantName, style: TextStyles.heading2()),
+                  Text('${widget.restaurantName}',
+                      style: TextStyles.heading2()),
                   ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -127,12 +126,11 @@ class _PastOrderCardState extends State<PastOrderCard> {
                       }),
 
                   // subtotal
-                  // restaurant delivery fee (full) 
+                  // restaurant delivery fee (full)
                   // (with the delivery bike icon)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-
                       Expanded(
                         flex: 2,
                         child: Column(
@@ -145,22 +143,19 @@ class _PastOrderCardState extends State<PastOrderCard> {
                           ],
                         ),
                       ),
-
-
                       Icon(
                         Icons.delivery_dining,
                         color: ThemeColors.teals,
                         size: 20,
                       ),
                       Text(
-                        '\$${restaurantProvider.deliveryFee}',
+                        '\$${widget.deliveryFee}',
                         style: TextStyles.details(),
                       ),
                     ],
                   ),
 
                   // (no total)
-
                 ],
               ),
             )));

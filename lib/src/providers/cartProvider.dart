@@ -55,9 +55,9 @@ class CartProvider with ChangeNotifier {
     if (exists == null) {
       _cartItems.add(1);
       _cartItems[_uniqueItemCount] = cartItem;
-      _cartItems[_uniqueItemCount].quantity = 1;
+      _cartItems[_uniqueItemCount].quantity = cartItem.quantity;
+      _itemCount = _itemCount + _cartItems[_uniqueItemCount].quantity;
       _uniqueItemCount++;
-      _itemCount++;
     } else {
       int updateIndex = _cartItems.indexOf(exists);
       _cartItems[updateIndex].quantity++;

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
+import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,37 @@ class Alerts {
               cartProvider.clearCart();
             },
             child: Text('Empty cart', style: TextStyles.textButton()),
+          ),
+        ],
+      );
+    };
+  }
+
+  static Function cancelOrder() {
+    return (BuildContext context) {
+      final cartProvider = Provider.of<CartProvider>(context);
+      final orderProvider = Provider.of<OrderProvider>(context);
+      return CupertinoAlertDialog(
+        title: const Text('Cancel Order'),
+        content: const Text('Are you sure you want to cancel your order?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('No', style: TextStyles.emphasis()),
+          ),
+          TextButton(
+            onPressed: () async {
+              orderProvider.getOrder(orderProvider.orderId);
+              if (orderProvider.cartIds.length > 1) {
+                await orderProvider.removeFromCartsList(
+                    cartProvider.cartId, orderProvider.orderId);
+              } else {
+                await orderProvider.removeOrder(orderProvider.orderId);
+              }
+              await cartProvider.deleteCart(cartProvider.cartId);
+              Navigator.pushNamedAndRemoveUntil(context, '/home', (r) => false);
+            },
+            child: Text('Yes', style: TextStyles.textButton()),
           ),
         ],
       );

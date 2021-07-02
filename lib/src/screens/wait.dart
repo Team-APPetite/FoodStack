@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
-import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/utilities/alerts.dart';
 import 'package:foodstack/src/utilities/numbers.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:provider/provider.dart';
@@ -294,18 +294,9 @@ class _WaitScreenState extends State<WaitScreen> {
                         'Cancel Order',
                         style: TextStyles.textButton(),
                       ),
-                      onPressed: () async {
-                        // Alert
-                        if (orderProvider.cartIds.length > 1) {
-                          await orderProvider.removeFromCartsList(
-                              cartProvider.cartId, orderProvider.orderId);
-                        } else {
-                          await orderProvider
-                              .removeOrder(orderProvider.orderId);
-                        }
-                        await cartProvider.deleteCart(cartProvider.cartId);
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/home', (r) => false);
+                      onPressed: 
+                      () {
+                        showDialog<String>(context: context, builder: Alerts.cancelOrder());
                       },
                     ),
             ],

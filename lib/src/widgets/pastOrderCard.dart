@@ -59,7 +59,7 @@ class _PastOrderCardState extends State<PastOrderCard> {
                 children: [
                   Text(name, style: TextStyles.heading3()),
                   SizedBox(height: 5.0),
-                  Text(price, style: TextStyles.emphasis()),
+                  Text(price, style: TextStyles.details()),
                 ],
               ),
             ),
@@ -79,11 +79,17 @@ class _PastOrderCardState extends State<PastOrderCard> {
                 foodName: currCartItem.foodName,
                 image: currCartItem.image,
                 price: currCartItem.price,
+                quantity: currCartItem.quantity,
                 notes: 'none'));
-            // (these cartItems will already be there in the cart)
           }
 
-          Navigator.pushNamed(context, '/menu', arguments: {
+          // Replacing recentOrders screen with menu
+          // so that when the user presses back from
+          // the menu, they go to the home screen
+          // instead of the recentOrders screen,
+          // because recentOrders screen does not show
+          // restaurant info when going back from menu
+          Navigator.pushReplacementNamed(context, '/menu', arguments: {
             'restaurantId': widget.restaurantId,
             'restaurantName': widget.restaurantName,
             'deliveryFee': widget.deliveryFee,
@@ -102,8 +108,8 @@ class _PastOrderCardState extends State<PastOrderCard> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Text('${widget.restaurantName}',
-                      style: TextStyles.heading2()),
+                  widget.restaurantName != 'Restaurant' ? Text('${widget.restaurantName}',
+                      style: TextStyles.heading3()): Container(),
                   ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -117,9 +123,6 @@ class _PastOrderCardState extends State<PastOrderCard> {
                         );
                       }),
 
-                  // subtotal
-                  // restaurant delivery fee (full)
-                  // (with the delivery bike icon)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -129,7 +132,7 @@ class _PastOrderCardState extends State<PastOrderCard> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Text(
-                              'Subtotal: \$ ${widget.subtotal}',
+                              'Subtotal \$${widget.subtotal}',
                               style: TextStyles.details(),
                             ),
                           ],
@@ -140,14 +143,11 @@ class _PastOrderCardState extends State<PastOrderCard> {
                         color: ThemeColors.teals,
                         size: 20,
                       ),
-                      Text(
+                      widget.deliveryFee != 0.0 ? Text(
                         '\$${widget.deliveryFee}',
-                        style: TextStyles.details(),
-                      ),
+                        style: TextStyles.details()) : Container(),
                     ],
                   ),
-
-                  // (no total)
                 ],
               ),
             )));

@@ -86,6 +86,7 @@ class _FoodCardState extends State<FoodCard> {
                     foodName: widget.foodName,
                     image: widget.image,
                     price: widget.price,
+                    quantity: 1,
                     notes: 'none'));
               },
               backgroundColor: ThemeColors.mint,

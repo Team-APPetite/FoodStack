@@ -7,6 +7,7 @@ import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/pastOrderCard.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RecentOrdersScreen extends StatefulWidget {
   @override
@@ -20,6 +21,12 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
   @override
   void initState() {
     super.initState();
+     _setUserRole();
+  }
+
+  Future<void> _setUserRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isPooler', false);
   }
 
   @override

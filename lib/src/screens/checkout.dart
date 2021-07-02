@@ -5,7 +5,6 @@ import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/paymentProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
-import 'package:foodstack/src/screens/orderSummary.dart';
 import 'package:foodstack/src/services/braintreeService.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -197,11 +196,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                           orderProvider.orderId,
                                           _total,
                                           paymentLabels[value]);
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SummaryScreen()));
+                                      Navigator.pushNamed(
+                                          context, '/orderSummary');
                                     } else {
                                       Fluttertoast.showToast(
                                         msg: result,
@@ -215,11 +211,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         orderProvider.orderId,
                                         _total,
                                         paymentLabels[value]);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SummaryScreen()));
+                                    Navigator.pushNamed(
+                                        context, '/orderSummary');
                                   }
                                 }),
                           ],

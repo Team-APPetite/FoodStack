@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodstack/src/screens/welcome.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/header.dart';
@@ -62,8 +61,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
     await user.reload();
     if (user.emailVerified) {
       timer.cancel();
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
+      Navigator.pushNamed(
+          context, '/welcome');
     }
   }
 }

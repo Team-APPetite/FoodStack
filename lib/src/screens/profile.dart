@@ -7,8 +7,6 @@ import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../src/utilities/enums.dart';
-import 'authentication/login.dart';
-import 'address.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -85,9 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   color: ThemeColors.light,
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(
-                            builder: (context) => AddressScreen()));
+                    Navigator.pushNamed(context, '/pickAddress');
                   },
                   child: Row(
                     children: [
@@ -119,8 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.remove('email');
                     auth.signOut();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                    Navigator.pushNamed(context, '/login');
                   },
                   child: Row(
                     children: [

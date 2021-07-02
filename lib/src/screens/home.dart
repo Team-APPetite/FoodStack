@@ -2,10 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
-import 'package:foodstack/src/screens/favourites.dart';
-import 'package:foodstack/src/screens/joinOrders.dart';
-import 'package:foodstack/src/screens/newOrder.dart';
-import 'package:foodstack/src/screens/recentOrders.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
@@ -66,10 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: Icons.add_shopping_cart,
                       color: ThemeColors.mint,
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NewOrderScreen()));
+                        Navigator.pushNamed(
+                            context, '/newOrder');
                       },
                     ),
                   ),
@@ -80,10 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: Icons.person_add_alt_1_outlined,
                       color: ThemeColors.oranges,
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => JoinOrdersScreen()));
+                        Navigator.pushNamed(
+                            context, '/joinOrders');
                       },
                     ),
                   ),
@@ -97,10 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: Icons.favorite_border_outlined,
                         color: ThemeColors.yellows,
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FavouritesScreen()));
+                          Navigator.pushNamed(
+                              context, '/favourites');
                         },
                       ),
                     ),
@@ -111,10 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: Icons.access_time_outlined,
                         color: ThemeColors.teals,
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RecentOrdersScreen()));
+                          Navigator.pushNamed(
+                              context, '/recentOrders');
                         },
                       ),
                     ),

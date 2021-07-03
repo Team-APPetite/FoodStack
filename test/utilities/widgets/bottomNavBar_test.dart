@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/screens/profile.dart';
 import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
@@ -18,13 +20,17 @@ void main() {
 
 
     Future<void> _buildNavBar(WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserLocator()),
+      ],
+      child: MaterialApp(
+        title: 'FoodStack',
         home: CustomBottomNavBar(),
-
         // This mocked observer will now receive all navigation events
         // that happen in our app.
         navigatorObservers: [mockObserver],
-      ));
+      )));
     }
 
       Future<void> _navigateToHomeScreen(WidgetTester tester) async {

@@ -10,6 +10,7 @@ import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -19,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    final userLocator = Provider.of<UserLocator>(context, listen: false);
+    final userLocator = Provider.of<UserLocator>(context, listen: false );
 
     if (userLocator.deliveryAddress != null) {
       Fluttertoast.showToast(

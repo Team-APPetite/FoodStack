@@ -64,7 +64,7 @@ class _AppState extends State<App> {
           '/menu': (context) => MenuScreen(),
           '/newOrder': (context) => NewOrderScreen(),
           '/orderSummary': (context) => SummaryScreen(),
-          '/profile': (context) => ProfilePage(),
+          '/profile': (context) => ProfileScreen(),
           '/recentOrders': (context) => RecentOrdersScreen(),
           '/trackOrder': (context) => TrackScreen(),
           '/wait': (context) => WaitScreen(),

@@ -57,7 +57,6 @@ class RestaurantProvider with ChangeNotifier {
   }
 
   setFlag(){
-    print("Flag is set");
     flag = true;
   }
 
@@ -65,19 +64,15 @@ class RestaurantProvider with ChangeNotifier {
     return flag;
   }
 
-  bool checkNearbyOrderFromRestaurant(
-      Stream<List<String>> restaurantIds, String currRestaurantId) {
-    restaurantIdsList = restaurantIds;
-    flag = false;
+  Future<void> checkNearbyOrderFromRestaurant(
+      Stream<List<String>> restaurantIds, String currRestaurantId) async {
     restaurantIds.listen((listOfStrings) {
         for (int i = 0; i < listOfStrings.length; i++) {
           if(currRestaurantId == listOfStrings[i]) {
             setFlag();
-            break;
           }
         }
     });
-   return getFlag();
   }
 
   Stream<List<Restaurant>> getNearbyOrdersRestaurantsList() {

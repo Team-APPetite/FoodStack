@@ -84,11 +84,10 @@ class Alerts {
             onPressed: () async {
               final pref = await SharedPreferences.getInstance();
               pref.setBool('isPooler', true);
+              await orderProvider.getNearbyOrder(cartProvider.restaurantId);
               orderProvider.addToCartsList(
-                  cartProvider.cartId, orderProvider
-                  .orderId);
-              Navigator.pushNamed(
-                  context, '/wait');
+                  cartProvider.cartId, orderProvider.orderId);
+              Navigator.pushNamed(context, '/wait');
             },
             child: Text('Join Order', style: TextStyles.emphasis()),
           ),
@@ -98,16 +97,14 @@ class Alerts {
                   Order(
                       restaurantId: cartProvider.restaurantId,
                       coordinates: userLocation,
-                      totalPrice: cartProvider.getSubtotal() +
-                          cartProvider.deliveryFee,
-                      deliveryAddress:
-                          userLocator.deliveryAddress.addressLine,
+                      totalPrice:
+                          cartProvider.getSubtotal() + cartProvider.deliveryFee,
+                      deliveryAddress: userLocator.deliveryAddress.addressLine,
                       cartIds: [cartProvider.cartId]),
                   cartProvider.joinDuration);
-              Navigator.pushNamed(
-                  context, '/wait');
+              Navigator.pushNamed(context, '/wait');
             },
-            child: Text('Continue', style: TextStyles.textButton()),
+            child: Text('No, thanks', style: TextStyles.textButton()),
           ),
         ],
       );

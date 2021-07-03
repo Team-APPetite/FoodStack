@@ -33,7 +33,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     super.initState();
     orderProvider.getOrder(orderProvider.orderId);
-    orderProvider.completeOrder();
+    orderProvider.closeOrder();
     _getUserRole();
   }
 

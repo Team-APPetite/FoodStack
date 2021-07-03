@@ -202,8 +202,8 @@ class OrderProvider with ChangeNotifier {
         .catchError((error) => print(error));
   }
 
-  completeOrder() {
-    firestoreService.setStatus(Status.completed.toString(), orderId);
+  closeOrder() {
+    firestoreService.setStatus(Status.closed.toString(), orderId);
   }
 
   setStatusAsPaid() {

@@ -7,7 +7,6 @@ import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/alerts.dart';
-import 'package:foodstack/src/utilities/numbers.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,8 +20,6 @@ class _WaitScreenState extends State<WaitScreen> {
   DateTime _orderCompletionTime = DateTime.now();
   bool isPooler = false;
   bool enableCheckout = false;
-  double deliveryFee = 0;
-  double total = 0;
   Timer timer;
 
   @override
@@ -52,17 +49,9 @@ class _WaitScreenState extends State<WaitScreen> {
   Future<void> _checkIfOrderComplete() async {
     DateTime currentTime = DateTime.now();
 
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final restaurantProvider =
-        Provider.of<RestaurantProvider>(context, listen: false);
-
     await _setOrderCompletionTime();
     if (currentTime.compareTo(_orderCompletionTime) > 0) {
       setState(() {
-        deliveryFee = Numbers.roundTo2d(
-            restaurantProvider.deliveryFee / orderProvider.cartIds.length);
-        total = Numbers.roundTo2d(cartProvider.subtotal + deliveryFee);
         enableCheckout = true;
       });
     } else {
@@ -237,41 +226,12 @@ class _WaitScreenState extends State<WaitScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
+                child: Row(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                            child:
-                                Text('Subtotal', style: TextStyles.heading3())),
-                        Text('\$${cartProvider.getSubtotal()}',
-                            style: TextStyles.emphasis()),
-                      ],
-                    ),
-                    enableCheckout
-                        ? Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                      child: Text('Delivery Fee',
-                                          style: TextStyles.heading3())),
-                                  Text('\$$deliveryFee',
-                                      style: TextStyles.emphasis()),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                      child: Text('Total',
-                                          style: TextStyles.heading3())),
-                                  Text('\$$total',
-                                      style: TextStyles.emphasis()),
-                                ],
-                              ),
-                            ],
-                          )
-                        : Container(),
+                    Expanded(
+                        child: Text('Subtotal', style: TextStyles.heading3())),
+                    Text('\$${cartProvider.getSubtotal()}',
+                        style: TextStyles.emphasis()),
                   ],
                 ),
               ),
@@ -294,9 +254,9 @@ class _WaitScreenState extends State<WaitScreen> {
                         'Cancel Order',
                         style: TextStyles.textButton(),
                       ),
-                      onPressed: 
-                      () {
-                        showDialog<String>(context: context, builder: Alerts.cancelOrder());
+                      onPressed: () {
+                        showDialog<String>(
+                            context: context, builder: Alerts.cancelOrder());
                       },
                     ),
             ],

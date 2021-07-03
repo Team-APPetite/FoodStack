@@ -26,12 +26,13 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   DateTime _orderCompletionTime;
   bool isPooler = false;
-  bool nearbyOrderAvailable = false;
+  bool isNearbyOrderAvailable = false;
 
   @override
   void initState() {
     super.initState();
     _setOrderCompletionTime();
+    _checkOrderAvailability();
   }
 
   Future<bool> _getUserRole() async {
@@ -54,17 +55,17 @@ class _CartScreenState extends State<CartScreen> {
     await prefs.setString('status', Status.active.toString());
   }
 
-  Future<void> _orderAvailability() async {
-    print("Order Avaiable");
-    final restaurantProvider = Provider.of<RestaurantProvider>(context, listen: false);
+  Future<void> _checkOrderAvailability() async {
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final userLocator = Provider.of<UserLocator>(context, listen: false);
     await restaurantProvider.checkNearbyOrderFromRestaurant(
-        orderProvider.getRestaurantsfromOrders(
-            userLocator.coordinates),
+        orderProvider.getRestaurantsfromOrders(userLocator.coordinates),
         cartProvider.restaurantId);
-    setState(() => nearbyOrderAvailable = restaurantProvider.getFlag());
+    isNearbyOrderAvailable = restaurantProvider.getFlag();
+        print("Order Avaiable");
   }
 
   @override
@@ -171,22 +172,19 @@ class _CartScreenState extends State<CartScreen> {
                   onPressed: () async {
                     await cartProvider.confirmCart();
                     await _setUserOrderStatus();
-                    print(isPooler);
                     if (isPooler) {
                       orderProvider.addToCartsList(
                           cartProvider.cartId,
                           orderProvider
                               .orderId); // Need to update total price as well
+
+                    Navigator.pushNamed(context, '/wait');
                     } else {
-                      await restaurantProvider.checkNearbyOrderFromRestaurant(
-                          orderProvider.getRestaurantsfromOrders(
-                              userLocator.coordinates),
-                          cartProvider.restaurantId);
-                      _orderAvailability();
-                      print(restaurantProvider.getFlag());
-                      if (restaurantProvider.getFlag()) {
+                      await _checkOrderAvailability();
+                      print(isNearbyOrderAvailable);
+                      if (isNearbyOrderAvailable) {
                         print("Alert");
-                         showDialog<String>(
+                        showDialog<String>(
                             context: context, builder: Alerts.joinOrder());
                       } else {
                         orderProvider.setOrder(
@@ -199,9 +197,10 @@ class _CartScreenState extends State<CartScreen> {
                                     userLocator.deliveryAddress.addressLine,
                                 cartIds: [cartProvider.cartId]),
                             cartProvider.joinDuration);
+
+                    Navigator.pushNamed(context, '/wait');
                       }
                     }
-                    Navigator.pushNamed(context, '/wait');
                   },
                 )
               ],

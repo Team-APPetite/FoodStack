@@ -6,6 +6,7 @@ class FirestoreMenu {
 
   // Read
   Stream<List<FoodItem>> getMenu(String restaurantId) {
+    print("getMenu");
     return _db
         .collection('restaurants')
         .doc(restaurantId)

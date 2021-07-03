@@ -6,8 +6,8 @@ class FirestoreCarts {
   FirebaseFirestore _db = FirebaseFirestore.instance;
   final geo = Geoflutterfire();
 
-
   Future<Cart> getCart(String cartId) {
+    print("getCart");
     return _db
         .collection('carts')
         .doc(cartId)
@@ -19,10 +19,7 @@ class FirestoreCarts {
   Future<void> setCart(Cart cart) {
     var options = SetOptions(merge: true);
 
-    return _db
-        .collection('carts')
-        .doc(cart.cartId)
-        .set(cart.toMap(), options);
+    return _db.collection('carts').doc(cart.cartId).set(cart.toMap(), options);
   }
 
   // Delete
@@ -30,12 +27,14 @@ class FirestoreCarts {
     return _db.collection('carts').doc(cartId).delete();
   }
 
-  Stream<List<Cart>> getPastOrders(String uid){
+  Stream<List<Cart>> getPastOrders(String uid) {
+    print("getPastOrders");
     return _db
-            .collection('carts')
-            .where('userId', isEqualTo: uid)
-            .limit(10)
-            .snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Cart.fromJson(doc.data())).toList());
+        .collection('carts')
+        .where('userId', isEqualTo: uid)
+        .limit(10)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Cart.fromJson(doc.data())).toList());
   }
 }

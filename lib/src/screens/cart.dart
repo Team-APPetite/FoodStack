@@ -65,7 +65,6 @@ class _CartScreenState extends State<CartScreen> {
         orderProvider.getRestaurantsfromOrders(userLocator.coordinates),
         cartProvider.restaurantId);
     isNearbyOrderAvailable = restaurantProvider.getFlag();
-        print("Order Avaiable");
   }
 
   @override

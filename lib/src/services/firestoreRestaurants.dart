@@ -5,9 +5,9 @@ class FirestoreRestaurants {
   FirebaseFirestore _db = FirebaseFirestore.instance;
   Stream<List<Restaurant>> nearbyOrderRestaurants;
 
-
   // Read
   Future<Restaurant> getRestaurant(String restaurantId) {
+    print("getRestaurant");
     return _db
         .collection('restaurants')
         .doc(restaurantId)
@@ -16,11 +16,13 @@ class FirestoreRestaurants {
   }
 
   Stream<List<Restaurant>> getRestaurants() {
+    print("getRestaurants");
     return _db.collection('restaurants').snapshots().map((snapshot) =>
         snapshot.docs.map((doc) => Restaurant.fromJson(doc.data())).toList());
   }
 
   void loadNearbyOrderRestaurants(List nearbyOrders) {
+    print("loadNearbyOrderRestaurants");
     nearbyOrderRestaurants = _db
         .collection('restaurants')
         .where('restaurantId', whereIn: nearbyOrders)

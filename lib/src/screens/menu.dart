@@ -132,27 +132,19 @@ class _MenuScreenState extends State<MenuScreen> {
                                     : Container(),
                                 Expanded(
                                   child: GridView.builder(
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 0.8,
-                                    ),
-                                    itemCount: snapshot.data.length,
-                                    itemBuilder: (context, index) =>
-                                        ChangeNotifierProvider.value(
-                                            value: cartProvider,
-                                            child: FoodCard(
-                                                snapshot.data[index].foodId,
-                                                snapshot.data[index].foodName,
-                                                snapshot.data[index].price,
-                                                snapshot.data[index].image, () {
-                                              menuProvider.loadFoodItem(
-                                                  restaurantId,
-                                                  snapshot.data[index]);
-                                              Navigator.pushNamed(
-                                                  context, '/details');
-                                            })),
-                                  ),
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 0.8,
+                                      ),
+                                      itemCount: snapshot.data.length,
+                                      itemBuilder: (context, index) {
+                                        return FoodCard(
+                                            snapshot.data[index].foodId,
+                                            snapshot.data[index].foodName,
+                                            snapshot.data[index].price,
+                                            snapshot.data[index].image);
+                                      }),
                                 ),
                               ],
                             ),

@@ -13,14 +13,13 @@ class FirestoreUsers {
 
   //Fetch User
   Future<Users> fetchUser(String uid) {
+    print("fetchUser");
     return _db
         .collection('users')
         .doc(uid)
         .get()
         .then((snapshot) => Users.fromFirestore(snapshot.data()));
   }
-
-
 
   //Update user address
   Future<void> updateAddress(String address) {

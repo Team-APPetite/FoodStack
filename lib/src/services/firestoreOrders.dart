@@ -24,6 +24,7 @@ class FirestoreOrders {
 
   // Get order
   Future<Order> getOrder(String orderId) {
+    print("getOrder");
     return _db
         .collection('orders')
         .doc(orderId)
@@ -34,6 +35,7 @@ class FirestoreOrders {
   // Get list of orders near to user location
   Stream<List<DocumentSnapshot>> getNearbyOrders(
       GeoFirePoint center, double radius) {
+    print("getNearbyOrders");
     userLocation = center;
     ordersRadius = radius;
     return geo
@@ -46,17 +48,19 @@ class FirestoreOrders {
   }
 
   Future<Order> getNearbyOrder(String restaurantId) {
+    print("getNearbyOrder");
     return geo
         .collection(
             collectionRef: _db
                 .collection('orders')
                 .where('status', isEqualTo: 'Status.active')
                 .where('restaurantId', isEqualTo: restaurantId))
-        .within(center: userLocation, radius: ordersRadius, field: 'coordinates')
+        .within(
+            center: userLocation, radius: ordersRadius, field: 'coordinates')
         .map((snapshot) =>
-            snapshot.map((doc) => Order.fromFirestore(doc.data())).first).first;
+            snapshot.map((doc) => Order.fromFirestore(doc.data())).first)
+        .first;
   }
-
 
   //Add cartId to orders database
   Future<void> addToCartsList(String cartId, String orderId) async {

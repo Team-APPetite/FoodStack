@@ -11,10 +11,8 @@ class FoodCard extends StatefulWidget {
   final String foodName;
   final double price;
   final String image;
-  final void Function() onPressedDetails;
 
-  FoodCard(this.foodId, this.foodName, this.price, this.image,
-      this.onPressedDetails);
+  FoodCard(this.foodId, this.foodName, this.price, this.image);
 
   @override
   _FoodCardState createState() => _FoodCardState();
@@ -29,7 +27,9 @@ class _FoodCardState extends State<FoodCard> {
     return Stack(
       children: [
         TextButton(
-          onPressed: widget.onPressedDetails,
+          onPressed: () {
+            Navigator.pushNamed(context, '/details');
+          },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.0),
@@ -99,8 +99,7 @@ class _FoodCardState extends State<FoodCard> {
             child: quantity > 0
                 ? Container(
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white),
+                        shape: BoxShape.circle, color: Colors.white),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(

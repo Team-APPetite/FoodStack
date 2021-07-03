@@ -41,15 +41,15 @@ class _WaitScreenState extends State<WaitScreen> {
 
     setState(() => _orderCompletionTime = orderProvider.orderTime);
 
-    timer = Timer.periodic(Duration(minutes: 1), (timer) {
-      orderProvider.getOrder(orderProvider.orderId);
+    timer = Timer.periodic(Duration(minutes: 1), (timer) async {
+      await orderProvider.getOrder(orderProvider.orderId);
     });
   }
 
   Future<void> _checkIfOrderComplete() async {
     DateTime currentTime = DateTime.now();
 
-    await _setOrderCompletionTime();
+    _setOrderCompletionTime();
     if (currentTime.compareTo(_orderCompletionTime) > 0) {
       timer.cancel();
       setState(() {
@@ -256,6 +256,7 @@ class _WaitScreenState extends State<WaitScreen> {
                         style: TextStyles.textButton(),
                       ),
                       onPressed: () {
+                        timer.cancel();
                         showDialog<String>(
                             context: context, builder: Alerts.cancelOrder());
                       },

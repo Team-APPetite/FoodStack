@@ -6,6 +6,7 @@ import 'package:foodstack/src/models/restaurant.dart';
 
 class RestaurantProvider with ChangeNotifier {
   final firestoreService = FirestoreRestaurants();
+  bool flag = false;
 
   String _restaurantId;
   String _restaurantName;
@@ -53,6 +54,30 @@ class RestaurantProvider with ChangeNotifier {
       }
     });
     return firestoreService.getNearbyOrderRestaurants();
+  }
+
+  setFlag(){
+    print("Flag is set");
+    flag = true;
+  }
+
+  getFlag(){
+    return flag;
+  }
+
+  bool checkNearbyOrderFromRestaurant(
+      Stream<List<String>> restaurantIds, String currRestaurantId) {
+    restaurantIdsList = restaurantIds;
+    flag = false;
+    restaurantIds.listen((listOfStrings) {
+        for (int i = 0; i < listOfStrings.length; i++) {
+          if(currRestaurantId == listOfStrings[i]) {
+            setFlag();
+            break;
+          }
+        }
+    });
+   return getFlag();
   }
 
   Stream<List<Restaurant>> getNearbyOrdersRestaurantsList() {

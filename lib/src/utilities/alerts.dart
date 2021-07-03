@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -65,7 +68,13 @@ class Alerts {
 
   static Function joinOrder() {
     return (BuildContext context) {
+      final orderProvider = Provider.of<OrderProvider>(context);
       final cartProvider = Provider.of<CartProvider>(context);
+      final userLocator = Provider.of<UserLocator>(context);
+      final geo = Geoflutterfire();
+      GeoFirePoint userLocation = geo.point(
+          latitude: userLocator.coordinates.latitude,
+          longitude: userLocator.coordinates.longitude);
       return CupertinoAlertDialog(
         title: const Text('Order Nearby'),
         content: const Text(
@@ -75,13 +84,28 @@ class Alerts {
             onPressed: () async {
               final pref = await SharedPreferences.getInstance();
               pref.setBool('isPooler', true);
-              Navigator.pop(context);
+              orderProvider.addToCartsList(
+                  cartProvider.cartId, orderProvider
+                  .orderId);
+              Navigator.pushNamed(
+                  context, '/wait');
             },
             child: Text('Join Order', style: TextStyles.emphasis()),
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              orderProvider.setOrder(
+                  Order(
+                      restaurantId: cartProvider.restaurantId,
+                      coordinates: userLocation,
+                      totalPrice: cartProvider.getSubtotal() +
+                          cartProvider.deliveryFee,
+                      deliveryAddress:
+                          userLocator.deliveryAddress.addressLine,
+                      cartIds: [cartProvider.cartId]),
+                  cartProvider.joinDuration);
+              Navigator.pushNamed(
+                  context, '/wait');
             },
             child: Text('Continue', style: TextStyles.textButton()),
           ),

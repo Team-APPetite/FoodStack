@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
@@ -8,12 +9,13 @@ import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../src/utilities/enums.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfileScreen extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
+
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfileScreen> {
   final auth = FirebaseAuth.instance;
   FirestoreUsers _firestoreService = FirestoreUsers();
   String _displayName;

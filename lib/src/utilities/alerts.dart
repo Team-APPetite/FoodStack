@@ -49,7 +49,6 @@ class Alerts {
           ),
           TextButton(
             onPressed: () async {
-              orderProvider.getOrder(orderProvider.orderId);
               if (orderProvider.cartIds.length > 1) {
                 await orderProvider.removeFromCartsList(
                     cartProvider.cartId, orderProvider.orderId);

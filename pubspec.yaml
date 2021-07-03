@@ -41,6 +41,8 @@ dependencies:
   firebase_messaging: ^10.0.2
   shared_preferences: ^2.0.6
   flutter_braintree: ^1.2.1
+  flutter_local_notifications: ^6.0.0
+  flutter_native_timezone: ^2.0.0
 
 
 dev_dependencies:

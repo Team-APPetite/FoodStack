@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
+import 'package:foodstack/src/services/notifications.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/alerts.dart';
@@ -24,6 +25,7 @@ class _WaitScreenState extends State<WaitScreen> {
 
   @override
   void initState() {
+    Provider.of<NotificationService>(context, listen: false).initialize();
     super.initState();
     _getUserRole();
     _checkIfOrderComplete();
@@ -38,7 +40,6 @@ class _WaitScreenState extends State<WaitScreen> {
 
   Future<void> _setOrderCompletionTime() async {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-
     setState(() => _orderCompletionTime = orderProvider.orderTime);
 
     timer = Timer.periodic(Duration(minutes: 1), (timer) async {

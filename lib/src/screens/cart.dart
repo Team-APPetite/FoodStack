@@ -7,6 +7,7 @@ import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
+import 'package:foodstack/src/services/notifications.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/alerts.dart';
@@ -31,6 +32,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
+    Provider.of<NotificationService>(context, listen: false).initialize();
     _setOrderCompletionTime();
     _checkOrderAvailability();
   }
@@ -144,65 +146,78 @@ class _CartScreenState extends State<CartScreen> {
       );
     }
 
+    int _minutesRemaining() {
+    DateTime currentTime = DateTime.now();
+    int minutes;
+    if (_orderCompletionTime.hour > currentTime.hour) {
+      minutes = 60 - (currentTime.minute - _orderCompletionTime.minute);
+    } else {
+      minutes = _orderCompletionTime.minute - currentTime.minute;
+    }
+    return minutes;
+  }
+
     Widget _createOrder() {
-      return Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          height: 300.0,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: ThemeColors.light,
-                blurRadius: 4,
-              ),
-            ],
-          ),
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                isPooler ? _displayOrderCompletionTime() : _setJoinDuration(),
-                _paymentSummary(),
-                AppButton(
-                  buttonText: 'CONFIRM CART',
-                  onPressed: () async {
-                    await cartProvider.confirmCart();
-                    await _setUserOrderStatus();
-                    if (isPooler) {
-                      orderProvider.addToCartsList(
-                          cartProvider.cartId,
-                          orderProvider
-                              .orderId); // Need to update total price as well
-
-                    Navigator.pushNamed(context, '/wait');
-                    } else {
-                      await _checkOrderAvailability();
-                      print(isNearbyOrderAvailable);
-                      if (isNearbyOrderAvailable) {
-                        print("Alert");
-                        showDialog<String>(
-                            context: context, builder: Alerts.joinOrder());
-                      } else {
-                        orderProvider.setOrder(
-                            Order(
-                                restaurantId: cartProvider.restaurantId,
-                                coordinates: userLocation,
-                                totalPrice: cartProvider.getSubtotal() +
-                                    cartProvider.deliveryFee,
-                                deliveryAddress:
-                                    userLocator.deliveryAddress.addressLine,
-                                cartIds: [cartProvider.cartId]),
-                            cartProvider.joinDuration);
-
-                    Navigator.pushNamed(context, '/wait');
-                      }
-                    }
-                  },
-                )
+      return Consumer<NotificationService>(
+        builder: (context, model, _) => Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 300.0,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: ThemeColors.light,
+                  blurRadius: 4,
+                ),
               ],
+            ),
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  isPooler ? _displayOrderCompletionTime() : _setJoinDuration(),
+                  _paymentSummary(),
+                  AppButton(
+                    buttonText: 'CONFIRM CART',
+                    onPressed: () async {
+                      await cartProvider.confirmCart();
+                      await _setUserOrderStatus();
+
+                      if (isPooler) {
+                        orderProvider.addToCartsList(
+                            cartProvider.cartId,
+                            orderProvider
+                                .orderId); // Need to update total price as well
+                        model.scheduledNotification(1);
+                        Navigator.pushNamed(context, '/wait');
+                      } else {
+                        await _checkOrderAvailability();
+                        if (isNearbyOrderAvailable) {
+                          print("Alert");
+                          showDialog<String>(
+                              context: context, builder: Alerts.joinOrder());
+                        } else {
+                          orderProvider.setOrder(
+                              Order(
+                                  restaurantId: cartProvider.restaurantId,
+                                  coordinates: userLocation,
+                                  totalPrice: cartProvider.getSubtotal() +
+                                      cartProvider.deliveryFee,
+                                  deliveryAddress:
+                                      userLocator.deliveryAddress.addressLine,
+                                  cartIds: [cartProvider.cartId]),
+                              cartProvider.joinDuration);
+
+                          Navigator.pushNamed(context, '/wait');
+                        }
+                      }
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -12,6 +12,9 @@ import Braintree
     GMSServices.provideAPIKey("AIzaSyAIB_jrdSCoM7SB_AixhfGycL7Tyd_8oqk")
     GeneratedPluginRegistrant.register(with: self)
     BTAppSwitch.setReturnURLScheme("com.charismakausar.foodstack.payments")
+    if #available(iOS 10.0, *) {
+      UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+    }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

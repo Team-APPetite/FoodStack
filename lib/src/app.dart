@@ -24,6 +24,7 @@ import 'package:foodstack/src/screens/recentOrders.dart';
 import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/screens/wait.dart';
 import 'package:foodstack/src/screens/welcome.dart';
+import 'package:foodstack/src/services/notifications.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
@@ -44,7 +45,8 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(create: (context) => MenuProvider()),
         ChangeNotifierProvider(create: (context) => CartProvider()),
         ChangeNotifierProvider(create: (context) => OrderProvider()),
-        ChangeNotifierProvider(create: (context) => PaymentProvider())
+        ChangeNotifierProvider(create: (context) => PaymentProvider()),
+        ChangeNotifierProvider(create: (context) => NotificationService())
       ],
       child: MaterialApp(
         title: 'FoodStack',

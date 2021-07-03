@@ -51,6 +51,7 @@ class _WaitScreenState extends State<WaitScreen> {
 
     await _setOrderCompletionTime();
     if (currentTime.compareTo(_orderCompletionTime) > 0) {
+      timer.cancel();
       setState(() {
         enableCheckout = true;
       });

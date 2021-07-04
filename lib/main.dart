@@ -19,7 +19,7 @@ void main() async {
               ? HomeScreen()
               : (orderStatus == 'Status.active' ||
                       orderStatus == 'Status.full' ||
-                      orderStatus == 'Status.completed')
+                      orderStatus == 'Status.closed')
                   ? WaitScreen()
                   : TrackScreen()
           : LoginScreen()));

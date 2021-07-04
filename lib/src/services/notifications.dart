@@ -15,7 +15,7 @@ class NotificationService extends ChangeNotifier {
         FlutterLocalNotificationsPlugin();
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_launcher-playstore');
+        AndroidInitializationSettings('ic_launcher');
 
     final IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings();
@@ -41,7 +41,8 @@ class NotificationService extends ChangeNotifier {
     tz.TZDateTime.now(tz.local).add(Duration(minutes: joinDuration)),
     const NotificationDetails(
         android: AndroidNotificationDetails('0',
-            'FoodStack', 'Order Closing Notification')),
+            'FoodStack', 'Order Closing Notification'),
+            iOS: IOSNotificationDetails()),
     androidAllowWhileIdle: true,
     uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime);

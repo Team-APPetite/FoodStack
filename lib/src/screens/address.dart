@@ -137,7 +137,8 @@ class _AddressScreenState extends State<AddressScreen> {
                                   backgroundColor: ThemeColors.dark,
                               );
                               Navigator.pop(context);
-                            },),
+                            },
+                            ),
                           ],
                         ),
                       ),

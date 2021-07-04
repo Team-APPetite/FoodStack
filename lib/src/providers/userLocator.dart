@@ -9,7 +9,7 @@ class UserLocator with ChangeNotifier {
 
   Position currentLocation;
   LatLng coordinates;
-  var deliveryAddress;
+  Address deliveryAddress;
 
   UserLocator() {
     setCurrentLocation();
@@ -30,7 +30,9 @@ class UserLocator with ChangeNotifier {
 
   Future<void> getCameraLocation() async {
     final addresses =
-    await Geocoder.local.findAddressesFromCoordinates(new Coordinates(coordinates.latitude, coordinates.longitude));
+        await Geocoder.local
+            .findAddressesFromCoordinates(
+                new Coordinates(coordinates.latitude, coordinates.longitude));
     this.deliveryAddress = addresses.first;
     print("${deliveryAddress.featureName} : ${deliveryAddress.addressLine}");
     notifyListeners();

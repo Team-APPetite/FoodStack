@@ -54,7 +54,7 @@ class _CartScreenState extends State<CartScreen> {
 
   Future<void> _setUserOrderStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('status', Status.active.toString());
+    await prefs.setString('orderStatus', Status.active.toString());
   }
 
   Future<void> _checkOrderAvailability() async {
@@ -185,13 +185,12 @@ class _CartScreenState extends State<CartScreen> {
                     onPressed: () async {
                       await cartProvider.confirmCart();
                       await _setUserOrderStatus();
-
+                        model.scheduledNotification(1);
                       if (isPooler) {
                         orderProvider.addToCartsList(
                             cartProvider.cartId,
                             orderProvider
                                 .orderId); // Need to update total price as well
-                        model.scheduledNotification(1);
                         Navigator.pushNamed(context, '/wait');
                       } else {
                         await _checkOrderAvailability();

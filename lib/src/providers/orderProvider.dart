@@ -202,11 +202,15 @@ class OrderProvider with ChangeNotifier {
         .catchError((error) => print(error));
   }
 
-  closeOrder() {
+  closeOrder() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('orderStatus', Status.closed.toString());
     firestoreService.setStatus(Status.closed.toString(), orderId);
   }
 
-  setStatusAsPaid() {
+  setStatusAsPaid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('orderStatus', Status.paid.toString());
     firestoreService.setStatus(Status.paid.toString(), orderId);
   }
 

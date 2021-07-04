@@ -32,12 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     super.initState();
-    _getUserOrderStatus();
-  }
-
-  Future<String> _getUserOrderStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('status');
   }
 
   @override

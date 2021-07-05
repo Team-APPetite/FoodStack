@@ -35,7 +35,7 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
   // final restaurantProvider =
   //     Provider.of<RestaurantProvider>(context, listen: false);
   // final userLocator = Provider.of<UserLocator>(context, listen: false);
-
+  // 
   //   if (userLocator.coordinates != null) {
   // restaurantProvider.loadNearbyOrdersRestaurantsList(
   //     orderProvider.getRestaurantsfromOrders(userLocator.coordinates));

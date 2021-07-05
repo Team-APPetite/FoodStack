@@ -43,6 +43,7 @@ dependencies:
   flutter_braintree: ^1.2.1
   flutter_local_notifications: ^6.0.0
   flutter_native_timezone: ^2.0.0
+  fake_cloud_firestore: ^1.1.2
 
 
 dev_dependencies:

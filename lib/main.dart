@@ -11,7 +11,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String email = prefs.getString('email');
+  prefs.setString('orderStatus', 'Status.none');
   String orderStatus = prefs.getString('orderStatus');
+  print(orderStatus);
   await Firebase.initializeApp();
   runApp(App(
       home: email != null

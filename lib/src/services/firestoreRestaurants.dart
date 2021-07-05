@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 
 class FirestoreRestaurants {
   FirebaseFirestore _db = FirebaseFirestore.instance;
   Stream<List<Restaurant>> nearbyOrderRestaurants;
+  List listOfNearbyOrders;
 
   // Read
   Future<Restaurant> getRestaurant(String restaurantId) {
@@ -21,20 +23,25 @@ class FirestoreRestaurants {
         snapshot.docs.map((doc) => Restaurant.fromJson(doc.data())).toList());
   }
 
-  void loadNearbyOrderRestaurants(List nearbyOrders) {
+  Stream<List<Restaurant>> loadNearbyOrderRestaurants({List nearbyOrders}) {
     print("loadNearbyOrderRestaurants");
-    nearbyOrderRestaurants = _db
+    listOfNearbyOrders =
+        nearbyOrders != null ? nearbyOrders : listOfNearbyOrders;
+    print(listOfNearbyOrders);
+
+    return listOfNearbyOrders != null ?
+    _db
         .collection('restaurants')
-        .where('restaurantId', whereIn: nearbyOrders)
+        .where('restaurantId', whereIn: listOfNearbyOrders)
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => Restaurant.fromJson(doc.data()))
-            .toList());
+            .toList()) : null;
   }
 
-  Stream<List<Restaurant>> getNearbyOrderRestaurants() {
-    return nearbyOrderRestaurants;
-  }
+  // Stream<List<Restaurant>> getNearbyOrderRestaurants() {
+  //   return nearbyOrderRestaurants;
+  // }
 
   // Create and Update
   Future<void> setRestaurant(Restaurant restaurant) {

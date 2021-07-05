@@ -22,7 +22,7 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
   void initState() {
     super.initState();
     _setUserRole();
-    _getNearbyOrders();
+    // _getNearbyOrders();
   }
 
   Future<void> _setUserRole() async {
@@ -30,22 +30,24 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
     await prefs.setBool('isPooler', true);
   }
 
-  Future<void> _getNearbyOrders() async {
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    final restaurantProvider =
-        Provider.of<RestaurantProvider>(context, listen: false);
-    final userLocator = Provider.of<UserLocator>(context, listen: false);
+  // Future<void> _getNearbyOrders() async {
+  // final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+  // final restaurantProvider =
+  //     Provider.of<RestaurantProvider>(context, listen: false);
+  // final userLocator = Provider.of<UserLocator>(context, listen: false);
 
-    if (userLocator.coordinates != null) {
-      restaurantProvider.loadNearbyOrdersRestaurantsList(
-          orderProvider.getRestaurantsfromOrders(userLocator.coordinates));
-    } else {
-      loading = true;
-    }
-  }
+  //   if (userLocator.coordinates != null) {
+  // restaurantProvider.loadNearbyOrdersRestaurantsList(
+  //     orderProvider.getRestaurantsfromOrders(userLocator.coordinates));
+  //   } else {
+  //     loading = true;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final orderProvider = Provider.of<OrderProvider>(context);
+    final userLocator = Provider.of<UserLocator>(context);
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
     if (!loading) {
       return Scaffold(
@@ -53,13 +55,16 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
           body: Padding(
             padding: const EdgeInsets.all(8.0),
             child: StreamBuilder<List<Restaurant>>(
-                stream: restaurantProvider.getNearbyOrdersRestaurantsList(),
+                stream: restaurantProvider.loadNearbyOrdersRestaurantsList(
+                    restaurantIds: orderProvider
+                        .getRestaurantsfromOrders(userLocator.coordinates)),
                 builder: (context, snapshot) {
                   if (snapshot.data == null) {
                     return Center(
                         child: Text(
                             'Check another time! No nearby orders right now'));
                   } else {
+                    print(snapshot.data);
                     return Scrollbar(
                         child: ListView.builder(
                             itemCount: snapshot.data.length,

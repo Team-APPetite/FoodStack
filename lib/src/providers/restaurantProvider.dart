@@ -29,8 +29,6 @@ class RestaurantProvider with ChangeNotifier {
   GeoPoint get coordinates => _coordinates;
   Stream<List<Restaurant>> get restaurantsList =>
       firestoreService.getRestaurants();
-  Stream<List<Restaurant>> get nearbyOrdersRestaurantsList =>
-      getNearbyOrdersRestaurantsList();
 
   // Setters
   set changeRestaurantName(String restaurantName) {
@@ -40,43 +38,43 @@ class RestaurantProvider with ChangeNotifier {
 
   // Functions
   Stream<List<Restaurant>> loadNearbyOrdersRestaurantsList(
-      Stream<List<String>> restaurantIds) {
+      {Stream<List<String>> restaurantIds}) {
     List listOfRestaurantIds = [];
-    restaurantIdsList = restaurantIds;
-    restaurantIds.listen((listOfStrings) {
+    restaurantIdsList =
+        restaurantIds != null ? restaurantIds : restaurantIdsList;
+    restaurantIdsList.listen((listOfStrings) {
       if (listOfStrings.isNotEmpty) {
         int length = listOfStrings.length < 10 ? listOfStrings.length : 10;
         for (int i = 0; i < length; i++) {
           listOfRestaurantIds.add(1);
           listOfRestaurantIds[i] = listOfStrings[i];
         }
-        firestoreService.loadNearbyOrderRestaurants(listOfRestaurantIds);
+        firestoreService.loadNearbyOrderRestaurants(
+            nearbyOrders: listOfRestaurantIds);
       }
     });
-    return firestoreService.getNearbyOrderRestaurants();
+    return firestoreService.loadNearbyOrderRestaurants();
   }
 
-  setFlag(){
+  setFlag() {
     flag = true;
   }
 
-  getFlag(){
+  getFlag() {
     return flag;
   }
 
   Future<void> checkNearbyOrderFromRestaurant(
       Stream<List<String>> restaurantIds, String currRestaurantId) async {
     restaurantIds.listen((listOfStrings) {
-        for (int i = 0; i < listOfStrings.length; i++) {
-          if(currRestaurantId == listOfStrings[i]) {
-            setFlag();
-          }
+      for (int i = 0; i < listOfStrings.length; i++) {
+        if (currRestaurantId == listOfStrings[i]) {
+          setFlag();
+          return;
         }
+      }
+      flag = false;
     });
-  }
-
-  Stream<List<Restaurant>> getNearbyOrdersRestaurantsList() {
-    return loadNearbyOrdersRestaurantsList(restaurantIdsList);
   }
 
   addRestaurant(Restaurant restaurant) {

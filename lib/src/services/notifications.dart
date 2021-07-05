@@ -8,7 +8,6 @@ class NotificationService extends ChangeNotifier {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-
 // Initialize the plugin
   Future initialize() async {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

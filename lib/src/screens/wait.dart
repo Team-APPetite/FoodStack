@@ -188,7 +188,7 @@ class _WaitScreenState extends State<WaitScreen> {
                             ),
                 ],
               ),
-              Column(
+              cartProvider.cartItems.length != 0 ? Column(
                 children: [
                   Text(
                     'Your Cart',
@@ -225,8 +225,8 @@ class _WaitScreenState extends State<WaitScreen> {
                     ),
                   ),
                 ],
-              ),
-              Padding(
+              ) : Container(),
+              cartProvider.cartItems.length != 0 ? Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
@@ -236,7 +236,7 @@ class _WaitScreenState extends State<WaitScreen> {
                         style: TextStyles.emphasis()),
                   ],
                 ),
-              ),
+              ) : Container(),
               enableCheckout
                   ? Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),

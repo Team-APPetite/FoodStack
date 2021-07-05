@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
@@ -8,8 +12,6 @@ import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/utilities/enums.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,21 +19,55 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Timer timer;
 
   @override
   void initState() {
-    final userLocator = Provider.of<UserLocator>(context, listen: false );
-
-    if (userLocator.deliveryAddress != null) {
-      Fluttertoast.showToast(
-        msg: 'Delivering at ${userLocator.deliveryAddress.addressLine}',
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 5,
-        backgroundColor: ThemeColors.dark,
-      );
-    }
-
+    _showDeliveryAddress();
+    _getNearbyOrders();
     super.initState();
+  }
+
+  _showDeliveryAddress() {
+    final userLocator = Provider.of<UserLocator>(context, listen: false);
+
+    timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      if (userLocator.deliveryAddress != null) {
+        Fluttertoast.showToast(
+          msg: 'Delivering at ${userLocator.deliveryAddress.addressLine}',
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 5,
+          backgroundColor: ThemeColors.dark,
+        );
+        timer.cancel();
+      }
+    });
+  }
+
+  Future<void> _getNearbyOrders() async {
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
+    final userLocator = Provider.of<UserLocator>(context, listen: false);
+
+    timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      if (userLocator.coordinates != null) {
+        setState(() {
+          restaurantProvider.loadNearbyOrdersRestaurantsList(
+              restaurantIds: orderProvider
+                  .getRestaurantsfromOrders(userLocator.coordinates));
+        });
+        timer.cancel();
+      }
+    });
+
+    // if (userLocator.coordinates != null) {
+    //   setState(() {
+    //     restaurantProvider.loadNearbyOrdersRestaurantsList(
+    //         restaurantIds: orderProvider
+    //             .getRestaurantsfromOrders(userLocator.coordinates));
+    //   });
+    // }
   }
 
   @override
@@ -57,8 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: Icons.add_shopping_cart,
                       color: ThemeColors.mint,
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, '/newOrder');
+                        Navigator.pushNamed(context, '/newOrder');
                       },
                     ),
                   ),
@@ -69,8 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: Icons.person_add_alt_1_outlined,
                       color: ThemeColors.oranges,
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, '/joinOrders');
+                        Navigator.pushNamed(context, '/joinOrders');
                       },
                     ),
                   ),
@@ -84,8 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: Icons.favorite_border_outlined,
                         color: ThemeColors.yellows,
                         onPressed: () {
-                          Navigator.pushNamed(
-                              context, '/favourites');
+                          Navigator.pushNamed(context, '/favourites');
                         },
                       ),
                     ),
@@ -96,8 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: Icons.access_time_outlined,
                         color: ThemeColors.teals,
                         onPressed: () {
-                          Navigator.pushNamed(
-                              context, '/recentOrders');
+                          Navigator.pushNamed(context, '/recentOrders');
                         },
                       ),
                     ),

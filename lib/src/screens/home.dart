@@ -19,29 +19,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Timer timer;
+  Timer _timer;
 
   @override
   void initState() {
-    _showDeliveryAddress();
-    _getNearbyOrders();
+    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      final userLocator = Provider.of<UserLocator>(context, listen: false);
+      if (userLocator.deliveryAddress != null) {
+        _showDeliveryAddress();
+        _getNearbyOrders();
+        timer.cancel();
+      }
+    });
     super.initState();
   }
 
   _showDeliveryAddress() {
     final userLocator = Provider.of<UserLocator>(context, listen: false);
 
-    timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-      if (userLocator.deliveryAddress != null) {
-        Fluttertoast.showToast(
-          msg: 'Delivering at ${userLocator.deliveryAddress.addressLine}',
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 5,
-          backgroundColor: ThemeColors.dark,
-        );
-        timer.cancel();
-      }
-    });
+    Fluttertoast.showToast(
+      msg: 'Delivering at ${userLocator.deliveryAddress.addressLine}',
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 5,
+      backgroundColor: ThemeColors.dark,
+    );
   }
 
   Future<void> _getNearbyOrders() async {
@@ -50,24 +51,11 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<RestaurantProvider>(context, listen: false);
     final userLocator = Provider.of<UserLocator>(context, listen: false);
 
-    timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-      if (userLocator.coordinates != null) {
-        setState(() {
-          restaurantProvider.loadNearbyOrdersRestaurantsList(
-              restaurantIds: orderProvider
-                  .getRestaurantsfromOrders(userLocator.coordinates));
-        });
-        timer.cancel();
-      }
+    setState(() {
+      restaurantProvider.loadNearbyOrdersRestaurantsList(
+          restaurantIds:
+              orderProvider.getRestaurantsfromOrders(userLocator.coordinates));
     });
-
-    // if (userLocator.coordinates != null) {
-    //   setState(() {
-    //     restaurantProvider.loadNearbyOrdersRestaurantsList(
-    //         restaurantIds: orderProvider
-    //             .getRestaurantsfromOrders(userLocator.coordinates));
-    //   });
-    // }
   }
 
   @override
@@ -138,5 +126,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             )),
         bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.order));
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 }

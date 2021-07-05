@@ -43,6 +43,8 @@ dependencies:
   flutter_braintree: ^1.2.1
   flutter_local_notifications: ^6.0.0
   flutter_native_timezone: ^2.0.0
+  firebase_auth_mocks: ^0.7.1
+  google_sign_in_mocks: ^0.2.1
 
 
 dev_dependencies:

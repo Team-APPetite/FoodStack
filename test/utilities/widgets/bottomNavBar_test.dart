@@ -1,18 +1,27 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/screens/profile.dart';
 import 'package:foodstack/src/screens/track.dart';
+import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+
+import '../../mock.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
-void main() {
+void main() async{
+  setupFirebaseAuthMocks();
+
   group('Bottom Navigation Bar - Navigation tests', (){
     NavigatorObserver mockObserver;
+
 
     setUp(() {
       mockObserver = MockNavigatorObserver();
@@ -20,11 +29,14 @@ void main() {
 
 
     Future<void> _buildNavBar(WidgetTester tester) async {
+      await Firebase.initializeApp();
+
+
       await tester.pumpWidget(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserLocator()),
       ],
-      child: MaterialApp(
+      child: MaterialApp (
         title: 'FoodStack',
         home: CustomBottomNavBar(),
         // This mocked observer will now receive all navigation events
@@ -36,7 +48,6 @@ void main() {
       Future<void> _navigateToHomeScreen(WidgetTester tester) async {
         var home = find.descendant(of: find.byType(Row),
             matching: find.byKey(CustomBottomNavBar.navigateToHomeScreenKey));
-
         await tester.tap(home);
         await tester.pumpAndSettle();
       }

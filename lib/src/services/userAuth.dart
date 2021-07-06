@@ -4,8 +4,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class UserAuth {
   final FirebaseAuth auth;
-
   UserAuth({this.auth});
+
+
+  Future<String> signInWithCredential(AuthCredential credential) async {
+    try {
+      await auth.signInWithCredential(credential);
+      return "Success";
+    } on FirebaseAuthException catch (error) {
+      return error.message;
+    }
+  }
+
+  Future<void> logout() => auth.signOut();
+
+  Stream<User> get currentUser => auth.authStateChanges();
 
   Future<String> login(String _email, String _password) async {
     try {

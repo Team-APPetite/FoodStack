@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/blocs/auth_blocs.dart';
+import 'package:foodstack/src/screens/authentication/login.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../src/utilities/enums.dart';
 
@@ -20,9 +25,31 @@ class _ProfilePageState extends State<ProfileScreen> {
   FirestoreUsers _firestoreService = FirestoreUsers();
   String _displayName;
 
+  StreamSubscription<User> loginStateSubscription;
+
+  @override
+  void initState() {
+    var authBloc = Provider.of<AuthBloc>(context, listen: false);
+    loginStateSubscription = authBloc.currentUser.listen((fbUser) {
+      if (fbUser == null) {
+        Navigator.of(context).pushNamed('/login');
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    loginStateSubscription.cancel();
+    super.dispose();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+    final authBloc = Provider.of<AuthBloc>(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
@@ -116,8 +143,7 @@ class _ProfilePageState extends State<ProfileScreen> {
                   onPressed: () async {
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.remove('email');
-                    auth.signOut();
-                    Navigator.pushNamed(context, '/login');
+                    authBloc.logout();
                   },
                   child: Row(
                     children: [

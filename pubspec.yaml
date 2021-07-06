@@ -46,6 +46,8 @@ dependencies:
   fake_cloud_firestore: ^1.1.2
   firebase_auth_mocks: ^0.7.1
   google_sign_in_mocks: ^0.2.1
+  google_sign_in: ^5.0.2
+  flutter_signin_button: ^1.1.0
 
 
 dev_dependencies:

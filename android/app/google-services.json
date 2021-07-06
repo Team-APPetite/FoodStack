@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "701366733071",
+    "firebase_url": "https://foodstack-e8d0f-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "foodstack-e8d0f",
     "storage_bucket": "foodstack-e8d0f.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "701366733071-bbi05uiig5fuip7ltipr9sthlqf82u5t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.charismakausar.foodstack",
+            "certificate_hash": "a0d0b17e37917c1c59dcb3f8b505d5677d6d00dc"
+          }
+        },
         {
           "client_id": "701366733071-1jurjajrnm7dblu63ftqa6treavvu5e5.apps.googleusercontent.com",
           "client_type": 3
@@ -29,6 +38,13 @@
             {
               "client_id": "701366733071-1jurjajrnm7dblu63ftqa6treavvu5e5.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "701366733071-nt7p3ivqq7ftmk76diqc30d3tbvuq3q1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.charismakausar.foodstack"
+              }
             }
           ]
         }

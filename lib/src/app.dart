@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/blocs/auth_blocs.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
@@ -38,40 +39,43 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserLocator()),
-        ChangeNotifierProvider(create: (context) => RestaurantProvider()),
-        ChangeNotifierProvider(create: (context) => MenuProvider()),
-        ChangeNotifierProvider(create: (context) => CartProvider()),
-        ChangeNotifierProvider(create: (context) => OrderProvider()),
-        ChangeNotifierProvider(create: (context) => PaymentProvider()),
-        ChangeNotifierProvider(create: (context) => NotificationService())
-      ],
-      child: MaterialApp(
-        title: 'FoodStack',
-        home: widget.home,
-        routes: {
-          '/login': (context) => LoginScreen(),
-          '/signup': (context) => SignUpScreen(),
-          '/verifyEmail': (context) => VerifyScreen(),
-          '/resetPassword': (context) => ResetScreen(),
-          '/pickAddress': (context) => AddressScreen(),
-          '/cart': (context) => CartScreen(),
-          '/checkout': (context) => CheckoutScreen(),
-          '/details': (context) => DetailsScreen(),
-          '/favourites': (context) => FavouritesScreen(),
-          '/home': (context) => HomeScreen(),
-          '/joinOrders': (context) => JoinOrdersScreen(),
-          '/menu': (context) => MenuScreen(),
-          '/newOrder': (context) => NewOrderScreen(),
-          '/orderSummary': (context) => SummaryScreen(),
-          '/profile': (context) => ProfileScreen(),
-          '/recentOrders': (context) => RecentOrdersScreen(),
-          '/trackOrder': (context) => TrackScreen(),
-          '/wait': (context) => WaitScreen(),
-          '/welcome': (context) => WelcomeScreen(),
-        },
+    return Provider(
+      create: (context) => AuthBloc(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => UserLocator()),
+          ChangeNotifierProvider(create: (context) => RestaurantProvider()),
+          ChangeNotifierProvider(create: (context) => MenuProvider()),
+          ChangeNotifierProvider(create: (context) => CartProvider()),
+          ChangeNotifierProvider(create: (context) => OrderProvider()),
+          ChangeNotifierProvider(create: (context) => PaymentProvider()),
+          ChangeNotifierProvider(create: (context) => NotificationService())
+        ],
+        child: MaterialApp(
+          title: 'FoodStack',
+          home: widget.home,
+          routes: {
+            '/login': (context) => LoginScreen(),
+            '/signup': (context) => SignUpScreen(),
+            '/verifyEmail': (context) => VerifyScreen(),
+            '/resetPassword': (context) => ResetScreen(),
+            '/pickAddress': (context) => AddressScreen(),
+            '/cart': (context) => CartScreen(),
+            '/checkout': (context) => CheckoutScreen(),
+            '/details': (context) => DetailsScreen(),
+            '/favourites': (context) => FavouritesScreen(),
+            '/home': (context) => HomeScreen(),
+            '/joinOrders': (context) => JoinOrdersScreen(),
+            '/menu': (context) => MenuScreen(),
+            '/newOrder': (context) => NewOrderScreen(),
+            '/orderSummary': (context) => SummaryScreen(),
+            '/profile': (context) => ProfileScreen(),
+            '/recentOrders': (context) => RecentOrdersScreen(),
+            '/trackOrder': (context) => TrackScreen(),
+            '/wait': (context) => WaitScreen(),
+            '/welcome': (context) => WelcomeScreen(),
+          },
+        ),
       ),
     );
   }

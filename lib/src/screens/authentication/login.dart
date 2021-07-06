@@ -24,7 +24,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String _email = '', _password = '';
   final auth = FirebaseAuth.instance;
-  //final peristence = FirebaseAuth.instance.setPersistence(Persistence.SESSION);
+  final peristence = FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
 
   StreamSubscription<User> loginStateSubscription;
 
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           },
         ),
-        SizedBox(height: 30.0),
+        //SizedBox(height: 30.0),
       ]);
     }
 
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return Column(
         children: [
           // Text(
-          //   'or Sign in with',
+          //   'OR ',
           //   style: TextStyles.body(),
           // ),
           // SizedBox(height: 15.0),

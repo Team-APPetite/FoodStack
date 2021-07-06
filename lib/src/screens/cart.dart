@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -58,15 +59,17 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Future<void> _checkOrderAvailability() async {
-    final restaurantProvider =
-        Provider.of<RestaurantProvider>(context, listen: false);
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final userLocator = Provider.of<UserLocator>(context, listen: false);
-    await restaurantProvider.checkNearbyOrderFromRestaurant(
-        orderProvider.getRestaurantsfromOrders(userLocator.coordinates),
-        cartProvider.restaurantId);
-    isNearbyOrderAvailable = restaurantProvider.getFlag();
+    if (!isPooler) {
+      final restaurantProvider =
+          Provider.of<RestaurantProvider>(context, listen: false);
+      final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+      final cartProvider = Provider.of<CartProvider>(context, listen: false);
+      final userLocator = Provider.of<UserLocator>(context, listen: false);
+      await restaurantProvider.checkNearbyOrderFromRestaurant(
+          orderProvider.getRestaurantsfromOrders(userLocator.coordinates),
+          cartProvider.restaurantId);
+      isNearbyOrderAvailable = restaurantProvider.getFlag();
+    }
   }
 
   @override
@@ -112,11 +115,13 @@ class _CartScreenState extends State<CartScreen> {
     }
 
     Widget _displayOrderCompletionTime() {
-      return Container(
-          child: Text(
-        'Confirm cart by ${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
-        style: TextStyles.textButton(),
-      ));
+      return _orderCompletionTime != DateTime.fromMillisecondsSinceEpoch(0)
+          ? Container(
+              child: Text(
+              'Confirm cart by ${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
+              style: TextStyles.textButton(),
+            ))
+          : Container();
     }
 
     Widget _paymentSummary() {
@@ -147,15 +152,15 @@ class _CartScreenState extends State<CartScreen> {
     }
 
     int _minutesRemaining() {
-    DateTime currentTime = DateTime.now();
-    int minutes;
-    if (_orderCompletionTime.hour > currentTime.hour) {
-      minutes = 60 - (currentTime.minute - _orderCompletionTime.minute);
-    } else {
-      minutes = _orderCompletionTime.minute - currentTime.minute;
+      DateTime currentTime = DateTime.now();
+      int minutes;
+      if (_orderCompletionTime.hour > currentTime.hour) {
+        minutes = 60 - (currentTime.minute - _orderCompletionTime.minute);
+      } else {
+        minutes = _orderCompletionTime.minute - currentTime.minute;
+      }
+      return minutes;
     }
-    return minutes;
-  }
 
     Widget _createOrder() {
       return Consumer<NotificationService>(
@@ -185,7 +190,7 @@ class _CartScreenState extends State<CartScreen> {
                     onPressed: () async {
                       await cartProvider.confirmCart();
                       await _setUserOrderStatus();
-                        model.scheduledNotification(1);
+                      model.scheduledNotification(1);
                       if (isPooler) {
                         orderProvider.addToCartsList(
                             cartProvider.cartId,

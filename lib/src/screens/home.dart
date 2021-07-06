@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodstack/src/providers/orderProvider.dart';
-import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
@@ -27,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
       final userLocator = Provider.of<UserLocator>(context, listen: false);
       if (userLocator.deliveryAddress != null) {
         _showDeliveryAddress();
-        _getNearbyOrders();
         timer.cancel();
       }
     });
@@ -43,19 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
       timeInSecForIosWeb: 5,
       backgroundColor: ThemeColors.dark,
     );
-  }
-
-  Future<void> _getNearbyOrders() async {
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    final restaurantProvider =
-        Provider.of<RestaurantProvider>(context, listen: false);
-    final userLocator = Provider.of<UserLocator>(context, listen: false);
-
-    setState(() {
-      restaurantProvider.loadNearbyOrdersRestaurantsList(
-          restaurantIds:
-              orderProvider.getRestaurantsfromOrders(userLocator.coordinates));
-    });
   }
 
   @override

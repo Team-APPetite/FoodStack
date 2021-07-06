@@ -18,7 +18,7 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  DateTime _orderCompletionTime = DateTime.now();
+  DateTime _orderCompletionTime;
   bool isPooler = false;
 
   String restaurantId;
@@ -118,7 +118,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         : Scrollbar(
                             child: Column(
                               children: [
-                                isPooler
+                                isPooler && _orderCompletionTime != null
                                     ? Container(
                                         child: Padding(
                                           padding: const EdgeInsets.only(

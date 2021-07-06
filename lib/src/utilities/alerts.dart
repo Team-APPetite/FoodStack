@@ -13,6 +13,7 @@ class Alerts {
   static Function loseCart() {
     return (BuildContext context) {
       final cartProvider = Provider.of<CartProvider>(context);
+      final orderProvider = Provider.of<OrderProvider>(context);
       return CupertinoAlertDialog(
         title: const Text('Lose Cart Items'),
         content: const Text(
@@ -27,6 +28,7 @@ class Alerts {
               Navigator.pop(context);
               Navigator.pop(context);
               cartProvider.clearCart();
+              orderProvider.clearOrder();
             },
             child: Text('Empty cart', style: TextStyles.textButton()),
           ),

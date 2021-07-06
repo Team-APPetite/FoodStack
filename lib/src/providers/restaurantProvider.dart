@@ -16,7 +16,6 @@ class RestaurantProvider with ChangeNotifier {
   String _image;
   GeoPoint _coordinates;
 
-  Stream<List<String>> restaurantIdsList;
   var uuid = Uuid();
 
   // Getters
@@ -38,22 +37,10 @@ class RestaurantProvider with ChangeNotifier {
 
   // Functions
   Stream<List<Restaurant>> loadNearbyOrdersRestaurantsList(
-      {Stream<List<String>> restaurantIds}) {
-    List listOfRestaurantIds = [];
-    restaurantIdsList =
-        restaurantIds != null ? restaurantIds : restaurantIdsList;
-    restaurantIdsList.listen((listOfStrings) {
-      if (listOfStrings.isNotEmpty) {
-        int length = listOfStrings.length < 10 ? listOfStrings.length : 10;
-        for (int i = 0; i < length; i++) {
-          listOfRestaurantIds.add(1);
-          listOfRestaurantIds[i] = listOfStrings[i];
-        }
-        firestoreService.loadNearbyOrderRestaurants(
-            nearbyOrders: listOfRestaurantIds);
-      }
-    });
-    return firestoreService.loadNearbyOrderRestaurants();
+      List<String> restaurantIds) {
+
+    return firestoreService.loadNearbyOrderRestaurants(
+        restaurantIds.take(10).toList());
   }
 
   setFlag() {

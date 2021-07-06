@@ -22,7 +22,6 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
   void initState() {
     super.initState();
     _setUserRole();
-    // _getNearbyOrders();
   }
 
   Future<void> _setUserRole() async {
@@ -30,58 +29,56 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
     await prefs.setBool('isPooler', true);
   }
 
-  // Future<void> _getNearbyOrders() async {
-  // final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-  // final restaurantProvider =
-  //     Provider.of<RestaurantProvider>(context, listen: false);
-  // final userLocator = Provider.of<UserLocator>(context, listen: false);
-  // 
-  //   if (userLocator.coordinates != null) {
-  // restaurantProvider.loadNearbyOrdersRestaurantsList(
-  //     orderProvider.getRestaurantsfromOrders(userLocator.coordinates));
-  //   } else {
-  //     loading = true;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final orderProvider = Provider.of<OrderProvider>(context);
     final userLocator = Provider.of<UserLocator>(context);
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
-    if (!loading) {
-      return Scaffold(
-          appBar: Header.getAppBar(title: 'Join Orders'),
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: StreamBuilder<List<Restaurant>>(
-                stream: restaurantProvider.loadNearbyOrdersRestaurantsList(
-                    restaurantIds: orderProvider
-                        .getRestaurantsfromOrders(userLocator.coordinates)),
-                builder: (context, snapshot) {
-                  if (snapshot.data == null) {
-                    return Center(
-                        child: Text(
-                            'Check another time! No nearby orders right now'));
-                  } else {
-                    print(snapshot.data);
-                    return Scrollbar(
-                        child: ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              return RestaurantCard(
-                                  snapshot.data[index].restaurantId,
-                                  snapshot.data[index].restaurantName,
-                                  snapshot.data[index].cuisineType,
-                                  snapshot.data[index].deliveryFee,
-                                  snapshot.data[index].rating,
-                                  snapshot.data[index].image);
-                            }));
-                  }
-                }),
-          ));
-    } else {
-      return Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
+    return Scaffold(
+        appBar: Header.getAppBar(title: 'Join Orders'),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: StreamBuilder<List<String>>(
+              stream: orderProvider
+                  .getRestaurantsfromOrders(userLocator.coordinates),
+              builder: (context1, snapshot1) {
+                if (snapshot1.data == null) {
+                  return Center(
+                      child: Text(
+                          'Check another time! No nearby orders right now'));
+                } else {
+                  return StreamBuilder<List<Restaurant>>(
+                    stream: restaurantProvider
+                        .loadNearbyOrdersRestaurantsList(snapshot1.data),
+                    builder: (context2, snapshot2) {
+                      if (snapshot2.data == null
+                          ? true
+                          : snapshot2.data.length == 1
+                              ? restaurantProvider
+                                      .loadNearbyOrdersRestaurantsList(
+                                          snapshot1.data) == null
+                              : false) {
+                        return Center(
+                            child: Text(
+                                'Check another time! No nearby orders right now'));
+                      } else {
+                        return Scrollbar(
+                            child: ListView.builder(
+                                itemCount: snapshot2.data.length,
+                                itemBuilder: (context, index) {
+                                  return RestaurantCard(
+                                      snapshot2.data[index].restaurantId,
+                                      snapshot2.data[index].restaurantName,
+                                      snapshot2.data[index].cuisineType,
+                                      snapshot2.data[index].deliveryFee,
+                                      snapshot2.data[index].rating,
+                                      snapshot2.data[index].image);
+                                }));
+                      }
+                    },
+                  );
+                }
+              }),
+        ));
   }
 }

@@ -4,6 +4,7 @@ import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
+import 'package:foodstack/src/services/notifications.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:provider/provider.dart';
@@ -20,17 +21,17 @@ class Alerts {
             'Returning to the previous page will delete all items in your cart'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
             child: Text('Add more', style: TextStyles.emphasis()),
+            onPressed: () => Navigator.pop(context, 'Cancel'),
           ),
           TextButton(
+            child: Text('Empty cart', style: TextStyles.textButton()),
             onPressed: () {
               Navigator.pop(context);
               Navigator.pop(context);
               cartProvider.clearCart();
               orderProvider.clearOrder();
             },
-            child: Text('Empty cart', style: TextStyles.textButton()),
           ),
         ],
       );
@@ -46,28 +47,43 @@ class Alerts {
         content: const Text('Are you sure you want to cancel your order?'),
         actions: <Widget>[
           TextButton(
+            child: Text('Go back', style: TextStyles.emphasis()),
             onPressed: () => Navigator.pop(context),
-            child: Text('No', style: TextStyles.emphasis()),
           ),
-          TextButton(
-            onPressed: () async {
-              if (orderProvider.cartIds.length > 1) {
-                await orderProvider.removeFromCartsList(
-                    cartProvider.cartId, orderProvider.orderId);
-              } else {
-                await orderProvider.removeOrder(orderProvider.orderId);
-              }
-              await cartProvider.deleteCart(cartProvider.cartId);
-              Navigator.pushNamedAndRemoveUntil(context, '/home', (r) => false);
-            },
-            child: Text('Yes', style: TextStyles.textButton()),
-          ),
+          Consumer<NotificationService>(
+              builder: (context, model, _) => TextButton(
+                    child: Text('I\'m sure', style: TextStyles.textButton()),
+                    onPressed: () async {
+                      await orderProvider.getOrder(orderProvider.orderId);
+                      if (orderProvider.cartIds.length > 1) {
+                        await orderProvider.removeFromCartsList(
+                            cartProvider.cartId, orderProvider.orderId);
+                      } else {
+                        await orderProvider.removeOrder(orderProvider.orderId);
+                      }
+                      await cartProvider.deleteCart(cartProvider.cartId);
+                      model.cancelNotification();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/home', (r) => false);
+                    },
+                  )),
         ],
       );
     };
   }
 
   static Function joinOrder() {
+    int _minutesRemaining(DateTime orderClosingTime) {
+      DateTime currentTime = DateTime.now();
+      int minutes;
+      if (orderClosingTime.hour > currentTime.hour) {
+        minutes = 60 - (currentTime.minute - orderClosingTime.minute);
+      } else {
+        minutes = orderClosingTime.minute - currentTime.minute;
+      }
+      return minutes;
+    }
+
     return (BuildContext context) {
       final orderProvider = Provider.of<OrderProvider>(context);
       final cartProvider = Provider.of<CartProvider>(context);
@@ -76,39 +92,46 @@ class Alerts {
       GeoFirePoint userLocation = geo.point(
           latitude: userLocator.coordinates.latitude,
           longitude: userLocator.coordinates.longitude);
-      return CupertinoAlertDialog(
-        title: const Text('Order Nearby'),
-        content: const Text(
-            'There is an order nearby from the same restaurant. Would you like to join the order?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () async {
-              final pref = await SharedPreferences.getInstance();
-              pref.setBool('isPooler', true);
-              await orderProvider.getNearbyOrder(cartProvider.restaurantId);
-              orderProvider.addToCartsList(
-                  cartProvider.cartId, orderProvider.orderId);
-              Navigator.pushNamed(context, '/wait');
-            },
-            child: Text('Join Order', style: TextStyles.emphasis()),
-          ),
-          TextButton(
-            onPressed: () {
-              orderProvider.setOrder(
-                  Order(
-                      restaurantId: cartProvider.restaurantId,
-                      coordinates: userLocation,
-                      totalPrice:
-                          cartProvider.getSubtotal() + cartProvider.deliveryFee,
-                      deliveryAddress: userLocator.deliveryAddress.addressLine,
-                      cartIds: [cartProvider.cartId]),
-                  cartProvider.joinDuration);
-              Navigator.pushNamed(context, '/wait');
-            },
-            child: Text('No, thanks', style: TextStyles.textButton()),
-          ),
-        ],
-      );
+      return Consumer<NotificationService>(
+          builder: (context, model, _) => CupertinoAlertDialog(
+                title: const Text('Order Nearby'),
+                content: const Text(
+                    'There is an order nearby from the same restaurant. Would you like to join the order?'),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('Join Order', style: TextStyles.emphasis()),
+                    onPressed: () async {
+                      final pref = await SharedPreferences.getInstance();
+                      pref.setBool('isPooler', true);
+                      await orderProvider
+                          .getNearbyOrder(cartProvider.restaurantId);
+                      orderProvider.addToCartsList(
+                          cartProvider.cartId, orderProvider.orderId);
+                      model.scheduledNotification(
+                          _minutesRemaining(orderProvider.orderTime));
+                      Navigator.pushNamed(context, '/wait');
+                    },
+                  ),
+                  TextButton(
+                    child: Text('No, thanks', style: TextStyles.textButton()),
+                    onPressed: () {
+                      orderProvider.setOrder(
+                          Order(
+                              restaurantId: cartProvider.restaurantId,
+                              coordinates: userLocation,
+                              totalPrice: cartProvider.getSubtotal() +
+                                  cartProvider.deliveryFee,
+                              deliveryAddress:
+                                  userLocator.deliveryAddress.addressLine,
+                              cartIds: [cartProvider.cartId]),
+                          cartProvider.joinDuration);
+                      if (cartProvider.joinDuration != 0)
+                        model.scheduledNotification(cartProvider.joinDuration);
+                      Navigator.pushNamed(context, '/wait');
+                    },
+                  ),
+                ],
+              ));
     };
   }
 }

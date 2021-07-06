@@ -24,9 +24,7 @@ class _SocialButtonState extends State<SocialButton> {
           child: widget.image,
           style: ElevatedButton.styleFrom(
               shape: CircleBorder(), primary: Colors.white),
-          onPressed: () {
-            // TODO Google Sign In
-          },
+          onPressed: widget.onPressed,
         ),
       ),
     );

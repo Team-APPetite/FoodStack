@@ -35,7 +35,7 @@ void main() async{
       ],
       child: MaterialApp (
         title: 'FoodStack',
-        home: CustomBottomNavBar(),
+        home: CustomBottomNavBar(selectedMenu: null,),
         // This mocked observer will now receive all navigation events
         // that happen in our app.
         navigatorObservers: [mockObserver],

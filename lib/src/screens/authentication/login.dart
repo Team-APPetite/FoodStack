@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/blocs/auth_blocs.dart';
-import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/services/userAuth.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -20,6 +18,7 @@ class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
+
 class _LoginScreenState extends State<LoginScreen> {
   String _email = '', _password = '';
   final auth = FirebaseAuth.instance;
@@ -32,14 +31,22 @@ class _LoginScreenState extends State<LoginScreen> {
     var authBloc = Provider.of<AuthBloc>(context, listen: false);
     loginStateSubscription = authBloc.currentUser.listen((fbUser) {
       if (fbUser != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => HomeScreen(),
-          ),
-        );
+        _navigate();
       }
     });
     super.initState();
+  }
+
+  _navigate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String orderStatus = prefs.getString('orderStatus');   
+    (orderStatus == 'Status.none' || orderStatus == 'Status.delivered')
+              ? Navigator.pushReplacementNamed(context, '/home')
+              : (orderStatus == 'Status.active' ||
+                      orderStatus == 'Status.full' ||
+                      orderStatus == 'Status.closed')
+                  ? Navigator.pushReplacementNamed(context, '/wait')
+                  : Navigator.pushReplacementNamed(context, '/trackOrder');
   }
 
   @override
@@ -110,16 +117,27 @@ class _LoginScreenState extends State<LoginScreen> {
     Widget _socialLogin() {
       return Column(
         children: [
-          // Text(
-          //   'OR ',
-          //   style: TextStyles.body(),
-          // ),
-          // SizedBox(height: 15.0),
-          SignInButton(
-            Buttons.Google,
+          Text(
+            'or Sign in with',
+            style: TextStyles.body(),
+          ),
+          SizedBox(height: 15.0),
+          SocialButton(
+            image: Image.asset('images/google.png'),
             onPressed: () => authBloc.loginGoogle(),
-          )
+          ),
         ],
+        // children: [
+        //   // Text(
+        //   //   'OR ',
+        //   //   style: TextStyles.body(),
+        //   // ),
+        //   // SizedBox(height: 15.0),
+        //   SignInButton(
+        //     Buttons.Google,
+        //     onPressed: () => authBloc.loginGoogle(),
+        //   )
+        // ],
       );
     }
 

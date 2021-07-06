@@ -33,13 +33,13 @@ class _MenuScreenState extends State<MenuScreen> {
 
   Future<bool> _getUserRole() async {
     final prefs = await SharedPreferences.getInstance();
-    final isPooler = prefs.getBool('isPooler');
+    isPooler = prefs.getBool('isPooler');
     return isPooler;
   }
 
   Future<void> _setOrderCompletionTime() async {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    isPooler = await _getUserRole();
+      isPooler = await _getUserRole();
 
     if (isPooler) {
       await orderProvider.getNearbyOrder(restaurantId);
@@ -87,12 +87,15 @@ class _MenuScreenState extends State<MenuScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  AppButton(
+                  (!isPooler || _orderCompletionTime != null) ? AppButton(
                     buttonText: 'VIEW CART',
                     onPressed: () {
                       Navigator.pushNamed(context, '/cart');
                     },
-                  ),
+                  ) : Center(child: Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Text('Getting nearby order details...'),
+                  )),
                   cartProvider.itemQuantityIcon(),
                 ],
               ),

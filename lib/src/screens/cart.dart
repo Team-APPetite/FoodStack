@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -76,7 +75,6 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final orderProvider = Provider.of<OrderProvider>(context);
-    final restaurantProvider = Provider.of<RestaurantProvider>(context);
 
     final geo = Geoflutterfire();
     final userLocator = Provider.of<UserLocator>(context);
@@ -151,13 +149,13 @@ class _CartScreenState extends State<CartScreen> {
       );
     }
 
-    int _minutesRemaining() {
+    int _minutesRemaining(DateTime orderClosingTime) {
       DateTime currentTime = DateTime.now();
       int minutes;
-      if (_orderCompletionTime.hour > currentTime.hour) {
-        minutes = 60 - (currentTime.minute - _orderCompletionTime.minute);
+      if (orderClosingTime.hour > currentTime.hour) {
+        minutes = 60 - (currentTime.minute - orderClosingTime.minute);
       } else {
-        minutes = _orderCompletionTime.minute - currentTime.minute;
+        minutes = orderClosingTime.minute - currentTime.minute;
       }
       return minutes;
     }
@@ -190,12 +188,12 @@ class _CartScreenState extends State<CartScreen> {
                     onPressed: () async {
                       await cartProvider.confirmCart();
                       await _setUserOrderStatus();
-                      model.scheduledNotification(1);
                       if (isPooler) {
                         orderProvider.addToCartsList(
                             cartProvider.cartId,
                             orderProvider
-                                .orderId); // Need to update total price as well
+                                .orderId); // TODO Need to update total price as well
+                        model.scheduledNotification(_minutesRemaining(orderProvider.orderTime));
                         Navigator.pushNamed(context, '/wait');
                       } else {
                         await _checkOrderAvailability();
@@ -214,7 +212,8 @@ class _CartScreenState extends State<CartScreen> {
                                       userLocator.deliveryAddress.addressLine,
                                   cartIds: [cartProvider.cartId]),
                               cartProvider.joinDuration);
-
+                          if (cartProvider.joinDuration != 0)
+                          model.scheduledNotification(cartProvider.joinDuration);
                           Navigator.pushNamed(context, '/wait');
                         }
                       }

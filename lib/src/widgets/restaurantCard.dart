@@ -22,7 +22,6 @@ class RestaurantCard extends StatefulWidget {
 
 class _RestaurantCardState extends State<RestaurantCard> {
   bool _favourites = false;
-  int maxCartLength = 5;
 
   @override
   Widget build(BuildContext context) {

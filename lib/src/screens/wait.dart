@@ -21,6 +21,7 @@ class _WaitScreenState extends State<WaitScreen> {
   DateTime _orderCompletionTime = DateTime.now();
   bool isPooler = false;
   bool enableCheckout = false;
+  bool isCartAvailable = false;
   Timer timer;
 
   @override
@@ -72,8 +73,11 @@ class _WaitScreenState extends State<WaitScreen> {
     final restaurantProvider =
         Provider.of<RestaurantProvider>(context, listen: false);
     await orderProvider.getOrder(orderId);
-    cartProvider.getCart(cartId);
+    await cartProvider.getCart(cartId);
     restaurantProvider.getRestaurant(orderProvider.restaurantId);
+    setState(() {
+      isCartAvailable = true;
+    });
   }
 
   int _minutesRemaining() {
@@ -188,55 +192,60 @@ class _WaitScreenState extends State<WaitScreen> {
                             ),
                 ],
               ),
-              cartProvider.cartItems.length != 0 ? Column(
-                children: [
-                  Text(
-                    'Your Cart',
-                    style: TextStyles.heading2(),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24.0),
-                      border: Border.all(
-                        color: ThemeColors.light,
-                        width: 1,
-                      ),
-                      color: Colors.white,
-                    ),
-                    child: Padding(
+              isCartAvailable
+                  ? Column(
+                      children: [
+                        Text(
+                          'Your Cart',
+                          style: TextStyles.heading2(),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24.0),
+                            border: Border.all(
+                              color: ThemeColors.light,
+                              width: 1,
+                            ),
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Scrollbar(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: cartProvider.cartItems.length,
+                                  itemBuilder: (context, index) {
+                                    return _cartItem(
+                                      cartProvider.cartItems[index].foodId,
+                                      cartProvider.cartItems[index].foodName,
+                                      '\$' +
+                                          cartProvider.cartItems[index].price
+                                              .toString(),
+                                      cartProvider.cartItems[index].image,
+                                    );
+                                  }),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
+              isCartAvailable
+                  ? Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Scrollbar(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: cartProvider.cartItems.length,
-                            itemBuilder: (context, index) {
-                              return _cartItem(
-                                cartProvider.cartItems[index].foodId,
-                                cartProvider.cartItems[index].foodName,
-                                '\$' +
-                                    cartProvider.cartItems[index].price
-                                        .toString(),
-                                cartProvider.cartItems[index].image,
-                              );
-                            }),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Text('Subtotal',
+                                  style: TextStyles.heading3())),
+                          Text('\$${cartProvider.getSubtotal()}',
+                              style: TextStyles.emphasis()),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
-              ) : Container(),
-              cartProvider.cartItems.length != 0 ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Text('Subtotal', style: TextStyles.heading3())),
-                    Text('\$${cartProvider.getSubtotal()}',
-                        style: TextStyles.emphasis()),
-                  ],
-                ),
-              ) : Container(),
+                    )
+                  : Container(),
               enableCheckout
                   ? Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),

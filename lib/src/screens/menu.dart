@@ -39,7 +39,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   Future<void> _setOrderCompletionTime() async {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-      isPooler = await _getUserRole();
+    isPooler = await _getUserRole();
 
     if (isPooler) {
       await orderProvider.getNearbyOrder(restaurantId);
@@ -87,16 +87,28 @@ class _MenuScreenState extends State<MenuScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  (!isPooler || _orderCompletionTime != null) ? AppButton(
-                    buttonText: 'VIEW CART',
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/cart');
-                    },
-                  ) : Center(child: Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Text('Getting nearby order details...'),
-                  )),
-                  cartProvider.itemQuantityIcon(),
+                  (!isPooler || _orderCompletionTime != null)
+                      ? AppButton(
+                          buttonText: 'VIEW CART',
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/cart');
+                          },
+                        )
+                      : Center(
+                          child: Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: Text('Getting nearby order details...'),
+                        )),
+                  Material(
+                    child: InkResponse(
+                      child: cartProvider.itemQuantityIcon(),
+                      onTap: () {
+                        (!isPooler || _orderCompletionTime != null) ? 
+                        Navigator.pushNamed(context, '/cart') : print('');
+                      },
+                    ),
+                    shape: CircleBorder(),
+                  )
                 ],
               ),
             ),

@@ -39,22 +39,32 @@ class Cart {
   String cartId;
   String userId;
   String restaurantId;
+  String restaurantName;
   double subtotal;
+  double deliveryFee;
   List<dynamic> cartItems = [];
 
-  Cart(this.cartId, this.userId, this.restaurantId, this.subtotal,
-      this.cartItems);
+  Cart(this.cartId, this.userId, this.restaurantId, this.restaurantName,
+      this.subtotal, this.deliveryFee, this.cartItems);
 
   factory Cart.fromJson(Map<String, dynamic> json) {
-    return Cart(json['cartId'], json['userId'], json['restaurantId'],
-        json['subtotal'], json['cartItems']);
+    return Cart(
+        json['cartId'],
+        json['userId'],
+        json['restaurantId'],
+        json['restaurantName'],
+        json['subtotal'],
+        json['deliveryFee'],
+        json['cartItems']);
   }
 
   Map<String, dynamic> toMap() => {
         "cartId": this.cartId,
         "userId": this.userId,
         "restaurantId": this.restaurantId,
+        "restaurantName": this.restaurantName,
         "subtotal": this.subtotal,
+        "deliveryFee": this.deliveryFee,
         "cartItems": this.cartItems
       };
 }

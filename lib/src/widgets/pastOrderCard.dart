@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/cart.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
-import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:provider/provider.dart';
@@ -11,15 +10,18 @@ class PastOrderCard extends StatefulWidget {
   String cartId;
   List<CartItem> cartItems = [];
   String restaurantId;
-  String restaurantName = 'Restaurant';
-  double deliveryFee = 0.0;
+  String restaurantName;
+  double deliveryFee;
   double subtotal;
 
-  PastOrderCard(String id, List list, String rstId, double price) {
+  PastOrderCard(String id, List list, String rstId, String rstName,
+      double price, double fee) {
     cartId = id;
     list.forEach((item) => cartItems.add(CartItem.fromJson(item)));
     restaurantId = rstId;
+    restaurantName = rstName;
     subtotal = price;
+    deliveryFee = fee;
   }
 
   @override
@@ -27,22 +29,6 @@ class PastOrderCard extends StatefulWidget {
 }
 
 class _PastOrderCardState extends State<PastOrderCard> {
-  @override
-  void initState() {
-    super.initState();
-    _getRestaurantInfo();
-  }
-
-  Future<void> _getRestaurantInfo() async {
-    final restaurantProvider =
-        Provider.of<RestaurantProvider>(context, listen: false);
-    await restaurantProvider.getRestaurant(widget.restaurantId);
-    setState(() {
-       widget.restaurantName = restaurantProvider.restaurantName;
-       widget.deliveryFee = restaurantProvider.deliveryFee;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
@@ -83,13 +69,7 @@ class _PastOrderCardState extends State<PastOrderCard> {
                 notes: 'none'));
           }
 
-          // Replacing recentOrders screen with menu
-          // so that when the user presses back from
-          // the menu, they go to the home screen
-          // instead of the recentOrders screen,
-          // because recentOrders screen does not show
-          // restaurant info when going back from menu
-          Navigator.pushReplacementNamed(context, '/menu', arguments: {
+          Navigator.pushNamed(context, '/menu', arguments: {
             'restaurantId': widget.restaurantId,
             'restaurantName': widget.restaurantName,
             'deliveryFee': widget.deliveryFee,
@@ -108,8 +88,8 @@ class _PastOrderCardState extends State<PastOrderCard> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  widget.restaurantName != 'Restaurant' ? Text('${widget.restaurantName}',
-                      style: TextStyles.heading3()): Container(),
+                  Text(widget.restaurantName,
+                          style: TextStyles.heading3()),
                   ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -122,7 +102,6 @@ class _PastOrderCardState extends State<PastOrderCard> {
                           widget.cartItems[index].quantity,
                         );
                       }),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -143,9 +122,8 @@ class _PastOrderCardState extends State<PastOrderCard> {
                         color: ThemeColors.teals,
                         size: 20,
                       ),
-                      widget.deliveryFee != 0.0 ? Text(
-                        '\$${widget.deliveryFee}',
-                        style: TextStyles.details()) : Container(),
+                      Text('\$${widget.deliveryFee}',
+                              style: TextStyles.details()),
                     ],
                   ),
                 ],

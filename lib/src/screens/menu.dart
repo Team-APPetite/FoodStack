@@ -66,6 +66,7 @@ class _MenuScreenState extends State<MenuScreen> {
     menuProvider.selectRestaurant = restaurantId;
     cartProvider.deliveryFee = deliveryFee;
     cartProvider.restaurantId = restaurantId;
+    cartProvider.restaurantName = restaurantName;
 
     Widget viewCart() {
       return Align(
@@ -103,8 +104,9 @@ class _MenuScreenState extends State<MenuScreen> {
                     child: InkResponse(
                       child: cartProvider.itemQuantityIcon(),
                       onTap: () {
-                        (!isPooler || _orderCompletionTime != null) ? 
-                        Navigator.pushNamed(context, '/cart') : print('');
+                        (!isPooler || _orderCompletionTime != null)
+                            ? Navigator.pushNamed(context, '/cart')
+                            : print('');
                       },
                     ),
                     shape: CircleBorder(),

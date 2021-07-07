@@ -21,7 +21,7 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
   @override
   void initState() {
     super.initState();
-     _setUserRole();
+    _setUserRole();
   }
 
   Future<void> _setUserRole() async {
@@ -50,7 +50,13 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
                               Cart cart = snapshot.data[index];
-                              return PastOrderCard(cart.cartId, cart.cartItems, cart.restaurantId, cart.subtotal);
+                              return PastOrderCard(
+                                  cart.cartId,
+                                  cart.cartItems,
+                                  cart.restaurantId,
+                                  cart.restaurantName,
+                                  cart.subtotal,
+                                  cart.deliveryFee);
                             }));
                   }
                 }),

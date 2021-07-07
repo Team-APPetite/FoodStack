@@ -19,6 +19,7 @@ class CartProvider with ChangeNotifier {
 
   String _cartId;
   String _restaurantId;
+  String _restaurantName;
   String _userId;
   double _deliveryFee;
   double _subtotal = 0;
@@ -47,6 +48,10 @@ class CartProvider with ChangeNotifier {
 
   set restaurantId(String id) {
     _restaurantId = id;
+  }
+
+  set restaurantName(String name) {
+    _restaurantName = name;
   }
 
   addToCart(CartItem cartItem) {
@@ -88,7 +93,8 @@ class CartProvider with ChangeNotifier {
     List<dynamic> cartItemsList = [];
 
     _cartItems.forEach((item) => cartItemsList.add(item.toMap()));
-    var cart = Cart(_cartId, _userId, _restaurantId, _subtotal, cartItemsList);
+    var cart = Cart(_cartId, _userId, _restaurantId, _restaurantName, _subtotal,
+        _deliveryFee, cartItemsList);
     firestoreService.setCart(cart);
   }
 

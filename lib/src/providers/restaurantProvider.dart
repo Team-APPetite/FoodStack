@@ -38,9 +38,12 @@ class RestaurantProvider with ChangeNotifier {
   // Functions
   Stream<List<Restaurant>> loadNearbyOrdersRestaurantsList(
       List<String> restaurantIds) {
+    return firestoreService
+        .loadNearbyOrderRestaurants(restaurantIds.take(10).toList());
+  }
 
-    return firestoreService.loadNearbyOrderRestaurants(
-        restaurantIds.take(10).toList());
+  Stream<List<Restaurant>> getFavouriteRestaurants() {
+    return firestoreService.getFavouriteRestaurants();
   }
 
   setFlag() {

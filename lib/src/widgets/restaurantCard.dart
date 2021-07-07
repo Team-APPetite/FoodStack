@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -12,16 +13,17 @@ class RestaurantCard extends StatefulWidget {
   final double deliveryFee;
   final double rating;
   final String image;
+  bool favourite = false;
 
   RestaurantCard(this.restaurantId, this.restaurantName, this.cuisineType,
-      this.deliveryFee, this.rating, this.image);
+      this.deliveryFee, this.rating, this.image,
+      {this.favourite = false});
 
   @override
   _RestaurantCardState createState() => _RestaurantCardState();
 }
 
 class _RestaurantCardState extends State<RestaurantCard> {
-  bool _favourites = false;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +105,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     IconButton(
-                      icon: _favourites
+                      icon: widget.favourite
                           ? Icon(
                               Icons.favorite,
                               color: Colors.red,
@@ -115,12 +117,23 @@ class _RestaurantCardState extends State<RestaurantCard> {
                       iconSize: 30.0,
                       onPressed: () {
                         setState(() {
-                          _favourites = !_favourites;
-                          _favourites
-                              ? firestoreService
-                                  .addToFavourites(widget.restaurantId)
-                              : firestoreService
-                                  .removeFromFavourites(widget.restaurantId);
+                          widget.favourite = !widget.favourite;
+                          widget.favourite
+                              ? firestoreService.addToFavourites(Restaurant(
+                                  restaurantId: widget.restaurantId,
+                                  restaurantName: widget.restaurantName,
+                                  cuisineType: widget.cuisineType,
+                                  deliveryFee: widget.deliveryFee,
+                                  rating: widget.rating,
+                                  image: widget.image))
+                              : firestoreService.removeFromFavourites(
+                                  Restaurant(
+                                      restaurantId: widget.restaurantId,
+                                      restaurantName: widget.restaurantName,
+                                      cuisineType: widget.cuisineType,
+                                      deliveryFee: widget.deliveryFee,
+                                      rating: widget.rating,
+                                      image: widget.image));
                         });
                       },
                     ),

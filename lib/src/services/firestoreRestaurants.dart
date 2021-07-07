@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:foodstack/src/models/order.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodstack/src/models/restaurant.dart';
+import 'package:foodstack/src/models/user.dart';
 
 class FirestoreRestaurants {
   FirebaseFirestore _db = FirebaseFirestore.instance;
   Stream<List<Restaurant>> nearbyOrderRestaurants;
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Read
   Future<Restaurant> getRestaurant(String restaurantId) {
@@ -23,14 +25,26 @@ class FirestoreRestaurants {
   }
 
   Stream<List<Restaurant>> loadNearbyOrderRestaurants(List nearbyOrders) {
-    return nearbyOrders.isNotEmpty ?
-    _db
-        .collection('restaurants')
-        .where('restaurantId', whereIn: nearbyOrders)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Restaurant.fromJson(doc.data()))
-            .toList()) : null;
+    return nearbyOrders.isNotEmpty
+        ? _db
+            .collection('restaurants')
+            .where('restaurantId', whereIn: nearbyOrders)
+            .snapshots()
+            .map((snapshot) => snapshot.docs
+                .map((doc) => Restaurant.fromJson(doc.data()))
+                .toList())
+        : null;
+  }
+
+  Stream<List<Restaurant>> getFavouriteRestaurants() {
+    print("getFavouriteRestaurants");
+    String uid = _auth.currentUser.uid;
+    return _db
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((snapshot) => Users.fromFirestore(snapshot.data()))
+        .then((value) => value.favourites.map((e) => Restaurant.fromJson(e)).toList()).asStream();
   }
 
   // Create and Update

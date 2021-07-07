@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/models/user.dart';
 
 class FirestoreUsers {
@@ -44,10 +45,10 @@ class FirestoreUsers {
   }
 
   //Add restaurant to user favourites array
-  Future<void> addToFavourites(String restaurantId) async {
+  Future<void> addToFavourites(Restaurant restaurant) async {
     CollectionReference users = _db.collection('users');
     var currUid = _auth.currentUser.uid;
-    List addFavourite = [restaurantId];
+    List addFavourite = [restaurant.toMap()];
     return users
         .doc(currUid)
         .update({'favourites': FieldValue.arrayUnion(addFavourite)})
@@ -56,10 +57,10 @@ class FirestoreUsers {
   }
 
   //Remove restaurant from user favourites array
-  Future<void> removeFromFavourites(String restaurantId) async {
+  Future<void> removeFromFavourites(Restaurant restaurant) async {
     CollectionReference users = _db.collection('users');
     var currUid = _auth.currentUser.uid;
-    List addFavourite = [restaurantId];
+    List addFavourite = [restaurant.toMap()];
     return users
         .doc(currUid)
         .update({'favourites': FieldValue.arrayRemove(addFavourite)})

@@ -7,6 +7,7 @@ import 'package:foodstack/src/services/notifications.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/alerts.dart';
+import 'package:foodstack/src/utilities/time.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,17 +75,6 @@ class _WaitScreenState extends State<WaitScreen> {
     setState(() {
       isCartAvailable = true;
     });
-  }
-
-  int _minutesRemaining() {
-    DateTime currentTime = DateTime.now();
-    int minutes;
-    if (_orderCompletionTime.hour > currentTime.hour) {
-      minutes = 60 - (currentTime.minute - _orderCompletionTime.minute);
-    } else {
-      minutes = _orderCompletionTime.minute - currentTime.minute;
-    }
-    return minutes;
   }
 
   @override
@@ -177,13 +167,13 @@ class _WaitScreenState extends State<WaitScreen> {
                   ),
                   enableCheckout
                       ? Container()
-                      : (_minutesRemaining() == 1)
+                      : (TimeHelper.minutesRemaining(_orderCompletionTime) == 1)
                           ? Text(
-                              '${_minutesRemaining()} minute remaining',
+                              '${TimeHelper.minutesRemaining(_orderCompletionTime)} minute remaining',
                               style: TextStyles.heading3(),
                             )
                           : Text(
-                              '${_minutesRemaining()} minutes remaining',
+                              '${TimeHelper.minutesRemaining(_orderCompletionTime)} minutes remaining',
                               style: TextStyles.heading3(),
                             ),
                 ],

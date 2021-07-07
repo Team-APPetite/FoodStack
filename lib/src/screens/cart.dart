@@ -12,6 +12,7 @@ import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/alerts.dart';
 import 'package:foodstack/src/utilities/statusEnums.dart';
+import 'package:foodstack/src/utilities/time.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
@@ -149,17 +150,6 @@ class _CartScreenState extends State<CartScreen> {
       );
     }
 
-    int _minutesRemaining(DateTime orderClosingTime) {
-      DateTime currentTime = DateTime.now();
-      int minutes;
-      if (orderClosingTime.hour > currentTime.hour) {
-        minutes = 60 - (currentTime.minute - orderClosingTime.minute);
-      } else {
-        minutes = orderClosingTime.minute - currentTime.minute;
-      }
-      return minutes;
-    }
-
     Widget _createOrder() {
       return Consumer<NotificationService>(
         builder: (context, model, _) => Align(
@@ -193,7 +183,7 @@ class _CartScreenState extends State<CartScreen> {
                             cartProvider.cartId,
                             orderProvider
                                 .orderId); // TODO Need to update total price as well
-                        model.scheduledNotification(_minutesRemaining(orderProvider.orderTime));
+                        model.scheduledNotification(TimeHelper.minutesRemaining(orderProvider.orderTime));
                         Navigator.pushNamed(context, '/wait');
                       } else {
                         await _checkOrderAvailability();

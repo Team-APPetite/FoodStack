@@ -6,6 +6,7 @@ import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/services/notifications.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
+import 'package:foodstack/src/utilities/time.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -73,17 +74,6 @@ class Alerts {
   }
 
   static Function joinOrder() {
-    int _minutesRemaining(DateTime orderClosingTime) {
-      DateTime currentTime = DateTime.now();
-      int minutes;
-      if (orderClosingTime.hour > currentTime.hour) {
-        minutes = 60 - (currentTime.minute - orderClosingTime.minute);
-      } else {
-        minutes = orderClosingTime.minute - currentTime.minute;
-      }
-      return minutes;
-    }
-
     return (BuildContext context) {
       final orderProvider = Provider.of<OrderProvider>(context);
       final cartProvider = Provider.of<CartProvider>(context);
@@ -108,7 +98,7 @@ class Alerts {
                       orderProvider.addToCartsList(
                           cartProvider.cartId, orderProvider.orderId);
                       model.scheduledNotification(
-                          _minutesRemaining(orderProvider.orderTime));
+                          TimeHelper.minutesRemaining(orderProvider.orderTime));
                       Navigator.pushNamed(context, '/wait');
                     },
                   ),

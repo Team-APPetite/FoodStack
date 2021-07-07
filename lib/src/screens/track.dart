@@ -17,7 +17,7 @@ class TrackScreen extends StatefulWidget {
 }
 
 class _TrackScreenState extends State<TrackScreen> {
-  DateTime _orderCompletionTime = DateTime.now();
+  DateTime _orderCompletionTime;
   bool isPooler = false;
   bool isCartAvailable = false;
   String orderStatus = Status.none.toString();
@@ -48,16 +48,15 @@ class _TrackScreenState extends State<TrackScreen> {
 
   Future<void> _checkOrderStatus() async {
     DateTime currentTime = DateTime.now();
-
     _setOrderCompletionTime();
+
     if (currentTime.compareTo(_orderCompletionTime) > 0) {
       timer.cancel();
       setState(() {
         orderStatus = Status.closed.toString();
       });
     } else {
-      setState(() {
-      });
+      setState(() {});
     }
   }
 
@@ -74,22 +73,13 @@ class _TrackScreenState extends State<TrackScreen> {
     });
   }
 
-  int _minutesRemaining(DateTime time) {
-    DateTime currentTime = DateTime.now();
-    int minutes;
-    if (time.hour > currentTime.hour) {
-      minutes = 60 - (currentTime.minute - time.minute);
-    } else {
-      minutes = time.minute - currentTime.minute;
-    }
-    return minutes;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header.getAppBar(title: 'Track Your Order', back: false),
-        body: Column(),
+        appBar: Header.getAppBar(title: 'Track Your Order', back: false),
+        body: _orderCompletionTime != null
+            ? Column()
+            : Center(child: CircularProgressIndicator()),
         bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.track));
   }
 }

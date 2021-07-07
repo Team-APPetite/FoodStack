@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/paymentProvider.dart';
-import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/utilities/numbers.dart';
 import 'package:foodstack/src/utilities/statusEnums.dart';
@@ -23,7 +22,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
     super.initState();
     _setOrderStatus();
-    orderProvider.setStatusAsPaid();
+    orderProvider.setStatusAsPaid(orderProvider.orderId);
   }
 
   _setOrderStatus() async {
@@ -35,11 +34,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
   Widget build(BuildContext context) {
     final orderProvider = Provider.of<OrderProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
-    final restaurantProvider = Provider.of<RestaurantProvider>(context);
     final paymentProvider = Provider.of<PaymentProvider>(context);
 
     final double _subtotal = cartProvider.getSubtotal();
-    final double _deliveryFee = restaurantProvider.deliveryFee;
+    final double _deliveryFee = cartProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
     final double _finalDeliveryFee = _deliveryFee / _numOfUsers;
     final double _total = _subtotal + _finalDeliveryFee;

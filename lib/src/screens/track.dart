@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/utilities/statusEnums.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
@@ -17,69 +16,105 @@ class TrackScreen extends StatefulWidget {
 }
 
 class _TrackScreenState extends State<TrackScreen> {
-  DateTime _orderCompletionTime;
+  static const int noOfMillisecondsPerSecond = 1000;
+
+  DateTime orderCompletionTime;
+  DateTime currentTime;
+  DateTime orderPickupTime;
+  DateTime orderDeliveryTime;
+  DateTime clearOrderTrackTime;
+
   bool isPooler = false;
   bool isCartAvailable = false;
   String orderStatus = Status.none.toString();
+  String orderId;
   Timer timer;
 
   @override
   void initState() {
-    super.initState();
-    _getUserRole();
     _checkOrderStatus();
-    _getOrderInfo();
-  }
-
-  Future<bool> _getUserRole() async {
-    final prefs = await SharedPreferences.getInstance();
-    isPooler = prefs.getBool('isPooler');
-    return isPooler;
+    timer = Timer.periodic(Duration(seconds: 5), (timer) async { // 2 minutes
+      _checkOrderStatus();
+    });
+    super.initState();
   }
 
   Future<void> _setOrderCompletionTime() async {
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    setState(() => _orderCompletionTime = orderProvider.orderTime);
-
-    timer = Timer.periodic(Duration(minutes: 1), (timer) async {
-      await orderProvider.getOrder(orderProvider.orderId);
+    final prefs = await SharedPreferences.getInstance();
+    orderId = prefs.getString('orderId');
+    setState(() {
+      orderCompletionTime = DateTime.fromMillisecondsSinceEpoch(
+          prefs.getInt('orderCompletionTime') * noOfMillisecondsPerSecond);
+      currentTime = DateTime.now();
+      orderPickupTime =
+          orderCompletionTime.add(Duration(seconds: 30)); // 10 minutes
+      orderDeliveryTime =
+          orderPickupTime.add(Duration(seconds: 20)); // 20 minutes
+      clearOrderTrackTime =
+          orderDeliveryTime.add(Duration(seconds: 20)); // 10 minutes
     });
   }
 
   Future<void> _checkOrderStatus() async {
-    DateTime currentTime = DateTime.now();
-    _setOrderCompletionTime();
-
-    if (currentTime.compareTo(_orderCompletionTime) > 0) {
-      timer.cancel();
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    await _setOrderCompletionTime();
+    if (currentTime.compareTo(clearOrderTrackTime) > 0) {
       setState(() {
-        orderStatus = Status.closed.toString();
+        orderStatus = Status.none.toString();
+      });
+    } else if (currentTime.compareTo(orderDeliveryTime) > 0) {
+      setState(() {
+        orderStatus = Status.delivered.toString();
+        orderProvider.setStatusAsDelivered(orderId);
+      });
+    } else if (currentTime.compareTo(orderPickupTime) > 0) {
+      setState(() {
+        orderStatus = Status.pickedUp.toString();
+      });
+    } else if (currentTime.compareTo(orderCompletionTime) > 0) {
+      setState(() {
+        orderStatus = Status.paid.toString();
       });
     } else {
-      setState(() {});
+      setState(() {
+        orderStatus = Status.none.toString();
+      });
     }
-  }
-
-  Future<void> _getOrderInfo() async {
-    final prefs = await SharedPreferences.getInstance();
-    String orderId = prefs.getString('orderId');
-    String cartId = prefs.getString('cartId');
-    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    await orderProvider.getOrder(orderId);
-    await cartProvider.getCart(cartId);
-    setState(() {
-      isCartAvailable = true;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: Header.getAppBar(title: 'Track Your Order', back: false),
-        body: _orderCompletionTime != null
-            ? Column()
-            : Center(child: CircularProgressIndicator()),
+        body: orderStatus == 'Status.paid'
+            ? Column(
+                children: [
+                  Center(child: Text('paid')),
+                ],
+              )
+            : orderStatus == 'Status.pickedUp'
+                ? Column(
+                    children: [
+                      Center(child: Text('pickedUp')),
+                    ],
+                  )
+                : orderStatus == 'Status.delivered'
+                    ? Column(
+                        children: [
+                          Center(child: Text('delivered')),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          Center(child: Text('none')),
+                        ],
+                      ),
         bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.track));
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 }

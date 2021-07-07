@@ -79,6 +79,7 @@ class OrderProvider with ChangeNotifier {
     int nanoseconds = currentTime.nanoseconds;
     Timestamp orderCompletionTime = Timestamp(seconds, nanoseconds);
     _orderTime = orderCompletionTime;
+    prefs.setInt('orderCompletionTime', seconds);
 
     var newOrder = Order(
       orderId: _orderId,
@@ -208,10 +209,22 @@ class OrderProvider with ChangeNotifier {
     firestoreService.setStatus(Status.closed.toString(), orderId);
   }
 
-  setStatusAsPaid() async {
+  setStatusAsPaid(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('orderStatus', Status.paid.toString());
-    firestoreService.setStatus(Status.paid.toString(), orderId);
+    firestoreService.setStatus(Status.paid.toString(), id);
+  }
+
+  setStatusAsPickedUp(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('orderStatus', Status.pickedUp.toString());
+    firestoreService.setStatus(Status.pickedUp.toString(), id);
+  }
+
+  setStatusAsDelivered(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('orderStatus', Status.delivered.toString());
+    firestoreService.setStatus(Status.delivered.toString(), id);
   }
 
   getRestaurantsfromOrders(LatLng coordinates) {

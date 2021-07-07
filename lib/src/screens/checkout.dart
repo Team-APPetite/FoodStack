@@ -3,7 +3,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/paymentProvider.dart';
-import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/services/braintreeService.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
@@ -51,11 +50,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     final orderProvider = Provider.of<OrderProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
-    final restaurantProvider = Provider.of<RestaurantProvider>(context);
     final paymentProvider = Provider.of<PaymentProvider>(context);
 
     final double _subtotal = cartProvider.getSubtotal();
-    final double _deliveryFee = restaurantProvider.deliveryFee;
+    final double _deliveryFee = cartProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
     final double _finalDeliveryFee = _deliveryFee / _numOfUsers;
     final double _total = _subtotal + _finalDeliveryFee;
@@ -120,29 +118,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               style: TextStyles.body(),
                               textAlign: TextAlign.center,
                             ),
-                            // isPooler
-                            //     ? Container()
-                            //     : OutlinedButton(
-                            //         child: Text('Change Address',
-                            //             style: TextStyles.textButton()),
-                            //         style: OutlinedButton.styleFrom(
-                            //             primary: ThemeColors.oranges,
-                            //             shape: RoundedRectangleBorder(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(30.0),
-                            //             ),
-                            //             side: BorderSide(
-                            //               color: ThemeColors.oranges,
-                            //               width: 1,
-                            //             )),
-                            //         onPressed: () {
-                            //           Navigator.push(
-                            //               context,
-                            //               MaterialPageRoute(
-                            //                   builder: (context) =>
-                            //                       AddressScreen()));
-                            //         },
-                            //       ),
                           ],
                         ),
                       ),
@@ -192,6 +167,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         await BraintreeService.makePayment(
                                             _total, 'FoodStack');
                                     if (result == "Payment successful!") {
+                                      orderProvider.setStatusAsPaid(orderProvider.orderId);
                                       paymentProvider.addPayment(
                                           orderProvider.orderId,
                                           _total,
@@ -207,6 +183,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       );
                                     }
                                   } else {
+                                    orderProvider.setStatusAsPaid(orderProvider.orderId);
                                     paymentProvider.addPayment(
                                         orderProvider.orderId,
                                         _total,

@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Fluttertoast.showToast(
       msg: 'Delivering at ${userLocator.deliveryAddress.addressLine}',
       gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 5,
+      timeInSecForIosWeb: 2,
       backgroundColor: ThemeColors.dark,
     );
   }

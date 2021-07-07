@@ -9,4 +9,5 @@ class TimeHelper {
     }
     return minutes;
   }
-}  
+}
+  

@@ -85,6 +85,7 @@ class FirestoreOrders {
   }
 
   Future<void> setStatus(String status, String orderId) {
+    print("setStatus");
     CollectionReference users = _db.collection('orders');
     return users
         .doc(orderId)

@@ -1,123 +1,84 @@
-import 'dart:async';
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:foodstack/src/models/cart.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
-import 'package:foodstack/src/services/firestoreCarts.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+import 'package:foodstack/src/utilities/numbers.dart';
 
 import '../mock.dart';
 
-class FirestoreCartsMock extends Mock implements FirestoreCarts {}
+List<CartItem> mockCartItems = [
+  CartItem(
+      foodId: "123",
+      foodName: "French Fries",
+      price: 4.50,
+      quantity: 1,
+      notes: "none"),
+  CartItem(
+      foodId: "456",
+      foodName: "Ice Cream Cone",
+      price: 1.95,
+      quantity: 1,
+      notes: "none"),
+  CartItem(
+      foodId: "789",
+      foodName: "Chicken Wrap",
+      price: 6.50,
+      quantity: 1,
+      notes: "none"),
+  CartItem(
+      foodId: "1011",
+      foodName: "Chocolate Cake",
+      price: 5.65,
+      quantity: 1,
+      notes: "none"),
+];
 
 void main() async {
   setupFirebaseAuthMocks();
+  await Firebase.initializeApp();
+  var cartProvider = CartProvider();
 
-  Cart _cart;
-  CartProvider _cartProvider;
-  final instance = FakeFirebaseFirestore();
-  final firestoreCartsMock = FirestoreCartsMock();
+  cartProvider.addToCart(mockCartItems[0]);
+  cartProvider.addToCart(mockCartItems[1]);
+  cartProvider.addToCart(mockCartItems[2]);
+  cartProvider.addToCart(mockCartItems[3]);
+  cartProvider.addToCart(mockCartItems[0]);
+  cartProvider.addToCart(mockCartItems[1]);
 
-  setUp(() async {
-    await Firebase.initializeApp();
-    _cartProvider = CartProvider();
-    _cart = Cart('123-456-789', '987-654-321', '456-789-123',
-        'Fast Food Restaurant', 9.00, 4.00, [
-      CartItem(
-          foodId: '123',
-          foodName: 'FoodItem',
-          price: 2.50,
-          quantity: 2,
-          notes: ''),
-      CartItem(
-          foodId: '321',
-          foodName: 'AnotherFoodItem',
-          price: 4.00,
-          quantity: 1,
-          notes: 'none')
-    ]);
-  });
-
-  group('Check individual values', () {
-    test('Cart Id', () {
-      expect(_cart.cartId, '123-456-789');
+  group('Cart Functionality', () {
+    test('Add items to cart', () {
+      expect(cartProvider.cartItems.length, 4);
     });
 
-    test('User Id', () {
-      expect(_cart.userId, '987-654-321');
+    test('Item quantity when singular', () {
+      expect(cartProvider.getItemQuantityOf(mockCartItems[2].foodId), 1);
     });
 
-    test('Restaurant Id', () {
-      expect(_cart.restaurantId, '456-789-123');
+    test('Item quantity when plural', () {
+      expect(cartProvider.getItemQuantityOf(mockCartItems[0].foodId), 2);
     });
 
-    test('Subtotal', () {
-      expect(_cart.subtotal, 9.00);
+    test('Remove items from cart', () {
+      cartProvider.removeFromCart(mockCartItems[0].foodId);
+      expect(cartProvider.getItemQuantityOf(mockCartItems[0].foodId), 0);
     });
 
-    test('Cart Item Id', () {
-      expect(_cart.cartItems[1].foodId, '321');
+    test('Update item quantity', () {
+      cartProvider.updateItemQuantityOf(mockCartItems[3].foodId, 4);
+      expect(cartProvider.getItemQuantityOf(mockCartItems[3].foodId), 4);
     });
 
-    test('Cart Item Name', () {
-      expect(_cart.cartItems[1].foodName, 'AnotherFoodItem');
+    test('Calculate subtotal', () {
+      double subtotal = Numbers.roundTo2d((mockCartItems[0].price * 0) +
+          (mockCartItems[1].price * 2) +
+          mockCartItems[2].price +
+          mockCartItems[3].price * 4);
+      expect(cartProvider.getSubtotal(), subtotal);
     });
 
-    test('Cart Item Quantity', () {
-      expect(_cart.cartItems[0].quantity, 2);
+    test('Clear cart after confirm', () {
+      cartProvider.clearCart();
+      expect(cartProvider.cartItems.length, 0);
     });
-
-    test('Cart Item Price', () {
-      expect(_cart.cartItems[0].price, 2.50);
-    });
-
-    test('Cart Item Notes', () {
-      expect(_cart.cartItems[0].notes, isEmpty);
-    });
-  });
-
-  testWidgets('[Provider] Update when the value changes', (tester) async {
-    final _providerKey = GlobalKey();
-    final _childKey = GlobalKey();
-    BuildContext context;
-    await tester.pumpWidget(ChangeNotifierProvider<CartProvider>(
-      key: _providerKey,
-      create: (c) {
-        context = c;
-        return _cartProvider;
-      },
-      child: Container(key: _childKey),
-    ));
-// Check the context test...
-    // expect(context, equals(_providerKey.currentContext));
-// Check the model test (if null)...
-    // expect(Provider.of<CartProvider>(_childKey.currentContext, listen: false), null);
-    _cartProvider.restaurantId = '456-789-123';
-    _cartProvider.restaurantName = 'Fast Food Restaurant';
-    _cartProvider.deliveryFee = 4.00;
-    _cartProvider.addToCart(CartItem(
-        foodId: '123',
-        foodName: 'FoodItem',
-        price: 2.50,
-        quantity: 1,
-        notes: ''));
-    _cartProvider.addToCart(CartItem(
-        foodId: '321',
-        foodName: 'AnotherFoodItem',
-        price: 4.00,
-        quantity: 1,
-        notes: 'none'));
-    _cartProvider.updateItemQuantityOf('123', 2);
-    _cartProvider.getSubtotal();
-    _cartProvider.confirmCart();
-// Delay the pump...
-    await Future.microtask(tester.pump);
-// Check if the model passed (with some value) is the same as received...
-    expect(Provider.of<CartProvider>(_childKey.currentContext, listen: false), _cartProvider);
-    // _cartProvider.dispose();
   });
 }

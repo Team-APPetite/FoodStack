@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
-import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/services/notifications.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -70,11 +69,8 @@ class _WaitScreenState extends State<WaitScreen> {
     String cartId = prefs.getString('cartId');
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    final restaurantProvider =
-        Provider.of<RestaurantProvider>(context, listen: false);
     await orderProvider.getOrder(orderId);
     await cartProvider.getCart(cartId);
-    restaurantProvider.getRestaurant(orderProvider.restaurantId);
     setState(() {
       isCartAvailable = true;
     });

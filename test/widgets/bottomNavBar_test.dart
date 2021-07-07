@@ -9,7 +9,7 @@ import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
-import '../../mock.dart';
+import '../mock.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 

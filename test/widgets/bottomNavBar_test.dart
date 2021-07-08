@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:foodstack/src/blocs/auth_blocs.dart';
+import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/screens/profile.dart';
@@ -12,6 +15,10 @@ import 'package:provider/provider.dart';
 import '../mock.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
+
+class MockUser extends Mock implements User {}
+
+final MockUser _mockUser = MockUser();
 
 void main() async{
   setupFirebaseAuthMocks();
@@ -29,17 +36,26 @@ void main() async{
       await Firebase.initializeApp();
 
 
-      await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserLocator()),
-      ],
-      child: MaterialApp (
-        title: 'FoodStack',
-        home: CustomBottomNavBar(selectedMenu: null,),
-        // This mocked observer will now receive all navigation events
-        // that happen in our app.
-        navigatorObservers: [mockObserver],
-      )));
+      await tester.pumpWidget(Provider(
+        create: (context) => AuthBloc(),
+              child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => UserLocator()),
+          ChangeNotifierProvider(create: (context) => OrderProvider()),
+        ],
+        child: MaterialApp (
+          title: 'FoodStack',
+          home: CustomBottomNavBar(selectedMenu: null,),
+          // This mocked observer will now receive all navigation events
+          // that happen in our app.
+          navigatorObservers: [mockObserver],
+          routes: {
+              '/home': (context) => HomeScreen(),
+              '/profile': (context) => ProfileScreen(),
+              '/trackOrder': (context) => TrackScreen(),
+            },
+        )),
+      ));
     }
 
       Future<void> _navigateToHomeScreen(WidgetTester tester) async {

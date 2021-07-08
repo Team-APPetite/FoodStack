@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/restaurantCard.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                 } else {
                   return Scrollbar(
                     child: RefreshIndicator(
+                        color: ThemeColors.greens,
                         child: ListView.builder(
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {

@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/models/user.dart';
 
 class FirestoreUsers {
   FirebaseFirestore _db = FirebaseFirestore.instance;
+  FirebaseMessaging _fcm = FirebaseMessaging.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   //Set User uid, name and email
@@ -66,5 +68,18 @@ class FirestoreUsers {
         .update({'favourites': FieldValue.arrayRemove(addFavourite)})
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  _saveDeviceToken(String uid) async {
+    String fcmToken = await _fcm.getToken();
+
+    if (fcmToken != null) {
+      var tokens =
+          _db.collection('users').doc(uid).collection('tokens').doc(fcmToken);
+
+      await tokens.set({
+        'token': fcmToken,
+      });
+    }
   }
 }

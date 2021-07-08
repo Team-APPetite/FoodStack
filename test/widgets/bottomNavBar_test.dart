@@ -36,12 +36,11 @@ void main() async{
       await Firebase.initializeApp();
 
 
-      await tester.pumpWidget(Provider(
-        create: (context) => AuthBloc(),
-              child: MultiProvider(
+      await tester.pumpWidget(MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => UserLocator()),
           ChangeNotifierProvider(create: (context) => OrderProvider()),
+          Provider(create: (context) => AuthBloc()),
         ],
         child: MaterialApp (
           title: 'FoodStack',
@@ -50,12 +49,11 @@ void main() async{
           // that happen in our app.
           navigatorObservers: [mockObserver],
           routes: {
-              '/home': (context) => HomeScreen(),
-              '/profile': (context) => ProfileScreen(),
-              '/trackOrder': (context) => TrackScreen(),
+      '/home': (context) => HomeScreen(),
+      '/profile': (context) => ProfileScreen(),
+      '/trackOrder': (context) => TrackScreen(),
             },
-        )),
-      ));
+        )));
     }
 
       Future<void> _navigateToHomeScreen(WidgetTester tester) async {

@@ -19,6 +19,7 @@ class UserAuth {
   Future<void> logout() => auth.signOut();
 
   Stream<User> get currentUser => auth.authStateChanges();
+  User get user => auth.currentUser;
 
   Future<String> login(String _email, String _password) async {
     try {

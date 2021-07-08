@@ -21,7 +21,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfilePageState extends State<ProfileScreen> {
   final auth = FirebaseAuth.instance;
   FirestoreUsers _firestoreService = FirestoreUsers();
-  String _displayName;
+  String _displayName = "", _email = "";
 
   StreamSubscription<User> loginStateSubscription;
 
@@ -48,6 +48,11 @@ class _ProfilePageState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final authBloc = Provider.of<AuthBloc>(context);
 
+    if(authBloc.user != null){
+      _displayName = authBloc.user.displayName;
+      _email = authBloc.user.email;
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
@@ -64,7 +69,7 @@ class _ProfilePageState extends State<ProfileScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: TextFormField(
-                initialValue: auth.currentUser.displayName,
+                initialValue: _displayName,
                   decoration: InputDecoration(
                       hoverColor: ThemeColors.teals,
                       fillColor: ThemeColors.light,
@@ -78,7 +83,7 @@ class _ProfilePageState extends State<ProfileScreen> {
                 },
                 textInputAction: TextInputAction.newline,
                 onFieldSubmitted: (term){
-                  auth.currentUser.updateDisplayName(_displayName,);
+                  authBloc.user.updateDisplayName(_displayName,);
                   _firestoreService.updateName(_displayName);
                 },
               ),
@@ -87,7 +92,7 @@ class _ProfilePageState extends State<ProfileScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: TextFormField(
-                initialValue: auth.currentUser.email,
+                initialValue: _email,
                 decoration: InputDecoration(
                   hoverColor: ThemeColors.teals,
                   fillColor: ThemeColors.light,

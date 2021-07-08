@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:foodstack/src/blocs/auth_blocs.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
+import 'package:foodstack/src/screens/authentication/login.dart';
 import 'package:foodstack/src/screens/home.dart';
 import 'package:foodstack/src/screens/profile.dart';
 import 'package:foodstack/src/screens/track.dart';
@@ -53,6 +54,8 @@ void main() async{
               '/home': (context) => HomeScreen(),
               '/profile': (context) => ProfileScreen(),
               '/trackOrder': (context) => TrackScreen(),
+              '/login': (context) => LoginScreen(),
+
             },
         )),
       ));

@@ -5,13 +5,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class UserLocator with ChangeNotifier {
-  final geolocatorService = GeolocatorService();
+  var geolocatorService = GeolocatorService();
 
   Position currentLocation;
   LatLng coordinates;
   Address deliveryAddress;
 
-  UserLocator() {
+  UserLocator({GeolocatorService geolocator}) {
+    geolocatorService = geolocator != null ? geolocator : geolocatorService;
     setCurrentLocation();
   }
 
@@ -29,10 +30,8 @@ class UserLocator with ChangeNotifier {
   }
 
   Future<void> getCameraLocation() async {
-    final addresses =
-        await Geocoder.local
-            .findAddressesFromCoordinates(
-                new Coordinates(coordinates.latitude, coordinates.longitude));
+    final addresses = await Geocoder.local.findAddressesFromCoordinates(
+        new Coordinates(coordinates.latitude, coordinates.longitude));
     this.deliveryAddress = addresses.first;
     print("${deliveryAddress.featureName} : ${deliveryAddress.addressLine}");
     notifyListeners();

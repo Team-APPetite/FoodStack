@@ -103,7 +103,9 @@ class CartProvider with ChangeNotifier {
     _cartId = cart.cartId;
     _userId = cart.userId;
     _restaurantId = cart.restaurantId;
+    _restaurantName = cart.restaurantName;
     _subtotal = cart.subtotal;
+    _deliveryFee = cart.deliveryFee;
     _cartItems = [];
     cart.cartItems.forEach((item) => _cartItems.add(CartItem.fromJson(item)));
   }

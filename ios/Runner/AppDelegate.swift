@@ -2,6 +2,7 @@ import UIKit
 import Flutter
 import GoogleMaps
 import Braintree
+import BraintreeDropIn
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {

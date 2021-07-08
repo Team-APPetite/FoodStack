@@ -33,7 +33,8 @@ class _TrackScreenState extends State<TrackScreen> {
   @override
   void initState() {
     _checkOrderStatus();
-    timer = Timer.periodic(Duration(seconds: 5), (timer) async { // 2 minutes
+    timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      // 2 minutes
       _checkOrderStatus();
     });
     super.initState();
@@ -47,11 +48,11 @@ class _TrackScreenState extends State<TrackScreen> {
           prefs.getInt('orderCompletionTime') * noOfMillisecondsPerSecond);
       currentTime = DateTime.now();
       orderPickupTime =
-          orderCompletionTime.add(Duration(seconds: 30)); // 10 minutes
+          orderCompletionTime.add(Duration(seconds: 60)); // 10 minutes
       orderDeliveryTime =
-          orderPickupTime.add(Duration(seconds: 20)); // 20 minutes
+          orderPickupTime.add(Duration(seconds: 30)); // 20 minutes
       clearOrderTrackTime =
-          orderDeliveryTime.add(Duration(seconds: 20)); // 10 minutes
+          orderDeliveryTime.add(Duration(seconds: 30)); // 10 minutes
     });
   }
 
@@ -82,33 +83,59 @@ class _TrackScreenState extends State<TrackScreen> {
     }
   }
 
+  Widget _preparingUI() {
+    return Column(
+      children: [
+        Center(child: Text('paid')),
+      ],
+    );
+  }
+
+  Widget _deliveringUI() {
+    return Column(
+      children: [
+        Center(child: Text('pickedUp')),
+      ],
+    );
+  }
+
+  Widget _deliveredUI() {
+    return Column(
+      children: [
+        Center(child: Text('delivered')),
+      ],
+    );
+  }
+
+  Widget _noStatus() {
+    return Column(
+      children: [
+        Center(child: Text('none')),
+      ],
+    );
+  }
+
+  // Progress line with 4 circles: 
+  // order confirmed, 
+  // order being prepared, 
+  // order being delivered, 
+  // order delivered.
+
+  // Clip art for each case
+
+  // Estimated delivery time
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: Header.getAppBar(title: 'Track Your Order', back: false),
         body: orderStatus == 'Status.paid'
-            ? Column(
-                children: [
-                  Center(child: Text('paid')),
-                ],
-              )
+            ? _preparingUI()
             : orderStatus == 'Status.pickedUp'
-                ? Column(
-                    children: [
-                      Center(child: Text('pickedUp')),
-                    ],
-                  )
+                ? _deliveringUI()
                 : orderStatus == 'Status.delivered'
-                    ? Column(
-                        children: [
-                          Center(child: Text('delivered')),
-                        ],
-                      )
-                    : Column(
-                        children: [
-                          Center(child: Text('none')),
-                        ],
-                      ),
+                    ? _deliveredUI()
+                    : _noStatus(),
         bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.track));
   }
 

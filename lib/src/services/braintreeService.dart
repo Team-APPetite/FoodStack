@@ -4,8 +4,7 @@ import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:http/http.dart' as http;
 
 class BraintreeService {
-  static var url =
-      'https://us-central1-foodstack-e8d0f.cloudfunctions.net/makePayment';
+  static var url = 'https://us-central1-foodstack-e8d0f.cloudfunctions.net/makePayment';
 
   static Future<String> makePayment(double amount, String payee) async {
     var request = BraintreeDropInRequest(
@@ -17,14 +16,11 @@ class BraintreeService {
 
     BraintreeDropInResult result = await BraintreeDropIn.start(request);
 
-    String totalAmount = amount.toString();
-
     if (result != null) {
       final http.Response response = await http.post(Uri.tryParse(
-          '$url?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}&amount=$totalAmount'));
+          '$url?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}'));
 
-      final paymentResult =
-          response.body.isNotEmpty ? jsonDecode(response.body) : null;
+      final paymentResult = response.body.isNotEmpty ? jsonDecode(response.body) : null;
 
       if (paymentResult['result'] == 'Success') {
         return "Payment successful!";

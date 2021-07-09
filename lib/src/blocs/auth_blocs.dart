@@ -8,6 +8,7 @@ class AuthBloc {
   final googleSignin = GoogleSignIn(scopes: ['email']);
 
   Stream<User> get currentUser => authService.currentUser;
+  User get user => authService.user;
 
   loginGoogle() async {
 

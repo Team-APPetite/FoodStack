@@ -14,14 +14,14 @@ import '../../src/utilities/enums.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 
 }
 
-class _ProfilePageState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   final auth = FirebaseAuth.instance;
   FirestoreUsers _firestoreService = FirestoreUsers();
-  String _displayName;
+  String _displayName = "", _email = "";
 
   StreamSubscription<User> loginStateSubscription;
 
@@ -37,16 +37,13 @@ class _ProfilePageState extends State<ProfileScreen> {
   }
 
   @override
-  void dispose() {
-    loginStateSubscription.cancel();
-    super.dispose();
-  }
-
-
-
-  @override
   Widget build(BuildContext context) {
     final authBloc = Provider.of<AuthBloc>(context);
+
+    if(authBloc.user != null){
+      _displayName = authBloc.user.displayName;
+      _email = authBloc.user.email;
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -64,7 +61,7 @@ class _ProfilePageState extends State<ProfileScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: TextFormField(
-                initialValue: auth.currentUser.displayName,
+                initialValue: _displayName,
                   decoration: InputDecoration(
                       hoverColor: ThemeColors.teals,
                       fillColor: ThemeColors.light,
@@ -78,7 +75,7 @@ class _ProfilePageState extends State<ProfileScreen> {
                 },
                 textInputAction: TextInputAction.newline,
                 onFieldSubmitted: (term){
-                  auth.currentUser.updateDisplayName(_displayName,);
+                  authBloc.user.updateDisplayName(_displayName,);
                   _firestoreService.updateName(_displayName);
                 },
               ),
@@ -87,7 +84,7 @@ class _ProfilePageState extends State<ProfileScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: TextFormField(
-                initialValue: auth.currentUser.email,
+                initialValue: _email,
                 decoration: InputDecoration(
                   hoverColor: ThemeColors.teals,
                   fillColor: ThemeColors.light,
@@ -163,5 +160,11 @@ class _ProfilePageState extends State<ProfileScreen> {
       ),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.profile),
     );
+  }
+
+  @override
+  void dispose() {
+    loginStateSubscription.cancel();
+    super.dispose();
   }
 }

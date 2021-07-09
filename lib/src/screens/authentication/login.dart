@@ -22,7 +22,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String _email = '', _password = '';
   final auth = FirebaseAuth.instance;
-  final peristence = FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+  final persistence = FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
 
   StreamSubscription<User> loginStateSubscription;
 

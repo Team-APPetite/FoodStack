@@ -25,22 +25,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   StreamSubscription<User> loginStateSubscription;
 
-  @override
-  void initState() {
-    var authBloc = Provider.of<AuthBloc>(context, listen: false);
-    loginStateSubscription = authBloc.currentUser.listen((fbUser) {
-      if (fbUser == null) {
-        Navigator.of(context).pushNamed('/login');
-      }
-    });
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   var authBloc = Provider.of<AuthBloc>(context, listen: false);
+  //   loginStateSubscription = authBloc.currentUser.listen((fbUser) {
+  //     if (fbUser == null) {
+  //       Navigator.of(context).pushNamed('/login');
+  //
+  //     }
+  //   });
+  //   super.initState();
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   loginStateSubscription.cancel();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     final authBloc = Provider.of<AuthBloc>(context);
 
-    if(authBloc.user != null){
+    if (authBloc.user != null) {
       _displayName = authBloc.user.displayName;
       _email = authBloc.user.email;
     }
@@ -49,122 +56,120 @@ class _ProfileScreenState extends State<ProfileScreen> {
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.all(30.0),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const SizedBox(height: 40),
-            Text(
-              'Profile',
-              style: TextStyles.heading1(),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: TextFormField(
-                initialValue: _displayName,
-                  decoration: InputDecoration(
-                      hoverColor: ThemeColors.teals,
-                      fillColor: ThemeColors.light,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)
-                    ),
-                    labelText: "Name"
-                ),
-                onChanged: (value) {
-                  _displayName = value.trim();
-                },
-                textInputAction: TextInputAction.newline,
-                onFieldSubmitted: (term){
-                  authBloc.user.updateDisplayName(_displayName,);
-                  _firestoreService.updateName(_displayName);
-                },
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: TextFormField(
-                initialValue: _email,
-                decoration: InputDecoration(
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          const SizedBox(height: 40),
+          Text(
+            'Profile',
+            style: TextStyles.heading1(),
+          ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: TextFormField(
+              initialValue: _displayName,
+              decoration: InputDecoration(
                   hoverColor: ThemeColors.teals,
                   fillColor: ThemeColors.light,
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)
-                  ),
-                  labelText: "Email",
-                ),
-              ),
-            ),
-
-            SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              // ignore: deprecated_member_use
-              child: FlatButton(
-                  padding: EdgeInsets.all(20),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)
-                  ),
-                  color: ThemeColors.light,
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/pickAddress');
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.map_outlined, size: 30, color: ThemeColors.teals,),
-                      SizedBox(width: 20),
-                      Expanded(
-                          child: Text("Add New Address",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText1,
-                          )
-                      ),
-                      Icon(Icons.arrow_forward_ios_rounded, color: ThemeColors.teals),
-                    ],
-                  )
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              // ignore: deprecated_member_use
-              child: FlatButton(
-                  padding: EdgeInsets.all(20),
-                  shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
-                  color: ThemeColors.light,
-                  onPressed: () async {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    prefs.remove('email');
-                    authBloc.logout();
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.logout_outlined, size: 30, color: ThemeColors.teals,),
-                      SizedBox(width: 20),
-                      Expanded(
-                          child: Text("Logout",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .bodyText1,
-                          )
-                      ),
-                      Icon(Icons.arrow_forward_ios_rounded, color: ThemeColors.teals),
-                    ],
-                  )
+                  labelText: "Name"),
+              onChanged: (value) {
+                _displayName = value.trim();
+              },
+              textInputAction: TextInputAction.newline,
+              onFieldSubmitted: (term) {
+                authBloc.user.updateDisplayName(
+                  _displayName,
+                );
+                _firestoreService.updateName(_displayName);
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: TextFormField(
+              initialValue: _email,
+              decoration: InputDecoration(
+                hoverColor: ThemeColors.teals,
+                fillColor: ThemeColors.light,
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                labelText: "Email",
               ),
-        )]),
+            ),
+          ),
+          SizedBox(height: 40),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            // ignore: deprecated_member_use
+            child: FlatButton(
+                padding: EdgeInsets.all(20),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                color: ThemeColors.light,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/pickAddress');
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.map_outlined,
+                      size: 30,
+                      color: ThemeColors.teals,
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(
+                        child: Text(
+                      "Add New Address",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
+                    Icon(Icons.arrow_forward_ios_rounded,
+                        color: ThemeColors.teals),
+                  ],
+                )),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            // ignore: deprecated_member_use
+            child: FlatButton(
+                padding: EdgeInsets.all(20),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                color: ThemeColors.light,
+                onPressed: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.remove('email');
+                  authBloc.logout();
+                  loginStateSubscription =
+                      authBloc.currentUser.listen((fbUser) {
+                    if (fbUser == null) {
+                      Navigator.of(context).pushNamed('/login');
+                    }
+                  });
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.logout_outlined,
+                      size: 30,
+                      color: ThemeColors.teals,
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(
+                        child: Text(
+                      "Logout",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
+                    Icon(Icons.arrow_forward_ios_rounded,
+                        color: ThemeColors.teals),
+                  ],
+                )),
+          )
+        ]),
       ),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.profile),
     );
-  }
-
-  @override
-  void dispose() {
-    loginStateSubscription.cancel();
-    super.dispose();
   }
 }

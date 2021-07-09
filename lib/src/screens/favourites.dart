@@ -36,6 +36,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                 if (snapshot.data == null) {
                   return Center(child: CircularProgressIndicator());
                 } else {
+                  if (snapshot.data.length == 0) {
+                    return Center(child: Text('Like restaurants to see them here!'));
+                  }
                   return Scrollbar(
                     child: RefreshIndicator(
                         color: ThemeColors.greens,

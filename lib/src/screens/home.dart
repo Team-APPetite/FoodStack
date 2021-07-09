@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
+import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
@@ -21,6 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    final firestoreService = FirestoreUsers();
+    firestoreService.saveDeviceToken();
     _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
       final userLocator = Provider.of<UserLocator>(context, listen: false);
       if (userLocator.deliveryAddress != null) {

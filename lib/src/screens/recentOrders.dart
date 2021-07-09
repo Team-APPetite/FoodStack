@@ -34,35 +34,34 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
     final cartProvider = Provider.of<CartProvider>(context);
     final uid = FirebaseAuth.instance.currentUser.uid.toString();
 
-    if (!loading) {
-      return Scaffold(
-          appBar: Header.getAppBar(title: 'Place Orders Again'),
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: StreamBuilder<List<Cart>>(
-                stream: cartProvider.getPastOrdersList(uid),
-                builder: (context, snapshot) {
-                  if (snapshot.data == null) {
-                    return Center(child: Text('You have no past orders!'));
-                  } else {
-                    return Scrollbar(
-                        child: ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              Cart cart = snapshot.data[index];
-                              return PastOrderCard(
-                                  cart.cartId,
-                                  cart.cartItems,
-                                  cart.restaurantId,
-                                  cart.restaurantName,
-                                  cart.subtotal,
-                                  cart.deliveryFee);
-                            }));
+    return Scaffold(
+        appBar: Header.getAppBar(title: 'Place Orders Again'),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: StreamBuilder<List<Cart>>(
+              stream: cartProvider.getPastOrdersList(uid),
+              builder: (context, snapshot) {
+                if (snapshot.data == null) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  if (snapshot.data.length == 0) {
+                    return Center(child: Text('Place orders to see them here!'));
                   }
-                }),
-          ));
-    } else {
-      return Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
+                  return Scrollbar(
+                      child: ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            Cart cart = snapshot.data[index];
+                            return PastOrderCard(
+                                cart.cartId,
+                                cart.cartItems,
+                                cart.restaurantId,
+                                cart.restaurantName,
+                                cart.subtotal,
+                                cart.deliveryFee);
+                          }));
+                }
+              }),
+        ));
   }
 }

@@ -70,12 +70,13 @@ class FirestoreUsers {
         .catchError((error) => print("Failed to update user: $error"));
   }
 
-  _saveDeviceToken(String uid) async {
+  saveDeviceToken() async {
     String fcmToken = await _fcm.getToken();
+    var currUid = _auth.currentUser.uid;
 
     if (fcmToken != null) {
       var tokens =
-          _db.collection('users').doc(uid).collection('tokens').doc(fcmToken);
+          _db.collection('users').doc(currUid).collection('tokens').doc(fcmToken);
 
       await tokens.set({
         'token': fcmToken,

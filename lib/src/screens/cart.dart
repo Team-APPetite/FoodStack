@@ -195,6 +195,7 @@ class _CartScreenState extends State<CartScreen> {
                           orderProvider.setOrder(
                               Order(
                                   restaurantId: cartProvider.restaurantId,
+                                  restaurantName: cartProvider.restaurantName,
                                   coordinates: userLocation,
                                   totalPrice: cartProvider.getSubtotal() +
                                       cartProvider.deliveryFee,

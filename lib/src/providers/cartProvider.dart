@@ -31,6 +31,8 @@ class CartProvider with ChangeNotifier {
 
   String get restaurantId => _restaurantId;
 
+  String get restaurantName => _restaurantName;
+
   List get cartItems => _cartItems;
 
   double get deliveryFee => _deliveryFee;

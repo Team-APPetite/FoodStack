@@ -20,6 +20,7 @@ class OrderProvider with ChangeNotifier {
 
   String _orderId;
   String _restaurantId;
+  String _restaurantName;
   String _creatorId;
   String _paymentId;
   String _status;
@@ -61,6 +62,7 @@ class OrderProvider with ChangeNotifier {
   setOrder(Order order, int joinDurationMins) async {
     _orderId = uuid.v4();
     _restaurantId = order.restaurantId;
+    _restaurantName = order.restaurantName;
     _creatorId = FirebaseAuth.instance.currentUser.uid;
     _paymentId = null;
     _status = Status.active.toString();
@@ -84,6 +86,7 @@ class OrderProvider with ChangeNotifier {
     var newOrder = Order(
       orderId: _orderId,
       restaurantId: _restaurantId,
+      restaurantName: _restaurantName,
       creatorId: _creatorId,
       paymentId: _paymentId,
       status: _status,
@@ -104,6 +107,7 @@ class OrderProvider with ChangeNotifier {
     Order order = await firestoreService.getOrder(orderId);
     _orderId = order.orderId;
     _restaurantId = order.restaurantId;
+    _restaurantName = order.restaurantName;
     _creatorId = order.creatorId;
     _paymentId = order.paymentId;
     _status = order.status;
@@ -119,6 +123,7 @@ class OrderProvider with ChangeNotifier {
     Order order = await firestoreService.getNearbyOrder(restaurantId);
     _orderId = order.orderId;
     _restaurantId = order.restaurantId;
+    _restaurantName = order.restaurantName;
     _creatorId = order.creatorId;
     _paymentId = order.paymentId;
     _status = order.status;
@@ -140,6 +145,7 @@ class OrderProvider with ChangeNotifier {
   clearOrder() {
     _orderId = null;
     _restaurantId = null;
+    _restaurantName = null;
     _creatorId = null;
     _paymentId = null;
     _status = null;
@@ -187,6 +193,7 @@ class OrderProvider with ChangeNotifier {
     var newOrder = Order(
       orderId: _orderId,
       restaurantId: _restaurantId,
+      restaurantName: _restaurantName,
       creatorId: _creatorId,
       paymentId: _paymentId,
       status: _status,

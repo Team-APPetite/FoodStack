@@ -4,6 +4,7 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 class Order {
   final String orderId;
   final String restaurantId;
+  final String restaurantName;
   final String creatorId;
   final String paymentId;
   final String status;
@@ -17,6 +18,7 @@ class Order {
   Order(
       {this.orderId,
       this.restaurantId,
+      this.restaurantName,
       this.creatorId,
       this.paymentId,
       this.status,
@@ -31,6 +33,7 @@ class Order {
     return Order(
         orderId: firestore['orderId'],
         restaurantId: firestore['restaurantId'],
+        restaurantName: firestore['restaurantName'],
         creatorId: firestore['creatorId'],
         paymentId: firestore['paymentId'],
         status: firestore['status'],
@@ -46,6 +49,7 @@ class Order {
     return {
       'orderId': orderId,
       'restaurantId': restaurantId,
+      'restaurantName': restaurantName,
       'creatorId': creatorId,
       'paymentId': paymentId,
       'status': status,

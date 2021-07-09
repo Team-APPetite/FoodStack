@@ -124,7 +124,19 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(height: 15.0),
           SocialButton(
             image: Image.asset('images/google.png'),
-            onPressed: () => authBloc.loginGoogle(),
+            onPressed: () async {
+              String state = await authBloc.loginGoogle();
+              if (state == "Success") {
+                Navigator.pushNamed(context, '/home');
+              } else {
+                Fluttertoast.showToast(
+                  msg: '$state',
+                  gravity: ToastGravity.TOP,
+                  timeInSecForIosWeb: 5,
+                  backgroundColor: ThemeColors.dark,
+                );
+              }
+            },
           ),
         ],
         // children: [

@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "701366733071-quaj9qogo8doljnscp8t11mlrub0flkk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.charismakausar.foodstack",
+            "certificate_hash": "c3715d6c127f785203dcc059e57d78d52fa207b9"
+          }
+        },
+        {
           "client_id": "701366733071-1jurjajrnm7dblu63ftqa6treavvu5e5.apps.googleusercontent.com",
           "client_type": 3
         }

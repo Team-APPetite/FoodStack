@@ -10,7 +10,7 @@ class AuthBloc {
   Stream<User> get currentUser => authService.currentUser;
   User get user => authService.user;
 
-  loginGoogle() async {
+  Future<String> loginGoogle() async {
 
     try {
       final GoogleSignInAccount googleUser = await googleSignIn.signIn();
@@ -21,11 +21,12 @@ class AuthBloc {
       );
 
       //Firebase Sign in
-      await authService.signInWithCredential(credential);
-
+     String result = await authService.signInWithCredential(credential);
+     return result;
 
     } catch(error){
       print(error);
+      return error.toString();
     }
 
   }

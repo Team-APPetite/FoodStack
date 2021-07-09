@@ -76,22 +76,16 @@ class _RestaurantCardState extends State<RestaurantCard> {
                     ),
                     Row(
                       children: [
-                        Icon(
-                          Icons.star_rounded,
-                          color: ThemeColors.yellows,
-                        ),
-                        Icon(
-                          Icons.star_rounded,
-                          color: ThemeColors.yellows,
-                        ),
-                        Icon(
-                          Icons.star_rounded,
-                          color: ThemeColors.yellows,
-                        ),
-                        Icon(
-                          Icons.star_half_rounded,
-                          color: ThemeColors.yellows,
-                        ),
+                        for (int i = 0; i < widget.rating.toInt(); i++)
+                          Icon(
+                            Icons.star_rounded,
+                            color: ThemeColors.yellows,
+                          ),
+                        if (widget.rating % 1 != 0)
+                          Icon(
+                            Icons.star_half_rounded,
+                            color: ThemeColors.yellows,
+                          ),
                       ],
                     )
                   ],

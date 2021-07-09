@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/models/user.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 
 class FirestoreUsers {
   FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -25,12 +26,12 @@ class FirestoreUsers {
   }
 
   //Update user address
-  Future<void> updateAddress(String address) {
+  Future<void> updateAddress(String address, GeoFirePoint coordinates) {
     CollectionReference users = _db.collection('users');
     var currUid = _auth.currentUser.uid;
     return users
         .doc(currUid)
-        .update({'address': address})
+        .update(<String, dynamic>{'address': address, 'coordinates': coordinates.data})
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
   }

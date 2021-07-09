@@ -25,7 +25,7 @@ class Restaurant {
       restaurantName: json['restaurantName'],
       cuisineType: json['cuisineType'],
       deliveryFee: json['deliveryFee'].toDouble(),
-      rating: json['rating'],
+      rating: json['rating'].toDouble(),
       image: json['image'],
       coordinates: json['coordinates']
     );

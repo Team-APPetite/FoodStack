@@ -1,18 +1,23 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 
 class Users {
   String uid;
   String name;
   String email;
   String address;
+  GeoFirePoint coordinates;
   List favourites;
+  Object getCoordinates;
 
   Users(
       {@required this.uid,
       this.name,
       this.email,
       this.address,
-      this.favourites});
+      this.coordinates,
+      this.favourites,
+      this.getCoordinates});
 
   Map<String, dynamic> toMap() {
     return {
@@ -20,6 +25,7 @@ class Users {
       'name': name,
       'email': email,
       'address': address,
+      'coordinates': coordinates,
       'favourites': favourites
     };
   }
@@ -29,5 +35,6 @@ class Users {
         name = firestore['name'],
         email = firestore['email'],
         address = firestore['address'],
+        getCoordinates = firestore['coordinates'],
         favourites = firestore['favourites'];
 }

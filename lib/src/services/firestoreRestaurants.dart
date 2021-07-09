@@ -44,7 +44,9 @@ class FirestoreRestaurants {
         .doc(uid)
         .get()
         .then((snapshot) => Users.fromFirestore(snapshot.data()))
-        .then((value) => value.favourites.map((e) => Restaurant.fromJson(e)).toList()).asStream();
+        .then((value) =>
+            value.favourites.map((e) => Restaurant.fromJson(e)).toList())
+        .asStream();
   }
 
   // Create and Update

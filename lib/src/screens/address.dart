@@ -126,7 +126,7 @@ class _AddressScreenState extends State<AddressScreen> {
                               textAlign: TextAlign.center,
                             ),
                             AppButton(buttonText: 'DELIVER HERE', onPressed: () {
-                              firestoreService.updateAddress(userLocator.deliveryAddress.addressLine);
+                              firestoreService.updateAddress(userLocator.deliveryAddress.addressLine, userLocation);
                               if (!isPooler) {
                                 orderProvider.updateOrderAddress(userLocator.deliveryAddress.addressLine, userLocation);
                               }

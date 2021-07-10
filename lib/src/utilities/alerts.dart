@@ -188,7 +188,6 @@ class Alerts {
                 averageRating = ((averageRating * (numOfRatings - 1))+ newRating) / numOfRatings;
                 restaurantProvider.updateAverageRating(
                     averageRating, restaurantProvider.restaurantId);
-                orderProvider.setStatusAsNone(orderProvider.orderId);
                 Navigator.pop(context);
               }),
           TextButton(

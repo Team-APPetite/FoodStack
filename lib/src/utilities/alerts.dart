@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/blocs/auth_blocs.dart';
 import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/models/rating.dart';
-import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/ratingProvider.dart';
@@ -17,7 +16,6 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 
 class Alerts {
   static Function loseCart() {
@@ -149,7 +147,7 @@ class Alerts {
         title: const Text('Leave a review'),
         content: Column(
           children: [
-             Text(
+            Text(
                 'Did you like ${restaurantProvider.restaurantName}. Let us know by rating the restaurant!'),
             RatingBar(
               initialRating: 0,
@@ -158,21 +156,38 @@ class Alerts {
                 newRating = rating;
                 print(rating);
               },
+              ratingWidget: RatingWidget(
+                  full: Icon(
+                    Icons.star_rounded,
+                    color: ThemeColors.yellows,
+                  ),
+                  half: Icon(
+                    Icons.star_half_rounded,
+                    color: ThemeColors.yellows,
+                  ),
+                  empty: Icon(
+                    Icons.star_outline_rounded,
+                    color: ThemeColors.yellows,
+                  )),
             ),
           ],
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Submit', style: TextStyles.emphasis()),
-            onPressed: () {
-              //Update rating database and restaurant avg rating
-              ratingProvider.addRating(Rating(restaurantId: restaurantProvider.restaurantId, userId: authBloc.user.uid, rating: newRating));
-              restaurantProvider.updateNumOfRatings(numOfRatings, restaurantProvider.restaurantId);
-              averageRating = (averageRating + newRating)/numOfRatings;
-              restaurantProvider.updateAverageRating(averageRating, restaurantProvider.restaurantId);
-              Navigator.pop(context);
-          }
-          ),
+              child: Text('Submit', style: TextStyles.emphasis()),
+              onPressed: () {
+                //Update rating database and restaurant avg rating
+                ratingProvider.addRating(Rating(
+                    restaurantId: restaurantProvider.restaurantId,
+                    userId: authBloc.user.uid,
+                    rating: newRating));
+                restaurantProvider.updateNumOfRatings(
+                    numOfRatings, restaurantProvider.restaurantId);
+                averageRating = (averageRating + newRating) / numOfRatings;
+                restaurantProvider.updateAverageRating(
+                    averageRating, restaurantProvider.restaurantId);
+                Navigator.pop(context);
+              }),
           TextButton(
             child: Text('Later', style: TextStyles.textButton()),
             onPressed: () {

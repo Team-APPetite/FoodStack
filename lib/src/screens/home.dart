@@ -3,14 +3,19 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
+import 'package:foodstack/src/utilities/alerts.dart';
+import 'package:foodstack/src/utilities/statusEnums.dart';
 import 'package:foodstack/src/widgets/bigButton.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/utilities/enums.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -22,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    _getOrderStatus();
     final firestoreService = FirestoreUsers();
     firestoreService.saveDeviceToken();
     _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
@@ -32,6 +38,22 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
     super.initState();
+  }
+
+  _getOrderStatus() async {
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
+
+    final prefs = await SharedPreferences.getInstance();
+    String orderStatus = prefs.getString('orderStatus');
+    if (orderStatus == Status.delivered.toString()) {
+      String orderId = prefs.getString('orderId');
+      await orderProvider.getOrder(orderId);
+      String restaurantId = orderProvider.restaurantId;
+      await restaurantProvider.getRestaurant(restaurantId);
+      showDialog<String>(context: context, builder: Alerts.provideRating());
+    }
   }
 
   _showDeliveryAddress() {

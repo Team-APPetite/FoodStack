@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:foodstack/src/services/firestoreRatings.dart';
-import 'package:foodstack/src/services/firestoreRestaurants.dart';
-import 'package:uuid/uuid.dart';
 import 'package:foodstack/src/models/rating.dart';
 
 class RatingProvider with ChangeNotifier {

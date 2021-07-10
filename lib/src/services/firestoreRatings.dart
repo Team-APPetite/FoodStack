@@ -9,7 +9,7 @@ class FirestoreRatings {
     var options = SetOptions(merge: true);
 
     // Custom docId
-    String ratingId = 'rating/${rating.userId}_${rating.restaurantId}';
+    String ratingId = '${rating.userId}_${rating.restaurantId}';
     return _db.collection('rating').doc(ratingId).set(rating.toMap(), options);
   }
 

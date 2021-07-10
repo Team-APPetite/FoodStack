@@ -148,7 +148,8 @@ class Alerts {
         content: Column(
           children: [
             Text(
-                'Did you like ${restaurantProvider.restaurantName}. Let us know by rating the restaurant!'),
+                'How was ${restaurantProvider.restaurantName}? Let us know by rating the restaurant!'),
+            SizedBox(height: 10.0),
             RatingBar(
               initialRating: 0,
               allowHalfRating: true,
@@ -183,7 +184,7 @@ class Alerts {
                     rating: newRating));
                 restaurantProvider.updateNumOfRatings(
                     numOfRatings, restaurantProvider.restaurantId);
-                averageRating = (averageRating + newRating) / numOfRatings;
+                averageRating = ((averageRating * (numOfRatings - 1))+ newRating) / numOfRatings;
                 restaurantProvider.updateAverageRating(
                     averageRating, restaurantProvider.restaurantId);
                 Navigator.pop(context);

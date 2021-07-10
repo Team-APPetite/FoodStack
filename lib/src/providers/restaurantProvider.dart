@@ -13,6 +13,7 @@ class RestaurantProvider with ChangeNotifier {
   String _cuisineType;
   double _deliveryFee;
   double _rating;
+  int _numOfRatings;
   String _image;
   GeoPoint _coordinates;
 
@@ -24,6 +25,7 @@ class RestaurantProvider with ChangeNotifier {
   String get cuisineType => _cuisineType;
   double get deliveryFee => _deliveryFee;
   double get rating => _rating;
+  int get numOfRatings => _numOfRatings;
   String get image => _image;
   GeoPoint get coordinates => _coordinates;
   Stream<List<Restaurant>> get restaurantsList =>
@@ -67,6 +69,14 @@ class RestaurantProvider with ChangeNotifier {
     });
   }
 
+  Future<void> updateAverageRating(double average, String currRestaurantId) async{
+     await firestoreService.updateAverageRating(average, currRestaurantId);
+  }
+
+  Future<void> updateNumOfRatings(int num, String currRestaurantId) async{
+    await firestoreService.updateNumOfRatings(num, currRestaurantId);
+  }
+
   addRestaurant(Restaurant restaurant) {
     if (restaurant.restaurantId != null) {
       _restaurantId = restaurant.restaurantId;
@@ -78,6 +88,7 @@ class RestaurantProvider with ChangeNotifier {
     _cuisineType = restaurant.cuisineType;
     _deliveryFee = restaurant.deliveryFee;
     _rating = restaurant.rating;
+    _numOfRatings = restaurant.numOfRatings;
     _image = restaurant.image;
     _coordinates = restaurant.coordinates;
 
@@ -87,6 +98,7 @@ class RestaurantProvider with ChangeNotifier {
         cuisineType: _cuisineType,
         deliveryFee: _deliveryFee,
         rating: _rating,
+        numOfRatings: _numOfRatings,
         image: _image,
         coordinates: _coordinates);
     firestoreService.setRestaurant(newRestaurant);
@@ -99,6 +111,7 @@ class RestaurantProvider with ChangeNotifier {
     _cuisineType = restaurant.cuisineType;
     _deliveryFee = restaurant.deliveryFee;
     _rating = restaurant.rating;
+    _numOfRatings = restaurant.numOfRatings;
     _image = restaurant.image;
     _coordinates = restaurant.coordinates;
   }

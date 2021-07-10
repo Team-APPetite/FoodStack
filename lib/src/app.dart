@@ -4,6 +4,7 @@ import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/paymentProvider.dart';
+import 'package:foodstack/src/providers/ratingProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/screens/address.dart';
@@ -48,6 +49,7 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(create: (context) => OrderProvider()),
         ChangeNotifierProvider(create: (context) => PaymentProvider()),
         ChangeNotifierProvider(create: (context) => NotificationService()),
+        ChangeNotifierProvider(create: (context) => RatingProvider()),
         Provider(create: (context) => AuthBloc())
       ],
       child: MaterialApp(

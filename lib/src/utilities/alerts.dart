@@ -1,15 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodstack/src/blocs/auth_blocs.dart';
 import 'package:foodstack/src/models/order.dart';
+import 'package:foodstack/src/models/rating.dart';
+import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/providers/ratingProvider.dart';
+import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/services/notifications.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/time.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 
 class Alerts {
   static Function loseCart() {
@@ -123,6 +131,56 @@ class Alerts {
                   ),
                 ],
               ));
+    };
+  }
+
+  static Function provideRating() {
+    double newRating = 0.0;
+    double averageRating;
+    int numOfRatings;
+
+    return (BuildContext context) {
+      final restaurantProvider = Provider.of<RestaurantProvider>(context);
+      final ratingProvider = Provider.of<RatingProvider>(context);
+      final authBloc = Provider.of<AuthBloc>(context);
+      averageRating = restaurantProvider.rating;
+      numOfRatings = restaurantProvider.numOfRatings + 1;
+      return CupertinoAlertDialog(
+        title: const Text('Leave a review'),
+        content: Column(
+          children: [
+             Text(
+                'Did you like ${restaurantProvider.restaurantName}. Let us know by rating the restaurant!'),
+            RatingBar(
+              initialRating: 0,
+              allowHalfRating: true,
+              onRatingUpdate: (rating) {
+                newRating = rating;
+                print(rating);
+              },
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Submit', style: TextStyles.emphasis()),
+            onPressed: () {
+              //Update rating database and restaurant avg rating
+              ratingProvider.addRating(Rating(restaurantId: restaurantProvider.restaurantId, userId: authBloc.user.uid, rating: newRating));
+              restaurantProvider.updateNumOfRatings(numOfRatings, restaurantProvider.restaurantId);
+              averageRating = (averageRating + newRating)/numOfRatings;
+              restaurantProvider.updateAverageRating(averageRating, restaurantProvider.restaurantId);
+              Navigator.pop(context);
+          }
+          ),
+          TextButton(
+            child: Text('Later', style: TextStyles.textButton()),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      );
     };
   }
 }

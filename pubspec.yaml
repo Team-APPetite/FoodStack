@@ -48,6 +48,7 @@ dependencies:
   google_sign_in_mocks: ^0.2.1
   google_sign_in: ^5.0.2
   flutter_signin_button: ^1.1.0
+  flutter_rating_bar: ^3.2.0
 
 
 dev_dependencies:
@@ -57,6 +58,7 @@ dev_dependencies:
   mockito: ^5.0.10
   build_runner: ^2.0.4
   rating_dialog: ^1.0.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

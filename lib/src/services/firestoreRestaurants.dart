@@ -18,6 +18,26 @@ class FirestoreRestaurants {
         .then((snapshot) => Restaurant.fromJson(snapshot.data()));
   }
 
+  //Update number of ratings
+  Future<void> updateNumOfRatings(int num, String restaurantId) {
+    CollectionReference restaurant = _db.collection('restaurants');
+    return restaurant
+        .doc(restaurantId)
+        .update({'numOfRatings': num})
+        .then((value) => print("Number of Ratings Updated"))
+        .catchError((error) => print("Failed to update number of ratings: $error"));
+  }
+
+  //Update average ratings
+  Future<void> updateAverageRating(double average, String restaurantId) {
+    CollectionReference restaurant = _db.collection('restaurants');
+    return restaurant
+        .doc(restaurantId)
+        .update({'rating': average})
+        .then((value) => print("Average Rating Updated"))
+        .catchError((error) => print("Failed to update average rating: $error"));
+  }
+
   Stream<List<Restaurant>> getRestaurants() {
     print("getRestaurants");
     return _db.collection('restaurants').snapshots().map((snapshot) =>

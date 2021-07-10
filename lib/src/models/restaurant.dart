@@ -7,6 +7,7 @@ class Restaurant {
   final String cuisineType;
   final double deliveryFee;
   final double rating;
+  final int numOfRatings;
   final String image;
   final GeoPoint coordinates;
 
@@ -16,19 +17,20 @@ class Restaurant {
       this.cuisineType,
       this.deliveryFee,
       this.rating,
+      this.numOfRatings,
       this.image,
       this.coordinates});
 
   factory Restaurant.fromJson(Map<String, dynamic> json) {
     return Restaurant(
-      restaurantId: json['restaurantId'],
-      restaurantName: json['restaurantName'],
-      cuisineType: json['cuisineType'],
-      deliveryFee: json['deliveryFee'].toDouble(),
-      rating: json['rating'].toDouble(),
-      image: json['image'],
-      coordinates: json['coordinates']
-    );
+        restaurantId: json['restaurantId'],
+        restaurantName: json['restaurantName'],
+        cuisineType: json['cuisineType'],
+        deliveryFee: json['deliveryFee'].toDouble(),
+        rating: json['rating'].toDouble(),
+        numOfRatings: json['numOfRatings'],
+        image: json['image'],
+        coordinates: json['coordinates']);
   }
 
   Map<String, dynamic> toMap() {
@@ -38,6 +40,7 @@ class Restaurant {
       'cuisineType': cuisineType,
       'deliveryFee': deliveryFee,
       'rating': rating,
+      'numOfRatings': numOfRatings,
       'image': image,
       'coordinates': coordinates
     };

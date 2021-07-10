@@ -139,6 +139,7 @@ class Alerts {
 
     return (BuildContext context) {
       final restaurantProvider = Provider.of<RestaurantProvider>(context);
+      final orderProvider = Provider.of<OrderProvider>(context, listen: false);
       final ratingProvider = Provider.of<RatingProvider>(context);
       final authBloc = Provider.of<AuthBloc>(context);
       averageRating = restaurantProvider.rating;
@@ -149,26 +150,19 @@ class Alerts {
           children: [
             Text(
                 'Did you like ${restaurantProvider.restaurantName}. Let us know by rating the restaurant!'),
-            RatingBar(
+            RatingBar.builder(
               initialRating: 0,
+              minRating: 1,
               allowHalfRating: true,
+              direction: Axis.horizontal,
+              itemBuilder: (context, _) => Icon(
+                Icons.star,
+                color: ThemeColors.yellows,
+              ),
               onRatingUpdate: (rating) {
                 newRating = rating;
                 print(rating);
               },
-              ratingWidget: RatingWidget(
-                  full: Icon(
-                    Icons.star_rounded,
-                    color: ThemeColors.yellows,
-                  ),
-                  half: Icon(
-                    Icons.star_half_rounded,
-                    color: ThemeColors.yellows,
-                  ),
-                  empty: Icon(
-                    Icons.star_outline_rounded,
-                    color: ThemeColors.yellows,
-                  )),
             ),
           ],
         ),
@@ -186,6 +180,7 @@ class Alerts {
                 averageRating = (averageRating + newRating) / numOfRatings;
                 restaurantProvider.updateAverageRating(
                     averageRating, restaurantProvider.restaurantId);
+                orderProvider.setStatusAsNone(orderProvider.orderId);
                 Navigator.pop(context);
               }),
           TextButton(

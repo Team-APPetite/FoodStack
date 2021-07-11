@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/blocs/auth_blocs.dart';
 import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/models/rating.dart';
@@ -185,11 +186,19 @@ class Alerts {
                     rating: newRating));
                 restaurantProvider.updateNumOfRatings(
                     numOfRatings, restaurantProvider.restaurantId);
-                averageRating = ((averageRating * (numOfRatings - 1))+ newRating) / numOfRatings;
+                averageRating =
+                    ((averageRating * (numOfRatings - 1)) + newRating) /
+                        numOfRatings;
                 restaurantProvider.updateAverageRating(
                     averageRating, restaurantProvider.restaurantId);
                 orderProvider.setStatusAsNone(orderProvider.orderId);
                 Navigator.pop(context);
+                Fluttertoast.showToast(
+                  msg: 'Thank you for your review!',
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 5,
+                  backgroundColor: ThemeColors.dark,
+                );
               }),
           TextButton(
             child: Text('Later', style: TextStyles.textButton()),

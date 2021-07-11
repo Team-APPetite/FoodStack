@@ -234,6 +234,12 @@ class OrderProvider with ChangeNotifier {
     firestoreService.setStatus(Status.delivered.toString(), id);
   }
 
+  setStatusAsNone(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('orderStatus', Status.none.toString());
+    firestoreService.setStatus(Status.none.toString(), id);
+  }
+
   getRestaurantsfromOrders(LatLng coordinates) {
     final geo = Geoflutterfire();
     final userLatitude = coordinates.latitude;

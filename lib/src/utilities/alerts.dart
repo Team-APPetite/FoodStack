@@ -140,6 +140,7 @@ class Alerts {
     return (BuildContext context) {
       final restaurantProvider = Provider.of<RestaurantProvider>(context);
       final ratingProvider = Provider.of<RatingProvider>(context);
+      final orderProvider = Provider.of<OrderProvider>(context, listen: false);
       final authBloc = Provider.of<AuthBloc>(context);
       averageRating = restaurantProvider.rating;
       numOfRatings = restaurantProvider.numOfRatings + 1;
@@ -187,6 +188,7 @@ class Alerts {
                 averageRating = ((averageRating * (numOfRatings - 1))+ newRating) / numOfRatings;
                 restaurantProvider.updateAverageRating(
                     averageRating, restaurantProvider.restaurantId);
+                orderProvider.setStatusAsNone(orderProvider.orderId);
                 Navigator.pop(context);
               }),
           TextButton(

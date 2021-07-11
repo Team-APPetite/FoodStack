@@ -22,7 +22,6 @@ class RestaurantCard extends StatefulWidget {
 }
 
 class _RestaurantCardState extends State<RestaurantCard> {
-
   @override
   Widget build(BuildContext context) {
     final FirestoreUsers firestoreService = FirestoreUsers();
@@ -79,7 +78,13 @@ class _RestaurantCardState extends State<RestaurantCard> {
                             Icons.star_rounded,
                             color: ThemeColors.yellows,
                           ),
-                        if (widget.rating % 1 != 0)
+                        if (widget.rating % 1 >= 0.75)
+                          Icon(
+                            Icons.star_rounded,
+                            color: ThemeColors.yellows,
+                          ),
+                        if (widget.rating % 1 >= 0.25 &&
+                            widget.rating % 1 < 0.75)
                           Icon(
                             Icons.star_half_rounded,
                             color: ThemeColors.yellows,

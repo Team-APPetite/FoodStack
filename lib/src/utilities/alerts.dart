@@ -143,8 +143,6 @@ class Alerts {
       final ratingProvider = Provider.of<RatingProvider>(context);
       final orderProvider = Provider.of<OrderProvider>(context, listen: false);
       final authBloc = Provider.of<AuthBloc>(context);
-      averageRating = restaurantProvider.rating;
-      numOfRatings = restaurantProvider.numOfRatings + 1;
       return CupertinoAlertDialog(
         title: const Text('Leave a review'),
         content: Column(
@@ -177,6 +175,12 @@ class Alerts {
         ),
         actions: <Widget>[
           TextButton(
+            child: Text('Later', style: TextStyles.textButton()),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
               child: Text('Submit', style: TextStyles.emphasis()),
               onPressed: () {
                 //Update rating database and restaurant avg rating
@@ -184,15 +188,13 @@ class Alerts {
                     restaurantId: restaurantProvider.restaurantId,
                     userId: authBloc.user.uid,
                     rating: newRating));
-                restaurantProvider.updateNumOfRatings(
-                    numOfRatings, restaurantProvider.restaurantId);
-                averageRating =
-                    ((averageRating * (numOfRatings - 1)) + newRating) /
-                        numOfRatings;
-                restaurantProvider.updateAverageRating(
-                    averageRating, restaurantProvider.restaurantId);
+                restaurantProvider.addRating(
+                    restaurantProvider.restaurantId, newRating);
+
                 orderProvider.setStatusAsNone(orderProvider.orderId);
+
                 Navigator.pop(context);
+
                 Fluttertoast.showToast(
                   msg: 'Thank you for your review!',
                   gravity: ToastGravity.BOTTOM,
@@ -200,12 +202,6 @@ class Alerts {
                   backgroundColor: ThemeColors.dark,
                 );
               }),
-          TextButton(
-            child: Text('Later', style: TextStyles.textButton()),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
         ],
       );
     };

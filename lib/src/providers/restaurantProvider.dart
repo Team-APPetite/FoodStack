@@ -69,14 +69,6 @@ class RestaurantProvider with ChangeNotifier {
     });
   }
 
-  Future<void> updateAverageRating(double average, String currRestaurantId) async{
-     await firestoreService.updateAverageRating(average, currRestaurantId);
-  }
-
-  Future<void> updateNumOfRatings(int num, String currRestaurantId) async{
-    await firestoreService.updateNumOfRatings(num, currRestaurantId);
-  }
-
   addRestaurant(Restaurant restaurant) {
     if (restaurant.restaurantId != null) {
       _restaurantId = restaurant.restaurantId;
@@ -118,5 +110,9 @@ class RestaurantProvider with ChangeNotifier {
 
   removeRestaurant(String restaurantId) {
     firestoreService.removeRestaurant(restaurantId);
+  }
+
+  addRating(String restaurantId, double newRating) {
+    firestoreService.addRating(_restaurantId, newRating);
   }
 }

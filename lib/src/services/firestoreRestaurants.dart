@@ -18,24 +18,23 @@ class FirestoreRestaurants {
         .then((snapshot) => Restaurant.fromJson(snapshot.data()));
   }
 
-  //Update number of ratings
-  Future<void> updateNumOfRatings(int num, String restaurantId) {
-    CollectionReference restaurant = _db.collection('restaurants');
-    return restaurant
-        .doc(restaurantId)
-        .update({'numOfRatings': num})
-        .then((value) => print("Number of Ratings Updated"))
-        .catchError((error) => print("Failed to update number of ratings: $error"));
-  }
+  Future<void> addRating(String restaurantId, double newRating) async {
+    await _db.runTransaction((transaction) async {
+      DocumentReference restaurant =
+          _db.collection('restaurants').doc(restaurantId);
+      DocumentSnapshot snapshot = await transaction.get(restaurant);
 
-  //Update average ratings
-  Future<void> updateAverageRating(double average, String restaurantId) {
-    CollectionReference restaurant = _db.collection('restaurants');
-    return restaurant
-        .doc(restaurantId)
-        .update({'rating': average})
-        .then((value) => print("Average Rating Updated"))
-        .catchError((error) => print("Failed to update average rating: $error"));
+      double averageRating = snapshot.get('rating');
+      int numOfRatings = snapshot.get('numOfRatings');
+
+      int newNumOfRatings = numOfRatings + 1;
+
+      averageRating =
+          ((averageRating * numOfRatings) + newRating) / newNumOfRatings;
+
+      await transaction.update(restaurant,
+          {'rating': averageRating, 'numOfRatings': newNumOfRatings});
+    });
   }
 
   Stream<List<Restaurant>> getRestaurants() {

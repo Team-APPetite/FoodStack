@@ -39,8 +39,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
           child: StreamBuilder<List<Restaurant>>(
               stream: restaurantProvider.restaurantsList,
               builder: (context, snapshot) {
-                if (snapshot.data == null ||
-                    userLocator.coordinates == null) {
+                if (snapshot.data == null || userLocator.coordinates == null) {
                   return Center(child: CircularProgressIndicator());
                 } else {
                   final userLatitude = userLocator.coordinates.latitude;
@@ -55,18 +54,30 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           b.coordinates.longitude,
                           userLatitude,
                           userLongitude)));
-                  return Scrollbar(
-                    child: ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, index) {
-                          return RestaurantCard(
-                              snapshot.data[index].restaurantId,
-                              snapshot.data[index].restaurantName,
-                              snapshot.data[index].cuisineType,
-                              snapshot.data[index].deliveryFee,
-                              snapshot.data[index].rating,
-                              snapshot.data[index].image);
-                        }),
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CupertinoSearchTextField(
+                          padding: EdgeInsets.all(15.0),
+                        ),
+                      ),
+                      Expanded(
+                        child: Scrollbar(
+                          child: ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                return RestaurantCard(
+                                    snapshot.data[index].restaurantId,
+                                    snapshot.data[index].restaurantName,
+                                    snapshot.data[index].cuisineType,
+                                    snapshot.data[index].deliveryFee,
+                                    snapshot.data[index].rating,
+                                    snapshot.data[index].image);
+                              }),
+                        ),
+                      ),
+                    ],
                   );
                 }
               }),

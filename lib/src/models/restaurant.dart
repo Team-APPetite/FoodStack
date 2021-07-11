@@ -45,4 +45,15 @@ class Restaurant {
       'coordinates': coordinates
     };
   }
+
+  Map<String, dynamic> staticToMap() {
+    return {
+      'restaurantId': restaurantId,
+      'restaurantName': restaurantName,
+      'cuisineType': cuisineType,
+      'deliveryFee': deliveryFee,
+      'rating': 0,
+      'image': image,
+    };
+  }
 }

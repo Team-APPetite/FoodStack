@@ -51,7 +51,7 @@ class FirestoreUsers {
   Future<void> addToFavourites(Restaurant restaurant) async {
     CollectionReference users = _db.collection('users');
     var currUid = _auth.currentUser.uid;
-    List addFavourite = [restaurant.toMap()];
+    List addFavourite = [restaurant.staticToMap()];
     return users
         .doc(currUid)
         .update({'favourites': FieldValue.arrayUnion(addFavourite)})
@@ -63,10 +63,10 @@ class FirestoreUsers {
   Future<void> removeFromFavourites(Restaurant restaurant) async {
     CollectionReference users = _db.collection('users');
     var currUid = _auth.currentUser.uid;
-    List addFavourite = [restaurant.toMap()];
+    List removeFavourite = [restaurant.staticToMap()];
     return users
         .doc(currUid)
-        .update({'favourites': FieldValue.arrayRemove(addFavourite)})
+        .update({'favourites': FieldValue.arrayRemove(removeFavourite)})
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
   }

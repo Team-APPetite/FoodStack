@@ -222,10 +222,10 @@ class OrderProvider with ChangeNotifier {
     firestoreService.setStatus(Status.paid.toString(), id);
   }
 
-  setStatusAsPickedUp(String id) async {
+  setStatusAsPrepared(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('orderStatus', Status.pickedUp.toString());
-    firestoreService.setStatus(Status.pickedUp.toString(), id);
+    prefs.setString('orderStatus', Status.prepared.toString());
+    firestoreService.setStatus(Status.prepared.toString(), id);
   }
 
   setStatusAsDelivered(String id) async {

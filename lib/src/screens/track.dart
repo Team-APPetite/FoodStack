@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
+import 'package:foodstack/src/styles/textStyles.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/statusEnums.dart';
+import 'package:foodstack/src/utilities/time.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/utilities/enums.dart';
 import 'package:foodstack/src/widgets/header.dart';
@@ -29,6 +32,10 @@ class _TrackScreenState extends State<TrackScreen> {
   String orderStatus = Status.none.toString();
   String orderId;
   Timer timer;
+
+  String header;
+  Image image;
+  String details;
 
   @override
   void initState() {
@@ -70,7 +77,7 @@ class _TrackScreenState extends State<TrackScreen> {
       });
     } else if (currentTime.compareTo(orderPickupTime) > 0) {
       setState(() {
-        orderStatus = Status.pickedUp.toString();
+        orderStatus = Status.prepared.toString();
       });
     } else if (currentTime.compareTo(orderCompletionTime) > 0) {
       setState(() {
@@ -83,59 +90,87 @@ class _TrackScreenState extends State<TrackScreen> {
     }
   }
 
-  Widget _preparingUI() {
-    return Column(
-      children: [
-        Center(child: Text('paid')),
-      ],
-    );
+  _preparing() {
+    header = 'Your order is being prepared';
+    image = Image.asset('images/Track_Page_Preparing_UI.gif');
+    _estimateDeliveryTime();
   }
 
-  Widget _deliveringUI() {
-    return Column(
-      children: [
-        Center(child: Text('pickedUp')),
-      ],
-    );
+  _delivering() {
+    header = 'Your order is being delivered';
+    image = Image.asset('images/Track_Page_Delivering_UI.gif');
+    _estimateDeliveryTime();
   }
 
-  Widget _deliveredUI() {
-    return Column(
-      children: [
-        Center(child: Text('delivered')),
-      ],
-    );
+  _delivered() {
+    header = 'Enjoy your meal!';
+    image = Image.asset('images/Track_Page_Delivered_UI.gif');
+    details = '';
   }
 
-  Widget _noStatus() {
-    return Column(
-      children: [
-        Center(child: Text('none')),
-      ],
-    );
+  _noStatus() {
+    header = '';
+    image = Image.asset('images/FoodStack_Logo_LightGrey.gif', height: 150);
+    details = '\nPlace an order to track its status here!\n';
   }
 
-  // Progress line with 4 circles: 
-  // order confirmed, 
-  // order being prepared, 
-  // order being delivered, 
-  // order delivered.
+  _estimateDeliveryTime() {
+    details =
+    'Estimated delivery time: ${orderDeliveryTime.hour}:${orderDeliveryTime.minute}';
+    if (TimeHelper.minutesRemaining(orderDeliveryTime) > 1)
+    details = details + '\n\nWithin ${TimeHelper.minutesRemaining(orderDeliveryTime)} minutes';
+    else if (TimeHelper.minutesRemaining(orderDeliveryTime) == 1)
+      details = details + '\n\nWithin ${TimeHelper.minutesRemaining(orderDeliveryTime)} minute';
+    else
+      details = details + '\n\nYour order will be arriving soon';
+  }
 
-  // Clip art for each case
-
-  // Estimated delivery time
-  
   @override
   Widget build(BuildContext context) {
+    if (orderStatus == 'Status.paid')
+      _preparing();
+    else if (orderStatus == 'Status.prepared')
+      _delivering();
+    else if (orderStatus == 'Status.delivered')
+      _delivered();
+    else
+      _noStatus();
     return Scaffold(
+      backgroundColor: orderStatus == 'Status.none' ? Colors.white : Colors.grey[50],
         appBar: Header.getAppBar(title: 'Track Your Order', back: false),
-        body: orderStatus == 'Status.paid'
-            ? _preparingUI()
-            : orderStatus == 'Status.pickedUp'
-                ? _deliveringUI()
-                : orderStatus == 'Status.delivered'
-                    ? _deliveredUI()
-                    : _noStatus(),
+        body: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              header != ''
+                  ? Text(
+                      header,
+                      style: TextStyles.heading2(),
+                      textAlign: TextAlign.center,
+                    )
+                  : Container(),
+              image,
+              details != '' ? Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24.0),
+                  border: Border.all(
+                    color: ThemeColors.light,
+                    width: 1,
+                  ),
+                  color: Colors.white,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(details,
+                      style: TextStyles.heading3(), textAlign: TextAlign.center),
+                ),
+              ) : Container(),
+              SizedBox(height: 20),
+            ],
+          ),
+        ),
         bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.track));
   }
 

@@ -10,6 +10,7 @@ class UserLocator with ChangeNotifier {
   Position currentLocation;
   LatLng coordinates;
   Address deliveryAddress;
+  bool isOnline = true;
 
   UserLocator({GeolocatorService geolocator}) {
     geolocatorService = geolocator != null ? geolocator : geolocatorService;
@@ -17,6 +18,7 @@ class UserLocator with ChangeNotifier {
   }
 
   setCurrentLocation() async {
+    isOnline = true;
     currentLocation = await geolocatorService.getCurrentLocation();
     coordinates = LatLng(currentLocation.latitude, currentLocation.longitude);
     getCameraLocation();
@@ -30,10 +32,18 @@ class UserLocator with ChangeNotifier {
   }
 
   Future<void> getCameraLocation() async {
-    final addresses = await Geocoder.local.findAddressesFromCoordinates(
-        new Coordinates(coordinates.latitude, coordinates.longitude));
-    this.deliveryAddress = addresses.first;
-    print("${deliveryAddress.featureName} : ${deliveryAddress.addressLine}");
-    notifyListeners();
+    isOnline = true;
+    try {
+      final addresses = await Geocoder.local.findAddressesFromCoordinates(
+          new Coordinates(coordinates.latitude, coordinates.longitude));
+      this.deliveryAddress = addresses.first;
+      print("${deliveryAddress.featureName} : ${deliveryAddress.addressLine}");
+      notifyListeners();
+    } catch (error) {
+      if (error.toString() ==
+          "PlatformException(Error 2, kCLErrorDomain, The operation couldn’t be completed. (kCLErrorDomain error 2.), null)") {
+        isOnline = false;
+      }
+    }
   }
 }

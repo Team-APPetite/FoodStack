@@ -30,8 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
     _getOrderStatus();
     final firestoreService = FirestoreUsers();
     firestoreService.saveDeviceToken();
+    final userLocator = Provider.of<UserLocator>(context, listen: false);
+    userLocator.getCameraLocation();
     _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-      final userLocator = Provider.of<UserLocator>(context, listen: false);
+      if (!userLocator.isOnline) {
+        showDialog<String>(context: context, builder: Alerts.noInternet());
+        timer.cancel();
+      }
       if (userLocator.deliveryAddress != null) {
         _showDeliveryAddress();
         timer.cancel();

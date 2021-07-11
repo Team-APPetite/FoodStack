@@ -206,4 +206,22 @@ class Alerts {
       );
     };
   }
+
+  static Function noInternet() {
+    return (BuildContext context) {
+      return CupertinoAlertDialog(
+        title: Row(
+          children: [
+            Icon(Icons.info_outline_rounded),
+            const Text('  No internet connection'),
+          ],
+        ),
+        content: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: const Text(
+              'Your device is currently offline. Please check your internet connection and try again.'),
+        ),
+      );
+    };
+  }
 }

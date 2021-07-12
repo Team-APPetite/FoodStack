@@ -121,7 +121,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                     ),
                     title: Text(
                       sortOptions[0],
-                      style: TextStyle(color: ThemeColors.dark),
+                      style: TextStyle(color: ThemeColors.dark, fontSize: 15),
                     ),
                     trailing: Icon(sortIcons[0],
                         color: ThemeColors.oranges),
@@ -139,7 +139,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 ),
                 title: Text(
                   sortOptions[1],
-                  style: TextStyle(color: ThemeColors.dark),
+                  style: TextStyle(color: ThemeColors.dark, fontSize: 15),
                 ),
                 trailing: Icon(sortIcons[1],
                     color: ThemeColors.oranges),
@@ -157,7 +157,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 ),
                 title: Text(
                   sortOptions[2],
-                  style: TextStyle(color: ThemeColors.dark),
+                  style: TextStyle(color: ThemeColors.dark, fontSize: 15),
                 ),
                 trailing: Icon(sortIcons[2],
                     color: ThemeColors.oranges),

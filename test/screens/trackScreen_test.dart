@@ -11,10 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../mock.dart';
 
-
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
-
-
 
 Order mockOrder = Order(
   orderId: "123",

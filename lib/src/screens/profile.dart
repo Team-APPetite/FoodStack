@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,27 +20,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final auth = FirebaseAuth.instance;
   FirestoreUsers _firestoreService = FirestoreUsers();
   String _displayName = "", _email = "";
-
-  StreamSubscription<User> loginStateSubscription;
-
-  // @override
-  // void initState() {
-  //   var authBloc = Provider.of<AuthBloc>(context, listen: false);
-  //   loginStateSubscription = authBloc.currentUser.listen((fbUser) {
-  //     if (fbUser == null) {
-  //       Navigator.of(context).pushNamed('/login');
-  //
-  //     }
-  //   });
-  //   super.initState();
-  // }
-  //
-
-  @override
-  void dispose() {
-    loginStateSubscription.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +120,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       await SharedPreferences.getInstance();
                   prefs.remove('email');
                   authBloc.logout();
-                  loginStateSubscription =
                       authBloc.currentUser.listen((fbUser) {
                     if (fbUser == null) {
                       Navigator.of(context).pushNamed('/login');

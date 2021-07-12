@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
+import 'package:foodstack/src/blocs/auth_blocs.dart';
 import 'package:foodstack/src/models/order.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
@@ -76,6 +77,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final orderProvider = Provider.of<OrderProvider>(context);
+    final authBloc = Provider.of<AuthBloc>(context);
 
     final geo = Geoflutterfire();
     final userLocator = Provider.of<UserLocator>(context);
@@ -183,7 +185,7 @@ class _CartScreenState extends State<CartScreen> {
                             cartProvider.cartId,
                             orderProvider
                                 .orderId); // TODO Need to update total price as well
-                        model.scheduledNotification(TimeHelper.minutesRemaining(orderProvider.orderTime));
+                        model.scheduledNotification(TimeHelper.minutesRemaining(orderProvider.orderTime, DateTime.now()));
                         Navigator.pushNamed(context, '/wait');
                       } else {
                         await _checkOrderAvailability();
@@ -196,6 +198,7 @@ class _CartScreenState extends State<CartScreen> {
                               Order(
                                   restaurantId: cartProvider.restaurantId,
                                   restaurantName: cartProvider.restaurantName,
+                                  creatorId: authBloc.user.uid,
                                   coordinates: userLocation,
                                   totalPrice: cartProvider.getSubtotal() +
                                       cartProvider.deliveryFee,

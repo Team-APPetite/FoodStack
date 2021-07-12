@@ -63,7 +63,7 @@ class OrderProvider with ChangeNotifier {
     _orderId = uuid.v4();
     _restaurantId = order.restaurantId;
     _restaurantName = order.restaurantName;
-    _creatorId = FirebaseAuth.instance.currentUser.uid;
+    _creatorId = order.creatorId;
     _paymentId = null;
     _status = Status.active.toString();
     _deliveryAddress = order.deliveryAddress;

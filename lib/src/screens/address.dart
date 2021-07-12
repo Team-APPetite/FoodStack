@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/blocs/auth_blocs.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
@@ -39,6 +40,7 @@ class _AddressScreenState extends State<AddressScreen> {
   @override
   Widget build(BuildContext context) {
     final userLocator = Provider.of<UserLocator>(context);
+    final authBloc = Provider.of<AuthBloc>(context);
     LatLng userCoordinates = userLocator.coordinates;
     GoogleMapController _mapController;
 
@@ -126,7 +128,8 @@ class _AddressScreenState extends State<AddressScreen> {
                               textAlign: TextAlign.center,
                             ),
                             AppButton(buttonText: 'DELIVER HERE', onPressed: () {
-                              firestoreService.updateAddress(userLocator.deliveryAddress.addressLine, userLocation);
+                              firestoreService.updateAddress(authBloc.user.uid,userLocator.deliveryAddress.addressLine);
+                              firestoreService.updateCoordinates(authBloc.user.uid,userLocation);
                               if (!isPooler) {
                                 orderProvider.updateOrderAddress(userLocator.deliveryAddress.addressLine, userLocation);
                               }

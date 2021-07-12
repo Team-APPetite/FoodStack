@@ -167,13 +167,13 @@ class _WaitScreenState extends State<WaitScreen> {
                   ),
                   enableCheckout
                       ? Container()
-                      : (TimeHelper.minutesRemaining(_orderCompletionTime) == 1)
+                      : (TimeHelper.minutesRemaining(_orderCompletionTime, DateTime.now()) == 1)
                           ? Text(
-                              '${TimeHelper.minutesRemaining(_orderCompletionTime)} minute remaining',
+                              '${TimeHelper.minutesRemaining(_orderCompletionTime, DateTime.now())} minute remaining',
                               style: TextStyles.heading3(),
                             )
                           : Text(
-                              '${TimeHelper.minutesRemaining(_orderCompletionTime)} minutes remaining',
+                              '${TimeHelper.minutesRemaining(_orderCompletionTime, DateTime.now())} minutes remaining',
                               style: TextStyles.heading3(),
                             ),
                 ],

@@ -26,14 +26,22 @@ class FirestoreUsers {
   }
 
   //Update user address
-  Future<void> updateAddress(String address, GeoFirePoint coordinates) {
+  Future<void> updateAddress(String uid, String address) {
     CollectionReference users = _db.collection('users');
-    var currUid = _auth.currentUser.uid;
     return users
-        .doc(currUid)
-        .update(<String, dynamic>{'address': address, 'coordinates': coordinates.data})
-        .then((value) => print("User Updated"))
-        .catchError((error) => print("Failed to update user: $error"));
+        .doc(uid)
+        .update({'address': address})
+        .then((value) => print("Address Updated"))
+        .catchError((error) => print("Failed to update address: $error"));
+  }
+
+  Future<void> updateCoordinates(String uid, GeoFirePoint coordinates) {
+    CollectionReference users = _db.collection('users');
+    return users
+        .doc(uid)
+        .update({'coordinates': coordinates.data})
+        .then((value) => print("Coordinates Updated"))
+        .catchError((error) => print("Failed to update Coordinates: $error"));
   }
 
   //Update user display name

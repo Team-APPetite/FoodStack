@@ -105,7 +105,7 @@ class Alerts {
                       orderProvider.addToCartsList(
                           cartProvider.cartId, orderProvider.orderId);
                       model.scheduledNotification(
-                          TimeHelper.minutesRemaining(orderProvider.orderTime));
+                          TimeHelper.minutesRemaining(orderProvider.orderTime, DateTime.now()));
                       Navigator.pushNamed(context, '/wait');
                     },
                   ),

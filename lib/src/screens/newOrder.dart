@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/utilities/sortingOptions.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/restaurantCard.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
@@ -12,10 +13,13 @@ import 'package:provider/provider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 // ignore: must_be_immutable
 class NewOrderScreen extends StatefulWidget {
   bool isFilterCardShown = false;
   bool areFiltersEnabled = false;
+
+
 
   List<String> tags = [];
   List<String> options = [
@@ -30,6 +34,23 @@ class NewOrderScreen extends StatefulWidget {
 }
 
 class _NewOrderScreenState extends State<NewOrderScreen> {
+  final sortDirection = [
+    'Low to High',
+    'High to Low',
+  ];
+
+  final directionIcons = [
+    Icons.arrow_upward_outlined,
+    Icons.arrow_downward_outlined,
+  ];
+
+  bool ascending = false;
+  bool descending = false;
+
+  Color ascendingColour = ThemeColors.dark;
+  Color descendingColour = ThemeColors.dark;
+
+  int value = 0;
   @override
   void initState() {
     super.initState();
@@ -45,6 +66,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
   Widget build(BuildContext context) {
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
     final userLocator = Provider.of<UserLocator>(context);
+
 
     Widget _filterCard() {
       return Padding(
@@ -81,6 +103,113 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                     labelStyle: TextStyle(color: Colors.white),
                     brightness: Brightness.dark),
               ),
+              Text(
+                'Sort By',
+                style: TextStyles.heading3(),
+                textAlign: TextAlign.start,
+              ),
+             ListTile(
+                    leading: Radio(
+                      visualDensity: VisualDensity.compact,
+                      activeColor: ThemeColors.oranges,
+                      value: 0,
+                      groupValue: value,
+                      onChanged: (i) {
+                        widget.areFiltersEnabled = true;
+                        setState(() => value = i);
+                      },
+                    ),
+                    title: Text(
+                      sortOptions[0],
+                      style: TextStyle(color: ThemeColors.dark),
+                    ),
+                    trailing: Icon(sortIcons[0],
+                        color: ThemeColors.oranges),
+                  ),
+              ListTile(
+                leading: Radio(
+                  visualDensity: VisualDensity.compact,
+                  activeColor: ThemeColors.oranges,
+                  value: 1,
+                  groupValue: value,
+                  onChanged: (i) {
+                    widget.areFiltersEnabled = true;
+                    setState(() => value = i);
+                  },
+                ),
+                title: Text(
+                  sortOptions[1],
+                  style: TextStyle(color: ThemeColors.dark),
+                ),
+                trailing: Icon(sortIcons[1],
+                    color: ThemeColors.oranges),
+              ),
+              ListTile(
+                leading: Radio(
+                  visualDensity: VisualDensity.compact,
+                  activeColor: ThemeColors.oranges,
+                  value: 2,
+                  groupValue: value,
+                  onChanged: (i) {
+                    widget.areFiltersEnabled = true;
+                    setState(() => value = i);
+                  },
+                ),
+                title: Text(
+                  sortOptions[2],
+                  style: TextStyle(color: ThemeColors.dark),
+                ),
+                trailing: Icon(sortIcons[2],
+                    color: ThemeColors.oranges),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_upward_outlined, color: ascendingColour,),
+                    onPressed: () {
+                      setState(() {
+                        ascending = true;
+                        descending = false;
+                        ascendingColour = ThemeColors.oranges;
+                        descendingColour = ThemeColors.dark;
+                      });
+                  },
+                  ),
+                  Text(
+                    "Low to High",
+                    style: TextStyle(color: ThemeColors.dark),
+                  ),
+
+                  SizedBox(width: 20),
+
+                  IconButton(
+                    icon: Icon(Icons.arrow_downward_outlined, color: descendingColour,),
+                    onPressed: () {
+                      setState(() {
+                        ascending = false;
+                        descending = true;
+                        ascendingColour = ThemeColors.dark;
+                        descendingColour = ThemeColors.oranges;
+                      });
+                    },
+                  ),
+                  Text(
+                    "High to Low",
+                    style: TextStyle(color: ThemeColors.dark),
+                  ),
+                ],
+              )
+
+
+
+
+
+
+
+
+
             ],
           ),
         ),

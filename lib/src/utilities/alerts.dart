@@ -135,8 +135,6 @@ class Alerts {
 
   static Function provideRating() {
     double newRating = 0.0;
-    double averageRating;
-    int numOfRatings;
 
     return (BuildContext context) {
       final restaurantProvider = Provider.of<RestaurantProvider>(context);

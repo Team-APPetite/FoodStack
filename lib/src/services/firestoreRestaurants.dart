@@ -32,7 +32,7 @@ class FirestoreRestaurants {
       averageRating =
           ((averageRating * numOfRatings) + newRating) / newNumOfRatings;
 
-      await transaction.update(restaurant,
+      transaction.update(restaurant,
           {'rating': averageRating, 'numOfRatings': newNumOfRatings});
     });
   }

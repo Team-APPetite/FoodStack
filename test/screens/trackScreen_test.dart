@@ -2,14 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:foodstack/src/blocs/auth_blocs.dart';
-import 'package:foodstack/src/models/cart.dart';
 import 'package:foodstack/src/models/order.dart';
-import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
-import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/screens/track.dart';
-import 'package:foodstack/src/utilities/numbers.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +18,6 @@ class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 Order mockOrder = Order(
   orderId: "123",
-  //coordinates: GeoFirePoint(0.0, 0.0),
 );
 
 

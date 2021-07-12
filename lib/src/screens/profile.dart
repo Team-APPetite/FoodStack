@@ -37,11 +37,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //   super.initState();
   // }
   //
-  // @override
-  // void dispose() {
-  //   loginStateSubscription.cancel();
-  //   super.dispose();
-  // }
+
+  @override
+  void dispose() {
+    loginStateSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

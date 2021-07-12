@@ -4,6 +4,7 @@ import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
+// ignore: must_be_immutable
 class RestaurantCard extends StatefulWidget {
   final String restaurantId;
   final String restaurantName;

@@ -13,13 +13,10 @@ import 'package:provider/provider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 // ignore: must_be_immutable
 class NewOrderScreen extends StatefulWidget {
   bool isFilterCardShown = false;
   bool areFiltersEnabled = false;
-
-
 
   List<String> tags = [];
   List<String> options = [
@@ -67,11 +64,17 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     final restaurantProvider = Provider.of<RestaurantProvider>(context);
     final userLocator = Provider.of<UserLocator>(context);
 
-
     Widget _filterCard() {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24.0),
+          border: Border.all(
+            color: ThemeColors.light,
+            width: 1,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -95,121 +98,153 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   value: (i, v) => v,
                   label: (i, v) => v,
                 ),
-                wrapCrossAlignment: WrapCrossAlignment.start,
                 choiceStyle: C2ChoiceStyle(),
                 choiceActiveStyle: C2ChoiceStyle(
                     showCheckmark: true,
                     color: ThemeColors.oranges,
                     labelStyle: TextStyle(color: Colors.white),
                     brightness: Brightness.dark),
+                wrapped: true,
               ),
+              SizedBox(height: 20.0),
               Text(
                 'Sort By',
                 style: TextStyles.heading3(),
                 textAlign: TextAlign.start,
               ),
-             ListTile(
-                    leading: Radio(
-                      visualDensity: VisualDensity.compact,
-                      activeColor: ThemeColors.oranges,
-                      value: 0,
-                      groupValue: value,
-                      onChanged: (i) {
-                        widget.areFiltersEnabled = true;
-                        setState(() => value = i);
-                      },
-                    ),
-                    title: Text(
-                      sortOptions[0],
-                      style: TextStyle(color: ThemeColors.dark, fontSize: 15),
-                    ),
-                    trailing: Icon(sortIcons[0],
-                        color: ThemeColors.oranges),
-                  ),
-              ListTile(
-                leading: Radio(
-                  visualDensity: VisualDensity.compact,
-                  activeColor: ThemeColors.oranges,
-                  value: 1,
-                  groupValue: value,
-                  onChanged: (i) {
-                    widget.areFiltersEnabled = true;
-                    setState(() => value = i);
-                  },
+              RadioListTile(
+                dense: true,
+                activeColor: ThemeColors.oranges,
+                value: 0,
+                groupValue: value,
+                onChanged: (i) {
+                  setState(() => value = i);
+                },
+                title: Text(
+                  sortOptions[0],
+                  style: TextStyle(color: ThemeColors.dark, fontSize: 15),
                 ),
+                secondary: Icon(sortIcons[0], color: ThemeColors.oranges),
+              ),
+              RadioListTile(
+                dense: true,
+                activeColor: ThemeColors.oranges,
+                value: 1,
+                groupValue: value,
+                onChanged: (i) {
+                  setState(() => value = i);
+                },
                 title: Text(
                   sortOptions[1],
                   style: TextStyle(color: ThemeColors.dark, fontSize: 15),
                 ),
-                trailing: Icon(sortIcons[1],
-                    color: ThemeColors.oranges),
+                secondary: Icon(sortIcons[1], color: ThemeColors.oranges),
               ),
-              ListTile(
-                leading: Radio(
-                  visualDensity: VisualDensity.compact,
-                  activeColor: ThemeColors.oranges,
-                  value: 2,
-                  groupValue: value,
-                  onChanged: (i) {
-                    widget.areFiltersEnabled = true;
-                    setState(() => value = i);
-                  },
-                ),
+              RadioListTile(
+                dense: true,
+                activeColor: ThemeColors.oranges,
+                value: 2,
+                groupValue: value,
+                onChanged: (i) {
+                  setState(() => value = i);
+                },
                 title: Text(
                   sortOptions[2],
                   style: TextStyle(color: ThemeColors.dark, fontSize: 15),
                 ),
-                trailing: Icon(sortIcons[2],
-                    color: ThemeColors.oranges),
+                secondary: Icon(sortIcons[2], color: ThemeColors.oranges),
               ),
-
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_upward_outlined, color: ascendingColour,),
-                    onPressed: () {
-                      setState(() {
-                        ascending = true;
-                        descending = false;
-                        ascendingColour = ThemeColors.oranges;
-                        descendingColour = ThemeColors.dark;
-                      });
-                  },
+                  Expanded(
+                    child: InkWell(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24.0),
+                          border: Border.all(
+                            color: ThemeColors.light,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.arrow_upward_outlined,
+                                color: ascendingColour,
+                              ),
+                            ),
+                            Text(
+                              "Low to High",
+                              style: TextStyle(color: ThemeColors.dark),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          ascending = true;
+                          descending = false;
+                          ascendingColour = ThemeColors.oranges;
+                          descendingColour = ThemeColors.dark;
+                        });
+                      },
+                    ),
                   ),
-                  Text(
-                    "Low to High",
-                    style: TextStyle(color: ThemeColors.dark),
-                  ),
-
                   SizedBox(width: 20),
-
-                  IconButton(
-                    icon: Icon(Icons.arrow_downward_outlined, color: descendingColour,),
-                    onPressed: () {
-                      setState(() {
-                        ascending = false;
-                        descending = true;
-                        ascendingColour = ThemeColors.dark;
-                        descendingColour = ThemeColors.oranges;
-                      });
-                    },
-                  ),
-                  Text(
-                    "High to Low",
-                    style: TextStyle(color: ThemeColors.dark),
+                  Expanded(
+                    child: InkResponse(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24.0),
+                          border: Border.all(
+                            color: ThemeColors.light,
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.arrow_downward_outlined,
+                                color: descendingColour,
+                              ),
+                            ),
+                            Text(
+                              "High to Low",
+                              style: TextStyle(color: ThemeColors.dark),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          ascending = false;
+                          descending = true;
+                          ascendingColour = ThemeColors.dark;
+                          descendingColour = ThemeColors.oranges;
+                        });
+                      },
+                    ),
                   ),
                 ],
-              )
-
-
-
-
-
-
-
-
-
+              ),
+              SizedBox(height: 10),
+              Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                      icon: Icon(CupertinoIcons.arrow_down_right_arrow_up_left),
+                      onPressed: () {
+                        setState(() {
+                          widget.isFilterCardShown = false;
+                        });
+                      }))
             ],
           ),
         ),

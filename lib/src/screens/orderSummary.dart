@@ -90,67 +90,68 @@ class _SummaryScreenState extends State<SummaryScreen> {
     return new WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: Header.getAppBar(title: 'Order Summary', back: false),
-        body: Padding(
-          padding: EdgeInsets.all(30.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Your order has been confirmed!',
-                style: TextStyles.heading2(),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              Expanded(
-                child: Scrollbar(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: cartProvider.cartItems.length,
-                      itemBuilder: (context, index) {
-                        return _cartItem(
-                          cartProvider.cartItems[index].foodId,
-                          cartProvider.cartItems[index].foodName,
-                          '\$' + cartProvider.cartItems[index].price.toString(),
-                          cartProvider.cartItems[index].image,
-                        );
-                      }),
-                ),
-              ),
-              _paymentSummary('Subtotal', '\$$_subtotal'),
-              _paymentSummary('Number of people in the order', '$_numOfUsers'),
-              _paymentSummary('Delivery Fee',
-                  '\$$_deliveryFee \/ $_numOfUsers = \$${Numbers.roundTo2d(_finalDeliveryFee)}'),
-              _paymentSummary('Total', '\$${Numbers.roundTo2d(_total)}'),
-              SizedBox(
-                height: 75.0,
-              ),
-              _paymentSummary('Payment method', paymentProvider.paymentMethod),
-              _paymentSummary('Amount paid', '\$${Numbers.roundTo2d(_total)}'),
-              SizedBox(
-                height: 50.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+        // appBar: Header.getAppBar(title: 'Order Summary', back: false),
+        body: SafeArea(
+          child: Scrollbar(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AppButton(
-                      buttonText: 'TRACK ORDER',
-                      onPressed: () {
-                        cartProvider.clearCart();
-                        orderProvider.clearOrder();
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/trackOrder', (r) => false);
-                      },
+                    Text(
+                      'Your order has been confirmed!',
+                      style: TextStyles.heading2(),
+                      textAlign: TextAlign.center,
                     ),
+                    Divider(thickness: 1, height: 50,),
+                    ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: cartProvider.cartItems.length,
+                        itemBuilder: (context, index) {
+                          return _cartItem(
+                            cartProvider.cartItems[index].foodId,
+                            cartProvider.cartItems[index].foodName,
+                            '\$' + cartProvider.cartItems[index].price.toString(),
+                            cartProvider.cartItems[index].image,
+                          );
+                        }),
+                    Divider(thickness: 1, height: 50,),
+                    _paymentSummary('Subtotal', '\$$_subtotal'),
+                    _paymentSummary(
+                        'No. of order members', '$_numOfUsers'),
+                    _paymentSummary('Delivery Fee',
+                        '\$$_deliveryFee \/ $_numOfUsers = \$${Numbers.roundTo2d(_finalDeliveryFee)}'),
+                    _paymentSummary('Total', '\$${Numbers.roundTo2d(_total)}'),
+                    Divider(thickness: 1, height: 50,),
+                    _paymentSummary(
+                        'Payment method', paymentProvider.paymentMethod),
+                    _paymentSummary(
+                        'Amount paid', '\$${Numbers.roundTo2d(_total)}'),
+                    Divider(thickness: 1, height: 50,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppButton(
+                            buttonText: 'TRACK ORDER',
+                            onPressed: () {
+                              cartProvider.clearCart();
+                              orderProvider.clearOrder();
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, '/trackOrder', (r) => false);
+                            },
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              )
-            ],
+              ),
+            ),
           ),
         ),
       ),

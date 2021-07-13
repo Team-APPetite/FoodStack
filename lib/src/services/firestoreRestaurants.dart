@@ -68,6 +68,17 @@ class FirestoreRestaurants {
         .asStream();
   }
 
+  Stream<List<Restaurant>> filterRestaurantsList(List filters) {
+    print("filterRestaurantsList");
+    return _db
+        .collection('restaurants')
+        .where('cuisineType', whereIn: filters)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+        .map((doc) => Restaurant.fromJson(doc.data()))
+        .toList());
+  }
+
   // Create and Update
   Future<void> setRestaurant(Restaurant restaurant) {
     var options = SetOptions(merge: true);

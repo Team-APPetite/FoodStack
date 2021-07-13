@@ -48,6 +48,10 @@ class RestaurantProvider with ChangeNotifier {
     return firestoreService.getFavouriteRestaurants();
   }
 
+  Stream<List<Restaurant>> filterRestaurantsList(List filters) {
+    return firestoreService.filterRestaurantsList(filters);
+  }
+
   setFlag() {
     flag = true;
   }

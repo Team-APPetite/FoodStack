@@ -24,6 +24,7 @@ class NewOrderScreen extends StatefulWidget {
 class _NewOrderScreenState extends State<NewOrderScreen> {
   Stream<List<Restaurant>> restaurantsList;
   Stream<List<Restaurant>> filteredList;
+  String searchString;
 
   bool isFilterCardShown = false;
   bool areFiltersEnabled = false;
@@ -65,19 +66,39 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     await prefs.setBool('isPooler', false);
   }
 
-  _onSearchChanged(String searchString) {
+  _onSearchChanged(String searchWord) {
     var result;
-    if (searchString.isEmpty) {
+    searchString = searchWord;
+    if (searchWord.isEmpty) {
       result = restaurantsList;
     } else {
-      result = restaurantsList
-          .map((restaurants) => restaurants.where((restaurant) =>
-          restaurant.restaurantName.toLowerCase().contains(searchString.toLowerCase())).toList());
+      result = restaurantsList.map((restaurants) => restaurants
+          .where((restaurant) => restaurant.restaurantName
+              .toLowerCase()
+              .contains(searchWord.toLowerCase()))
+          .toList());
     }
 
     setState(() {
       filteredList = result;
     });
+  }
+
+  _onFiltersAdded(List filters) {
+    final restaurantProvider =
+    Provider.of<RestaurantProvider>(context, listen: false);
+    if (filters.isNotEmpty) {
+      restaurantsList = restaurantProvider.filterRestaurantsList(filters);
+      setState(() {
+        filteredList = restaurantsList;
+      });
+      if (searchString != null)
+      _onSearchChanged(searchString);
+    } else {
+      restaurantsList = restaurantProvider.restaurantsList;
+      if (searchString != null)
+      _onSearchChanged(searchString);
+    }
   }
 
   @override
@@ -108,6 +129,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 value: tags,
                 onChanged: (val) => setState(() {
                   tags = val;
+                  _onFiltersAdded(tags);
                   if (tags.isNotEmpty) {
                     areFiltersEnabled = true;
                   } else {
@@ -335,8 +357,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                               ),
                               onTap: () {
                                 setState(() {
-                                  isFilterCardShown =
-                                      !isFilterCardShown;
+                                  isFilterCardShown = !isFilterCardShown;
                                 });
                               },
                               radius: 20,

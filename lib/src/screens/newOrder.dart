@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/utilities/filters.dart';
 import 'package:foodstack/src/utilities/sortingOptions.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:foodstack/src/widgets/restaurantCard.dart';
@@ -13,35 +16,31 @@ import 'package:provider/provider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// ignore: must_be_immutable
 class NewOrderScreen extends StatefulWidget {
-  bool isFilterCardShown = false;
-  bool areFiltersEnabled = false;
-
-  List<String> tags = [];
-  List<String> options = [
-    'Casual',
-    'Fast Food',
-    'Desserts',
-    'Beverages',
-    'Healthy',
-  ];
   @override
   _NewOrderScreenState createState() => _NewOrderScreenState();
 }
 
 class _NewOrderScreenState extends State<NewOrderScreen> {
   Stream<List<Restaurant>> restaurantsList;
+  Stream<List<Restaurant>> filteredList;
 
-  final sortDirection = [
-    'Low to High',
-    'High to Low',
-  ];
+  bool isFilterCardShown = false;
+  bool areFiltersEnabled = false;
 
-  final directionIcons = [
-    Icons.arrow_upward_outlined,
-    Icons.arrow_downward_outlined,
-  ];
+  List<String> tags = [];
+
+  // Commented out since this code is not being used currently
+
+  // final sortDirection = [
+  //   'Low to High',
+  //   'High to Low',
+  // ];
+  //
+  // final directionIcons = [
+  //   Icons.arrow_upward_outlined,
+  //   Icons.arrow_downward_outlined,
+  // ];
 
   bool ascending = true;
   bool descending = false;
@@ -56,6 +55,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     final restaurantProvider =
         Provider.of<RestaurantProvider>(context, listen: false);
     restaurantsList = restaurantProvider.restaurantsList;
+    filteredList = restaurantsList;
     super.initState();
     _setUserRole();
   }
@@ -65,9 +65,23 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     await prefs.setBool('isPooler', false);
   }
 
+  _onSearchChanged(String searchString) {
+    var result;
+    if (searchString.isEmpty) {
+      result = restaurantsList;
+    } else {
+      result = restaurantsList
+          .map((restaurants) => restaurants.where((restaurant) =>
+          restaurant.restaurantName.toLowerCase().contains(searchString.toLowerCase())).toList());
+    }
+
+    setState(() {
+      filteredList = result;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final restaurantProvider = Provider.of<RestaurantProvider>(context);
     final userLocator = Provider.of<UserLocator>(context);
 
     Widget _filterCard() {
@@ -91,17 +105,17 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 textAlign: TextAlign.start,
               ),
               ChipsChoice<String>.multiple(
-                value: widget.tags,
+                value: tags,
                 onChanged: (val) => setState(() {
-                  widget.tags = val;
-                  if (widget.tags.isNotEmpty) {
-                    widget.areFiltersEnabled = true;
+                  tags = val;
+                  if (tags.isNotEmpty) {
+                    areFiltersEnabled = true;
                   } else {
-                    widget.areFiltersEnabled = false;
+                    areFiltersEnabled = false;
                   }
                 }),
                 choiceItems: C2Choice.listFrom<String, String>(
-                  source: widget.options,
+                  source: filtersList,
                   value: (i, v) => v,
                   label: (i, v) => v,
                 ),
@@ -249,7 +263,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                       icon: Icon(CupertinoIcons.arrow_down_right_arrow_up_left),
                       onPressed: () {
                         setState(() {
-                          widget.isFilterCardShown = false;
+                          isFilterCardShown = false;
                         });
                       }))
             ],
@@ -264,7 +278,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: StreamBuilder<List<Restaurant>>(
-              stream: restaurantsList,
+              stream: filteredList,
               builder: (context, snapshot) {
                 if (snapshot.data == null || userLocator.coordinates == null) {
                   return Center(child: CircularProgressIndicator());
@@ -273,25 +287,23 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   final userLongitude = userLocator.coordinates.longitude;
                   if (value == 0) {
                     if (ascending) {
-                      snapshot.data.sort((a, b) =>
-                          Geolocator.distanceBetween(
+                      snapshot.data.sort((a, b) => Geolocator.distanceBetween(
                               a.coordinates.latitude,
                               a.coordinates.longitude,
                               userLatitude,
                               userLongitude)
-                              .compareTo(Geolocator.distanceBetween(
+                          .compareTo(Geolocator.distanceBetween(
                               b.coordinates.latitude,
                               b.coordinates.longitude,
                               userLatitude,
                               userLongitude)));
                     } else {
-                      snapshot.data.sort((a, b) =>
-                          Geolocator.distanceBetween(
+                      snapshot.data.sort((a, b) => Geolocator.distanceBetween(
                               b.coordinates.latitude,
                               b.coordinates.longitude,
                               userLatitude,
                               userLongitude)
-                              .compareTo(Geolocator.distanceBetween(
+                          .compareTo(Geolocator.distanceBetween(
                               a.coordinates.latitude,
                               a.coordinates.longitude,
                               userLatitude,
@@ -306,6 +318,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           children: [
                             Expanded(
                               child: CupertinoSearchTextField(
+                                onChanged: (value) {
+                                  _onSearchChanged(value);
+                                },
                                 padding: EdgeInsets.all(15.0),
                               ),
                             ),
@@ -314,14 +329,14 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                               child: Icon(
                                 Icons.filter_list,
                                 size: 30,
-                                color: widget.areFiltersEnabled
+                                color: areFiltersEnabled
                                     ? ThemeColors.oranges
                                     : ThemeColors.dark,
                               ),
                               onTap: () {
                                 setState(() {
-                                  widget.isFilterCardShown =
-                                      !widget.isFilterCardShown;
+                                  isFilterCardShown =
+                                      !isFilterCardShown;
                                 });
                               },
                               radius: 20,
@@ -329,7 +344,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           ],
                         ),
                       ),
-                      widget.isFilterCardShown ? _filterCard() : Container(),
+                      isFilterCardShown ? _filterCard() : Container(),
                       Expanded(
                         child: Scrollbar(
                           child: ListView.builder(

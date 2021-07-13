@@ -198,7 +198,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   ),
                   SizedBox(width: 20),
                   Expanded(
-                    child: InkResponse(
+                    child: InkWell(
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(24.0),

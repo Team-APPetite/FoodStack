@@ -31,6 +31,8 @@ class NewOrderScreen extends StatefulWidget {
 }
 
 class _NewOrderScreenState extends State<NewOrderScreen> {
+  Stream<List<Restaurant>> restaurantsList;
+
   final sortDirection = [
     'Low to High',
     'High to Low',
@@ -41,15 +43,19 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     Icons.arrow_downward_outlined,
   ];
 
-  bool ascending = false;
+  bool ascending = true;
   bool descending = false;
 
-  Color ascendingColour = ThemeColors.dark;
+  Color ascendingColour = ThemeColors.oranges;
   Color descendingColour = ThemeColors.dark;
 
   int value = 0;
+
   @override
   void initState() {
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
+    restaurantsList = restaurantProvider.restaurantsList;
     super.initState();
     _setUserRole();
   }
@@ -78,6 +84,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SizedBox(height: 10),
               Text(
                 'Cuisine Type',
                 style: TextStyles.heading3(),
@@ -257,23 +264,40 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: StreamBuilder<List<Restaurant>>(
-              stream: restaurantProvider.restaurantsList,
+              stream: restaurantsList,
               builder: (context, snapshot) {
                 if (snapshot.data == null || userLocator.coordinates == null) {
                   return Center(child: CircularProgressIndicator());
                 } else {
                   final userLatitude = userLocator.coordinates.latitude;
                   final userLongitude = userLocator.coordinates.longitude;
-                  snapshot.data.sort((a, b) => Geolocator.distanceBetween(
-                          a.coordinates.latitude,
-                          a.coordinates.longitude,
-                          userLatitude,
-                          userLongitude)
-                      .compareTo(Geolocator.distanceBetween(
-                          b.coordinates.latitude,
-                          b.coordinates.longitude,
-                          userLatitude,
-                          userLongitude)));
+                  if (value == 0) {
+                    if (ascending) {
+                      snapshot.data.sort((a, b) =>
+                          Geolocator.distanceBetween(
+                              a.coordinates.latitude,
+                              a.coordinates.longitude,
+                              userLatitude,
+                              userLongitude)
+                              .compareTo(Geolocator.distanceBetween(
+                              b.coordinates.latitude,
+                              b.coordinates.longitude,
+                              userLatitude,
+                              userLongitude)));
+                    } else {
+                      snapshot.data.sort((a, b) =>
+                          Geolocator.distanceBetween(
+                              b.coordinates.latitude,
+                              b.coordinates.longitude,
+                              userLatitude,
+                              userLongitude)
+                              .compareTo(Geolocator.distanceBetween(
+                              a.coordinates.latitude,
+                              a.coordinates.longitude,
+                              userLatitude,
+                              userLongitude)));
+                    }
+                  }
                   return Column(
                     children: [
                       Padding(

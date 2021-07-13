@@ -123,28 +123,28 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                       Align(
                         alignment: Alignment.topLeft,
-                        child: Text(
-                          'Payment Methods',
-                          style: TextStyles.heading2(),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Text(
+                            'Payment Methods',
+                            style: TextStyles.heading2(),
+                          ),
                         ),
                       ),
                       Expanded(
                         child: ListView.separated(
                           itemCount: paymentLabels.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: Radio(
-                                visualDensity: VisualDensity.compact,
-                                activeColor: ThemeColors.oranges,
-                                value: index,
-                                groupValue: value,
-                                onChanged: (i) => setState(() => value = i),
-                              ),
+                            return RadioListTile(
+                              activeColor: ThemeColors.oranges,
+                              value: index,
+                              groupValue: value,
+                              onChanged: (i) => setState(() => value = i),
                               title: Text(
                                 paymentLabels[index],
                                 style: TextStyle(color: ThemeColors.dark),
                               ),
-                              trailing: Icon(paymentIcons[index],
+                              secondary: Icon(paymentIcons[index],
                                   color: ThemeColors.oranges),
                             );
                           },
@@ -153,48 +153,44 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           },
                         ),
                       ),
-                      Expanded(
-                          child: Padding(
+                      Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            AppButton(
-                                buttonText: 'PAY',
-                                onPressed: () async {
-                                  if (value == 0) {
-                                    String result =
-                                        await BraintreeService.makePayment(
-                                            _total, 'FoodStack');
-                                    if (result == "Payment successful!") {
-                                      orderProvider.setStatusAsPaid(orderProvider.orderId);
-                                      paymentProvider.addPayment(
-                                          orderProvider.orderId,
-                                          _total,
-                                          paymentLabels[value]);
-                                      Navigator.pushNamed(
-                                          context, '/orderSummary');
-                                    } else {
-                                      Fluttertoast.showToast(
-                                        msg: result,
-                                        gravity: ToastGravity.TOP,
-                                        timeInSecForIosWeb: 5,
-                                        backgroundColor: ThemeColors.dark,
-                                      );
-                                    }
-                                  } else {
-                                    orderProvider.setStatusAsPaid(orderProvider.orderId);
-                                    paymentProvider.addPayment(
-                                        orderProvider.orderId,
-                                        _total,
-                                        paymentLabels[value]);
-                                    Navigator.pushNamed(
-                                        context, '/orderSummary');
-                                  }
-                                }),
-                          ],
-                        ),
-                      ))
+                        child: AppButton(
+                            buttonText: 'PAY',
+                            onPressed: () async {
+                              if (value == 0) {
+                                String result =
+                                    await BraintreeService.makePayment(
+                                        _total, 'FoodStack');
+                                if (result == "Payment successful!") {
+                                  orderProvider.setStatusAsPaid(
+                                      orderProvider.orderId);
+                                  paymentProvider.addPayment(
+                                      orderProvider.orderId,
+                                      _total,
+                                      paymentLabels[value]);
+                                  Navigator.pushNamed(
+                                      context, '/orderSummary');
+                                } else {
+                                  Fluttertoast.showToast(
+                                    msg: result,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 5,
+                                    backgroundColor: ThemeColors.dark,
+                                  );
+                                }
+                              } else {
+                                orderProvider
+                                    .setStatusAsPaid(orderProvider.orderId);
+                                paymentProvider.addPayment(
+                                    orderProvider.orderId,
+                                    _total,
+                                    paymentLabels[value]);
+                                Navigator.pushNamed(
+                                    context, '/orderSummary');
+                              }
+                            }),
+                      )
                     ])));
   }
 }

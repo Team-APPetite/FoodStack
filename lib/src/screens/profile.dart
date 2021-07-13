@@ -13,7 +13,6 @@ import '../../src/utilities/enums.dart';
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
-
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -120,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       await SharedPreferences.getInstance();
                   prefs.remove('email');
                   authBloc.logout();
-                      authBloc.currentUser.listen((fbUser) {
+                  authBloc.currentUser.listen((fbUser) {
                     if (fbUser == null) {
                       Navigator.of(context).pushNamed('/login');
                     }

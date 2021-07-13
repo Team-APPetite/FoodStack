@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final paymentLabels = [
-  'Credit card / Debit card',
+  'Pay online',
   'Cash on delivery',
 ];
 

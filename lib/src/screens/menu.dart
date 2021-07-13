@@ -159,8 +159,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                         return FoodCard(
                                             snapshot.data[index].foodId,
                                             snapshot.data[index].foodName,
+                                            snapshot.data[index].description,
                                             snapshot.data[index].price,
-                                            snapshot.data[index].image);
+                                            snapshot.data[index].image,
+                                            restaurantId);
                                       }),
                                 ),
                               ],

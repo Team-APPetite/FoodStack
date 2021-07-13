@@ -104,7 +104,6 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
   @override
   Widget build(BuildContext context) {
     final userLocator = Provider.of<UserLocator>(context);
-
     Widget _filterCard() {
       return Container(
         decoration: BoxDecoration(
@@ -386,5 +385,11 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 }
               }),
         ));
+  }
+
+  @override
+  void dispose() {
+    searchString = null;
+    super.dispose();
   }
 }

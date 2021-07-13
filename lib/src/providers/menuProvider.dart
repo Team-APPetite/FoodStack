@@ -16,6 +16,7 @@ class MenuProvider with ChangeNotifier {
   var uuid = Uuid();
 
   // Getters
+  String get foodId => _foodId;
   String get foodName => _foodName;
   String get description => _description;
   double get price => _price;
@@ -51,6 +52,7 @@ class MenuProvider with ChangeNotifier {
   }
 
   loadFoodItem(String restaurantId, FoodItem foodItem) {
+    _foodId = foodItem.foodId;
     _foodName = foodItem.foodName;
     _description = foodItem.description;
     _price = foodItem.price;

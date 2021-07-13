@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/models/cart.dart';
+import 'package:foodstack/src/models/foodItem.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
+import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +11,19 @@ import 'package:provider/provider.dart';
 class FoodCard extends StatefulWidget {
   final String foodId;
   final String foodName;
+  final String description;
   final double price;
   final String image;
+  final String restaurantId;
 
-  FoodCard(this.foodId, this.foodName, this.price, this.image);
+  FoodCard(
+    this.foodId,
+    this.foodName,
+    this.description,
+    this.price,
+    this.image,
+    this.restaurantId,
+  );
 
   @override
   _FoodCardState createState() => _FoodCardState();
@@ -22,12 +33,21 @@ class _FoodCardState extends State<FoodCard> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
+    final menuProvider = Provider.of<MenuProvider>(context);
     int quantity = cartProvider.getItemQuantityOf(widget.foodId);
 
     return Stack(
       children: [
         TextButton(
           onPressed: () {
+            menuProvider.loadFoodItem(
+                widget.restaurantId,
+                FoodItem(
+                    foodId: widget.foodId,
+                    foodName: widget.foodName,
+                    description: widget.description,
+                    price: widget.price,
+                    image: widget.image));
             Navigator.pushNamed(context, '/details');
           },
           child: Container(

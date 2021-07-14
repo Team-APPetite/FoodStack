@@ -1,4 +1,4 @@
-name: GitHub Actions Demo
+name: GitHub Actions
 on: [push]
 jobs:
   Explore-GitHub-Actions:
@@ -15,4 +15,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Flutter action
+        uses: subosito/flutter-action@v1.5.3
+
       

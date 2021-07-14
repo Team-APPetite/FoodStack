@@ -331,6 +331,20 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                               userLongitude)));
                     }
                   }
+                  else if (value == 1){
+                    if(ascending){
+                      snapshot.data.sort((a,b) => (a.rating).compareTo(b.rating));
+                    } else {
+                      snapshot.data.sort((a,b) => (b.rating).compareTo(a.rating));
+                    }
+                  }
+                  else if (value == 2){
+                    if(ascending){
+                      snapshot.data.sort((a,b) => (a.deliveryFee).compareTo(b.deliveryFee));
+                    } else {
+                      snapshot.data.sort((a,b) => (b.deliveryFee).compareTo(a.deliveryFee));
+                    }
+                  }
                   return Column(
                     children: [
                       Padding(

@@ -116,11 +116,14 @@ class _TrackScreenState extends State<TrackScreen> {
 
   _estimateDeliveryTime() {
     details =
-    'Estimated delivery time: ${orderDeliveryTime.hour}:${orderDeliveryTime.minute}';
+        'Estimated delivery time: ${orderDeliveryTime.hour}:${orderDeliveryTime.minute}';
     if (TimeHelper.minutesRemaining(orderDeliveryTime, DateTime.now()) > 1)
-    details = details + '\n\nWithin ${TimeHelper.minutesRemaining(orderDeliveryTime, DateTime.now())} minutes';
-    else if (TimeHelper.minutesRemaining(orderDeliveryTime, DateTime.now()) == 1)
-      details = details + '\n\nWithin ${TimeHelper.minutesRemaining(orderDeliveryTime, DateTime.now())} minute';
+      details = details +
+          '\n\nWithin ${TimeHelper.minutesRemaining(orderDeliveryTime, DateTime.now())} minutes';
+    else if (TimeHelper.minutesRemaining(orderDeliveryTime, DateTime.now()) ==
+        1)
+      details = details +
+          '\n\nWithin ${TimeHelper.minutesRemaining(orderDeliveryTime, DateTime.now())} minute';
     else
       details = details + '\n\nYour order will be arriving soon';
   }
@@ -136,7 +139,8 @@ class _TrackScreenState extends State<TrackScreen> {
     else
       _noStatus();
     return Scaffold(
-      backgroundColor: orderStatus == 'Status.none' ? Colors.white : Colors.grey[50],
+        backgroundColor:
+            orderStatus == 'Status.none' ? Colors.white : Colors.grey[50],
         appBar: Header.getAppBar(title: 'Track Your Order', back: false),
         body: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -151,21 +155,23 @@ class _TrackScreenState extends State<TrackScreen> {
                     )
                   : Container(),
               image,
-              details != '' ? Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24.0),
-                  border: Border.all(
-                    color: ThemeColors.light,
-                    width: 1,
-                  ),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(details,
-                      style: TextStyles.heading3(), textAlign: TextAlign.center),
-                ),
+              details != ''
+                  ? Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24.0),
+                        border: Border.all(
+                          color: ThemeColors.light,
+                          width: 1,
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(details,
+                            style: TextStyles.heading3(),
+                            textAlign: TextAlign.center),
+                      ),
                     )
                   : Container(),
               SizedBox(height: 20),

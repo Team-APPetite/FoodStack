@@ -44,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Column(
       children: [
         Text(
-          'Sign Up',
+          'Get Started',
           style: TextStyles.heading1(),
         ),
         SizedBox(height: 30.0),

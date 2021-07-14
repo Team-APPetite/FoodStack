@@ -86,18 +86,16 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
 
   _onFiltersAdded(List filters) {
     final restaurantProvider =
-    Provider.of<RestaurantProvider>(context, listen: false);
+        Provider.of<RestaurantProvider>(context, listen: false);
     if (filters.isNotEmpty) {
       restaurantsList = restaurantProvider.filterRestaurantsList(filters);
       setState(() {
         filteredList = restaurantsList;
       });
-      if (searchString != null)
-      _onSearchChanged(searchString);
+      if (searchString != null) _onSearchChanged(searchString);
     } else {
       restaurantsList = restaurantProvider.restaurantsList;
-      if (searchString != null)
-      _onSearchChanged(searchString);
+      if (searchString != null) _onSearchChanged(searchString);
     }
   }
 
@@ -329,6 +327,36 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                               a.coordinates.longitude,
                               userLatitude,
                               userLongitude)));
+                    }
+                  } else if (value == 1) {
+                    if (ascending) {
+                      snapshot.data
+                          .sort((a, b) => (a.rating).compareTo(b.rating));
+                    } else {
+                      snapshot.data
+                          .sort((a, b) => (b.rating).compareTo(a.rating));
+                    }
+                  } else if (value == 2) {
+                    if (ascending) {
+                      snapshot.data.sort(
+                          (a, b) => (a.deliveryFee).compareTo(b.deliveryFee));
+                    } else {
+                      snapshot.data.sort(
+                          (a, b) => (b.deliveryFee).compareTo(a.deliveryFee));
+                    }
+                  }
+                  else if (value == 1){
+                    if(ascending){
+                      snapshot.data.sort((a,b) => (a.rating).compareTo(b.rating));
+                    } else {
+                      snapshot.data.sort((a,b) => (b.rating).compareTo(a.rating));
+                    }
+                  }
+                  else if (value == 2){
+                    if(ascending){
+                      snapshot.data.sort((a,b) => (a.deliveryFee).compareTo(b.deliveryFee));
+                    } else {
+                      snapshot.data.sort((a,b) => (b.deliveryFee).compareTo(a.deliveryFee));
                     }
                   }
                   return Column(

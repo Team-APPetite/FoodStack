@@ -84,17 +84,30 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     });
   }
 
-  _onFiltersAdded(List filters) {
+  _onFiltersAdded({List filters, int sortBy, bool isLowToHigh}) {
+    String sortingParameter;
+    if (sortBy == 1) {
+      sortingParameter = 'rating';
+    } else if (sortBy == 2) {
+      sortingParameter = 'deliveryFee';
+    } else {
+      sortingParameter = '';
+    }
     final restaurantProvider =
         Provider.of<RestaurantProvider>(context, listen: false);
-    if (filters.isNotEmpty) {
-      restaurantsList = restaurantProvider.filterRestaurantsList(filters);
+    print(filters);
+    if (filters.isNotEmpty || sortingParameter.isNotEmpty) {
+      restaurantsList = restaurantProvider.filterRestaurantsList(
+          filters: filters, sortBy: sortingParameter, isLowToHigh: isLowToHigh);
       setState(() {
         filteredList = restaurantsList;
       });
       if (searchString != null) _onSearchChanged(searchString);
     } else {
       restaurantsList = restaurantProvider.restaurantsList;
+      setState(() {
+        filteredList = restaurantsList;
+      });
       if (searchString != null) _onSearchChanged(searchString);
     }
   }
@@ -126,7 +139,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 value: tags,
                 onChanged: (val) => setState(() {
                   tags = val;
-                  _onFiltersAdded(tags);
+                  _onFiltersAdded(filters: tags, sortBy: value, isLowToHigh: ascending);
                   if (tags.isNotEmpty) {
                     areFiltersEnabled = true;
                   } else {
@@ -172,7 +185,13 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 value: 1,
                 groupValue: value,
                 onChanged: (i) {
-                  setState(() => value = i);
+                  setState(() {
+                    value = i;
+                    _onFiltersAdded(
+                        filters: tags,
+                        sortBy: value,
+                        isLowToHigh: ascending);
+                  });
                 },
                 title: Text(
                   sortOptions[1],
@@ -186,7 +205,13 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 value: 2,
                 groupValue: value,
                 onChanged: (i) {
-                  setState(() => value = i);
+                  setState(() {
+                    value = i;
+                    _onFiltersAdded(
+                        filters: tags,
+                        sortBy: value,
+                        isLowToHigh: ascending);
+                  });
                 },
                 title: Text(
                   sortOptions[2],
@@ -232,6 +257,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           descending = false;
                           ascendingColour = ThemeColors.oranges;
                           descendingColour = ThemeColors.dark;
+                          _onFiltersAdded(filters: tags, sortBy: value, isLowToHigh: ascending);
                         });
                       },
                     ),
@@ -269,6 +295,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           descending = true;
                           ascendingColour = ThemeColors.dark;
                           descendingColour = ThemeColors.oranges;
+                          _onFiltersAdded(filters: tags, sortBy: value, isLowToHigh: ascending);
                         });
                       },
                     ),
@@ -327,36 +354,6 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                               a.coordinates.longitude,
                               userLatitude,
                               userLongitude)));
-                    }
-                  } else if (value == 1) {
-                    if (ascending) {
-                      snapshot.data
-                          .sort((a, b) => (a.rating).compareTo(b.rating));
-                    } else {
-                      snapshot.data
-                          .sort((a, b) => (b.rating).compareTo(a.rating));
-                    }
-                  } else if (value == 2) {
-                    if (ascending) {
-                      snapshot.data.sort(
-                          (a, b) => (a.deliveryFee).compareTo(b.deliveryFee));
-                    } else {
-                      snapshot.data.sort(
-                          (a, b) => (b.deliveryFee).compareTo(a.deliveryFee));
-                    }
-                  }
-                  else if (value == 1){
-                    if(ascending){
-                      snapshot.data.sort((a,b) => (a.rating).compareTo(b.rating));
-                    } else {
-                      snapshot.data.sort((a,b) => (b.rating).compareTo(a.rating));
-                    }
-                  }
-                  else if (value == 2){
-                    if(ascending){
-                      snapshot.data.sort((a,b) => (a.deliveryFee).compareTo(b.deliveryFee));
-                    } else {
-                      snapshot.data.sort((a,b) => (b.deliveryFee).compareTo(a.deliveryFee));
                     }
                   }
                   return Column(

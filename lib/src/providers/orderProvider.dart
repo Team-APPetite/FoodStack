@@ -43,6 +43,7 @@ class OrderProvider with ChangeNotifier {
       ? DateTime.fromMillisecondsSinceEpoch(
           _orderTime.seconds * noOfMillisecondsPerSecond)
       : null;
+  int get orderTimeInSeconds => _orderTime.seconds;
   double get totalPrice => _totalPrice;
   List get cartIds => _cartIds;
 
@@ -159,6 +160,8 @@ class OrderProvider with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('orderId', _orderId);
     prefs.setString('orderStatus', Status.active.toString());
+    int seconds = _orderTime.seconds;
+    prefs.setInt('orderCompletionTime', seconds);
 
     int length = _cartIds.length;
     _cartIds.add(1);

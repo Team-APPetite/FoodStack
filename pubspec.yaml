@@ -42,7 +42,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  test: ^1.17.8
   mockito: ^5.0.10
   build_runner: ^2.0.4
   rating_dialog: ^1.0.0

@@ -42,7 +42,7 @@ void main() async {
 
     testWidgets('Track screen prompts user to place an order',
         (WidgetTester tester) async {
-           prefs.setInt('orderCompletionTime', Timestamp.now().seconds - 125);
+      prefs.setInt('orderCompletionTime', Timestamp.now().seconds - 125);
       await _buildTrackScreen(tester);
       await prefs.setString('orderStatus', 'Status.none');
       await tester.pumpAndSettle(const Duration(seconds: 2));
@@ -52,7 +52,7 @@ void main() async {
 
     testWidgets('Track screen says order is being prepared',
         (WidgetTester tester) async {
-           prefs.setInt('orderCompletionTime', Timestamp.now().seconds - 2);
+      prefs.setInt('orderCompletionTime', Timestamp.now().seconds - 2);
       await _buildTrackScreen(tester);
       await prefs.setString('orderStatus', 'Status.paid');
       await tester.pumpAndSettle(const Duration(seconds: 2));
@@ -61,7 +61,7 @@ void main() async {
 
     testWidgets('Track screen says the order is being delivered',
         (WidgetTester tester) async {
-           prefs.setInt('orderCompletionTime', Timestamp.now().seconds - 65);
+      prefs.setInt('orderCompletionTime', Timestamp.now().seconds - 65);
       await _buildTrackScreen(tester);
       await prefs.setString('orderStatus', 'Status.prepared');
       await tester.pumpAndSettle(const Duration(seconds: 2));
@@ -70,7 +70,7 @@ void main() async {
 
     testWidgets('Track screen says the order is delivered',
         (WidgetTester tester) async {
-           prefs.setInt('orderCompletionTime', Timestamp.now().seconds - 95);
+      prefs.setInt('orderCompletionTime', Timestamp.now().seconds - 95);
       await _buildTrackScreen(tester);
       await prefs.setString('orderStatus', 'Status.delivered');
       await tester.pumpAndSettle(const Duration(seconds: 2));

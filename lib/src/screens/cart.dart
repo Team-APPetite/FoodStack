@@ -185,7 +185,8 @@ class _CartScreenState extends State<CartScreen> {
                             cartProvider.cartId,
                             orderProvider
                                 .orderId); // TODO Need to update total price as well
-                        model.scheduledNotification(TimeHelper.minutesRemaining(orderProvider.orderTime, DateTime.now()));
+                        model.scheduledNotification(TimeHelper.minutesRemaining(
+                            orderProvider.orderTime, DateTime.now()));
                         Navigator.pushNamed(context, '/wait');
                       } else {
                         await _checkOrderAvailability();
@@ -207,7 +208,8 @@ class _CartScreenState extends State<CartScreen> {
                                   cartIds: [cartProvider.cartId]),
                               cartProvider.joinDuration);
                           if (cartProvider.joinDuration != 0)
-                          model.scheduledNotification(cartProvider.joinDuration);
+                            model.scheduledNotification(
+                                cartProvider.joinDuration);
                           Navigator.pushNamed(context, '/wait');
                         }
                       }
@@ -221,37 +223,51 @@ class _CartScreenState extends State<CartScreen> {
       );
     }
 
-    Widget _cartItem(String id, String name, String price, String image) {
+    Widget _cartItem(
+        String id, String name, String price, String image, String notes) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
+        child: Column(
           children: [
-            Expanded(flex: 1, child: Image.network(image)),
-            SizedBox(width: 10),
-            Expanded(
-              flex: 2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(name, style: TextStyles.heading3()),
-                  SizedBox(height: 10.0),
-                  Text(price, style: TextStyles.emphasis()),
-                ],
-              ),
+            Row(
+              children: [
+                Expanded(flex: 1, child: Image.network(image)),
+                SizedBox(width: 10),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(name, style: TextStyles.heading3()),
+                      SizedBox(height: 10.0),
+                      Text(price, style: TextStyles.emphasis()),
+                    ],
+                  ),
+                ),
+                CustomNumberPicker(
+                    onValue: (value) {
+                      if (value == 0) {
+                        Navigator.pushReplacement(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder: (_, __, ___) => super.widget));
+                      }
+                      cartProvider.updateItemQuantityOf(id, value);
+                    },
+                    initialValue: cartProvider.getItemQuantityOf(id),
+                    maxValue: 20,
+                    minValue: 0)
+              ],
             ),
-            CustomNumberPicker(
-                onValue: (value) {
-                  if (value == 0) {
-                    Navigator.pushReplacement(
-                        context,
-                        PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => super.widget));
-                  }
-                  cartProvider.updateItemQuantityOf(id, value);
-                },
-                initialValue: cartProvider.getItemQuantityOf(id),
-                maxValue: 20,
-                minValue: 0)
+            notes != 'none'
+                ? Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text('Note: $notes', style: TextStyles.body()),
+                    ),
+                  )
+                : Container()
           ],
         ),
       );
@@ -272,13 +288,13 @@ class _CartScreenState extends State<CartScreen> {
                           itemCount: cartProvider.cartItems.length,
                           itemBuilder: (context, index) {
                             return _cartItem(
-                              cartProvider.cartItems[index].foodId,
-                              cartProvider.cartItems[index].foodName,
-                              '\$' +
-                                  cartProvider.cartItems[index].price
-                                      .toString(),
-                              cartProvider.cartItems[index].image,
-                            );
+                                cartProvider.cartItems[index].foodId,
+                                cartProvider.cartItems[index].foodName,
+                                '\$' +
+                                    cartProvider.cartItems[index].price
+                                        .toString(),
+                                cartProvider.cartItems[index].image,
+                                cartProvider.cartItems[index].notes);
                           })),
                 ),
                 _createOrder(),

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_number_picker/flutter_number_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/models/cart.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
 import 'package:foodstack/src/providers/menuProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -12,10 +17,13 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+  String notes = "none";
+
   @override
   Widget build(BuildContext context) {
     final menuProvider = Provider.of<MenuProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
+    int itemQuantity = cartProvider.getItemQuantityOf(menuProvider.foodId);
     return Scaffold(
       appBar: Header.getAppBar(title: menuProvider.foodName),
       body: Scrollbar(
@@ -26,6 +34,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 menuProvider.image,
                 fit: BoxFit.fitWidth,
                 width: MediaQuery.of(context).size.width,
+                height: 350,
               ),
               Padding(
                 padding: const EdgeInsets.all(30.0),
@@ -37,39 +46,78 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       style: TextStyles.heading3(),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
                     Text('SGD \$${menuProvider.price}',
                         style: TextStyles.emphasis()),
-                    SizedBox(height: 20.0),
-                    Text(
-                        'I need ${cartProvider.getItemQuantityOf(menuProvider.foodId)} of these',
-                        style:
-                            TextStyles.textButton()), // TODO change to number picker
-                    SizedBox(height: 20.0),
-                    Text('Add notes for the restaurant:',
-                        style: TextStyles.heading3()), // TODO allow adding notes
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                            'I need   ',
+                            style: TextStyles
+                                .textButton()),
+                        CustomNumberPicker(
+                            onValue: (value) {
+                              itemQuantity = value;
+                            },
+                            initialValue: itemQuantity,
+                            maxValue: 20,
+                            minValue: 1),
+                        Text(
+                            '   of these',
+                            style: TextStyles
+                                .textButton()),
+
+                      ],
+                    ),
+
                     SizedBox(
                       height: 10.0,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.0),
-                        border: Border.all(
-                          color: ThemeColors.light,
-                          width: 1,
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'none',
-                          style: TextStyles.body(),
-                        ),
-                      ),
+
+                    Text('Add notes for the restaurant:',
+                        style:
+                            TextStyles.heading3()),
+                    SizedBox(
+                      height: 10.0,
                     ),
+                    TextField(
+                      cursorColor: ThemeColors.oranges,
+                      maxLines: 7,
+                      decoration: InputDecoration(
+                        fillColor: ThemeColors.light,
+                        hintText: "Notes",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                      ),
+                      onChanged: (value) {
+                        notes = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    AppButton(
+                      buttonText: 'ADD TO CART',
+                      onPressed: () {
+                        cartProvider.addToCart(CartItem(
+                            foodId: menuProvider.foodId,
+                            foodName: menuProvider.foodName,
+                            image: menuProvider.image,
+                            price: menuProvider.price,
+                            quantity: itemQuantity,
+                            notes: notes));
+
+                        Fluttertoast.showToast(
+                          msg: 'Item has been added to cart',
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: ThemeColors.dark,
+                        );
+
+                        Navigator.pop(context);
+                      },
+                    )
                   ],
                 ),
               )

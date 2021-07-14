@@ -166,7 +166,8 @@ class _TrackScreenState extends State<TrackScreen> {
                   child: Text(details,
                       style: TextStyles.heading3(), textAlign: TextAlign.center),
                 ),
-              ) : Container(),
+                    )
+                  : Container(),
               SizedBox(height: 20),
             ],
           ),

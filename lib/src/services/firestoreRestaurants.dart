@@ -68,15 +68,38 @@ class FirestoreRestaurants {
         .asStream();
   }
 
-  Stream<List<Restaurant>> filterRestaurantsList(List filters) {
+  Stream<List<Restaurant>> filterRestaurantsList(
+      {List filters, String sortBy, bool isLowToHigh}) {
     print("filterRestaurantsList");
-    return _db
-        .collection('restaurants')
-        .where('cuisineType', whereIn: filters)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-        .map((doc) => Restaurant.fromJson(doc.data()))
-        .toList());
+    if (filters.isEmpty && sortBy.isNotEmpty) {
+      return _db
+          .collection('restaurants')
+          .orderBy(sortBy, descending: !isLowToHigh)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Restaurant.fromJson(doc.data()))
+              .toList());
+    } else if (sortBy.isEmpty && filters.isNotEmpty) {
+      return _db
+          .collection('restaurants')
+          .where('cuisineType', whereIn: filters)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Restaurant.fromJson(doc.data()))
+              .toList());
+    } else if (sortBy.isNotEmpty && filters.isNotEmpty) {
+      return _db
+          .collection('restaurants')
+          .where('cuisineType', whereIn: filters)
+          .orderBy(sortBy, descending: !isLowToHigh)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Restaurant.fromJson(doc.data()))
+              .toList());
+    } else {
+      return _db.collection('restaurants').snapshots().map((snapshot) =>
+          snapshot.docs.map((doc) => Restaurant.fromJson(doc.data())).toList());
+    }
   }
 
   // Create and Update

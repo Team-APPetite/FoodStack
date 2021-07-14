@@ -48,8 +48,8 @@ class RestaurantProvider with ChangeNotifier {
     return firestoreService.getFavouriteRestaurants();
   }
 
-  Stream<List<Restaurant>> filterRestaurantsList(List filters) {
-    return firestoreService.filterRestaurantsList(filters);
+  Stream<List<Restaurant>> filterRestaurantsList({List filters, String sortBy, bool isLowToHigh}) {
+    return firestoreService.filterRestaurantsList(filters: filters, sortBy: sortBy, isLowToHigh: isLowToHigh);
   }
 
   setFlag() {

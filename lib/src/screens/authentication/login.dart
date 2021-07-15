@@ -67,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Widget _loginForm() {
       return Column(children: [
         AppTextField(
+          keyString: 'loginEmail',
             hintText: 'EMAIL',
             textInputType: TextInputType.emailAddress,
             onChanged: (value) {
@@ -74,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
             }),
         SizedBox(height: 15.0),
         AppTextField(
+          keyString: 'loginPassword',
           hintText: 'PASSWORD',
           obscureText: true,
           onChanged: (value) {
@@ -82,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         SizedBox(height: 15.0),
         TextButton(
+          key: Key('resetPasswordButton'),
           child: Text(
             'Forgot Password?',
             style: TextStyles.link(),
@@ -92,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         SizedBox(height: 15.0),
         AppButton(
+          keyString: 'loginButton',
           buttonText: 'LOGIN',
           onPressed: () async {
             String state = await UserAuth(auth: auth).login(_email, _password);
@@ -122,6 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 15.0),
           SocialButton(
+            keyString: 'googleLogin',
             image: Image.asset('images/google.png'),
             onPressed: () async {
               String state = await authBloc.loginGoogle();
@@ -138,17 +143,6 @@ class _LoginScreenState extends State<LoginScreen> {
             },
           ),
         ],
-        // children: [
-        //   // Text(
-        //   //   'OR ',
-        //   //   style: TextStyles.body(),
-        //   // ),
-        //   // SizedBox(height: 15.0),
-        //   SignInButton(
-        //     Buttons.Google,
-        //     onPressed: () => authBloc.loginGoogle(),
-        //   )
-        // ],
       );
     }
 
@@ -161,6 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
             style: TextStyles.body(),
           ),
           TextButton(
+            key: Key('signUpButton'),
             child: Text(
               'Sign Up',
               style: TextStyles.textButton(),

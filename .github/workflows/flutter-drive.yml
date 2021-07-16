@@ -32,6 +32,5 @@ jobs:
           arch: x86_64
           profile: Nexus 6
           script: |
-            cd ./FoodStack
-            flutter pub get
+            ls
             flutter drive --target=test_driver/app.dart

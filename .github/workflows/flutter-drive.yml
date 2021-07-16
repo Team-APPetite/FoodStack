@@ -11,7 +11,6 @@ jobs:
         with:
           flutter-version: '2.2.0'
       - run: flutter pub get
-      - run: flutter  analyze
 
   drive_android:
     runs-on: macos-latest

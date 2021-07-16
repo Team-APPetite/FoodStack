@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/blocs/auth_blocs.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -60,6 +61,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _displayName,
                 );
                 _firestoreService.updateName(_displayName);
+                Fluttertoast.showToast(
+                  msg: 'Name Updated',
+                  gravity: ToastGravity.TOP,
+                  timeInSecForIosWeb: 3,
+                  backgroundColor: ThemeColors.dark,
+                );
               },
             ),
           ),

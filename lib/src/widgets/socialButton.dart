@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SocialButton extends StatefulWidget {
+  final String keyString;
   final Image image;
   final void Function() onPressed;
   SocialButton({
+    this.keyString,
     @required this.image,
     this.onPressed
   });
@@ -16,6 +18,7 @@ class _SocialButtonState extends State<SocialButton> {
   @override
   Widget build(BuildContext context) {
     return FittedBox(
+      key: Key(widget.keyString),
       fit: BoxFit.scaleDown,
       child: SizedBox(
         height: 60,

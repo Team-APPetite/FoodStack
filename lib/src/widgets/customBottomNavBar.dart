@@ -17,6 +17,7 @@ class CustomBottomNavBar extends StatelessWidget {
     final Color inActiveIconColor = Color(0xFFB6B6B6);
 
     return Material(
+      key: Key('bottomNavigationBar'),
       child: Container(
           padding: EdgeInsets.symmetric(vertical: 8.0),
           decoration: BoxDecoration(
@@ -35,7 +36,7 @@ class CustomBottomNavBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                 IconButton(
-                    key: navigateToHomeScreenKey,
+                    key: Key('navigateToHomeScreen'),
                     icon: Icon(Icons.list_alt_outlined,
                         size: 30,
                         color: MenuState.order == selectedMenu
@@ -44,7 +45,7 @@ class CustomBottomNavBar extends StatelessWidget {
                     onPressed: () =>
                         Navigator.pushReplacementNamed(context, '/home')),
                 IconButton(
-                    key: navigateToTrackScreenKey,
+                    key: Key('navigateToTrackScreen'),
                     icon: Icon(Icons.location_on_outlined,
                         size: 30,
                         color: MenuState.track == selectedMenu
@@ -53,7 +54,7 @@ class CustomBottomNavBar extends StatelessWidget {
                     onPressed: () =>
                         Navigator.pushReplacementNamed(context, '/trackOrder')),
                 IconButton(
-                    key: navigateToProfileScreenKey,
+                    key: Key('navigateToProfileScreen'),
                     icon: Icon(Icons.person,
                         size: 30,
                         color: MenuState.profile == selectedMenu

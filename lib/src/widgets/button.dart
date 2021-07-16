@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 
 class AppButton extends StatefulWidget {
+  final String keyString;
   final String buttonText;
   final void Function() onPressed;
 
   AppButton({
+    this.keyString,
     @required this.buttonText,
     this.onPressed
   });
@@ -18,6 +20,7 @@ class _AppButtonState extends State<AppButton> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      key: Key(widget.keyString),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 16.0),
         child: Text(

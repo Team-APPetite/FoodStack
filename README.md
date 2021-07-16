@@ -1,5 +1,6 @@
 # FoodStack
 
+![example workflow](https://github.com/Team-APPetite/FoodStack/actions/workflows/build-actions.yml/badge.svg)
 ![example workflow](https://github.com/Team-APPetite/FoodStack/actions/workflows/github-actions.yml/badge.svg)
 
 Flutter app by Team APPetite.

@@ -21,9 +21,6 @@ jobs:
         timeout-minutes: 30
         uses: reactivecircus/android-emulator-runner@v2.15.0
         env:
-          ANDROID_SIGN_PWD: ${{ secrets.ANDROID_SIGN_PWD }}
-          SECRET_REPO: ${{ secrets.SECRET_REPO }}
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
           ANDROID_HOME: '/Users/runner/Library/Android/sdk'
           ANDROID_SDK_ROOT: '/Users/runner/Library/Android/sdk'
         with:
@@ -34,4 +31,4 @@ jobs:
             sleep 20
             ./scripts/setenv.sh
             flutter doctor -v
-            cd ./foodstack && export ANDROID_DEBUG=true && flutter pub get && flutter drive --target=test_driver/app.dart --no-sound-null-safety
+            flutter pub get && flutter drive --target=test_driver/app.dart --no-sound-null-safety

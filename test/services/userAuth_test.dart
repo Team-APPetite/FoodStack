@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:foodstack/src/services/userAuth.dart';
+import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
 import 'package:mockito/mockito.dart';
 
 class MockUser extends Mock implements User {}
@@ -20,10 +21,16 @@ class MockFirebaseAuth extends Mock implements FirebaseAuth {
 void main() {
   final MockFirebaseAuth mockFirebaseAuth = MockFirebaseAuth();
   final UserAuth userAuth = UserAuth(auth: mockFirebaseAuth);
-  setUp(() {});
+
   tearDown(() {});
 
   group("Login", () {
+
+    MockGoogleSignIn googleSignIn;
+    setUp(() {
+      googleSignIn = MockGoogleSignIn();
+    });
+
     test("valid details", () async {
       when(
         mockFirebaseAuth.signInWithEmailAndPassword(
@@ -86,6 +93,28 @@ void main() {
       expect(await userAuth.login("charisma.kausar@gmail.com", "111111"),
           "Incorrect password");
     });
+
+    test('testing google login - not cancelled', () async {
+      googleSignIn.setIsCancelled(false);
+      final signInAccountSecondAttempt = await googleSignIn.signIn();
+      expect(signInAccountSecondAttempt, isNotNull);
+    });
+
+    test('testing google login - cancelled', () async {
+      googleSignIn.setIsCancelled(true);
+      final signInAccountSecondAttempt = await googleSignIn.signIn();
+      expect(signInAccountSecondAttempt, isNull);
+    });
+
+    test('google login should return idToken and accessToken', () async {
+      final signInAccount = await googleSignIn.signIn();
+      final signInAuthentication = await signInAccount.authentication;
+      expect(signInAuthentication, isNotNull);
+      expect(googleSignIn.currentUser, isNotNull);
+      expect(signInAuthentication.accessToken, isNotNull);
+      expect(signInAuthentication.idToken, isNotNull);
+    });
+
   });
 
   group("Signup", () {

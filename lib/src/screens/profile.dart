@@ -110,6 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             // ignore: deprecated_member_use
             child: FlatButton(
+                key: Key('logoutButton'),
                 padding: EdgeInsets.all(20),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),

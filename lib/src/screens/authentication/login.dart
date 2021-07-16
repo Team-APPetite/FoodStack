@@ -39,13 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
   _navigate() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String orderStatus = prefs.getString('orderStatus');   
-    (orderStatus == 'Status.none' || orderStatus == 'Status.delivered')
-              ? Navigator.pushReplacementNamed(context, '/home')
+    (orderStatus == 'Status.paid' || orderStatus == 'Status.prepared')
+              ? Navigator.pushReplacementNamed(context, '/trackOrder')
               : (orderStatus == 'Status.active' ||
                       orderStatus == 'Status.full' ||
                       orderStatus == 'Status.closed')
                   ? Navigator.pushReplacementNamed(context, '/wait')
-                  : Navigator.pushReplacementNamed(context, '/trackOrder');
+                  : Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override

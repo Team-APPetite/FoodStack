@@ -16,12 +16,12 @@ void main() async {
   await Firebase.initializeApp();
   runApp(App(
       home: email != null
-          ? (orderStatus == 'Status.none' || orderStatus == 'Status.delivered')
-              ? HomeScreen()
+          ? (orderStatus == 'Status.paid' || orderStatus == 'Status.prepared')
+              ? TrackScreen()
               : (orderStatus == 'Status.active' ||
                       orderStatus == 'Status.full' ||
                       orderStatus == 'Status.closed')
                   ? WaitScreen()
-                  : TrackScreen()
+                  : HomeScreen()
           : LoginScreen()));
 }

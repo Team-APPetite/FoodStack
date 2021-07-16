@@ -44,9 +44,9 @@ dev_dependencies:
     sdk: flutter
   flutter_driver:
     sdk: flutter
+  test: any
   mockito: ^5.0.10
   build_runner: ^2.0.4
-  rating_dialog: ^1.0.0
 
 flutter:
 

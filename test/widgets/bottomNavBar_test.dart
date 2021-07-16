@@ -57,7 +57,7 @@ void main() async {
     Future<void> _navigateToHomeScreen(WidgetTester tester) async {
       var home = find.descendant(
           of: find.byType(Row),
-          matching: find.byKey(CustomBottomNavBar.navigateToHomeScreenKey));
+          matching: find.byKey(Key('navigateToHomeScreen')));
       await tester.tap(home);
       await tester.pumpAndSettle();
     }

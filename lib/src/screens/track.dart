@@ -64,11 +64,17 @@ class _TrackScreenState extends State<TrackScreen> {
   }
 
   Future<void> _checkOrderStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    String prefsStatus = prefs.getString('orderStatus');
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
     await _setOrderCompletionTime();
     if (currentTime.compareTo(clearOrderTrackTime) > 0) {
       setState(() {
         orderStatus = Status.none.toString();
+        if (prefsStatus == Status.paid.toString() ||
+            prefsStatus == Status.prepared.toString()) {
+          orderProvider.setStatusAsDelivered(orderId);
+        }
       });
     } else if (currentTime.compareTo(orderDeliveryTime) > 0) {
       setState(() {

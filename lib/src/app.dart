@@ -26,6 +26,7 @@ import 'package:foodstack/src/screens/recentOrders.dart';
 import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/screens/wait.dart';
 import 'package:foodstack/src/screens/welcome.dart';
+import 'package:foodstack/src/services/analyticsService.dart';
 import 'package:foodstack/src/services/notifications.dart';
 import 'package:provider/provider.dart';
 
@@ -76,6 +77,9 @@ class _AppState extends State<App> {
           '/wait': (context) => WaitScreen(),
           '/welcome': (context) => WelcomeScreen(),
         },
+        navigatorObservers: [
+          AnalyticsService().getAnalyticsObserver()
+        ],
       ),
     );
   }

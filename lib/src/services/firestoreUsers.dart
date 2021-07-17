@@ -3,12 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:foodstack/src/models/restaurant.dart';
 import 'package:foodstack/src/models/user.dart';
+import 'package:foodstack/src/services/analyticsService.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class FirestoreUsers {
   FirebaseFirestore _db = FirebaseFirestore.instance;
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
+  AnalyticsService _analyticsService = AnalyticsService();
 
   //Set User uid, name and email
   Future<void> addUser(Users user) {
@@ -84,12 +86,20 @@ class FirestoreUsers {
     var currUid = _auth.currentUser.uid;
 
     if (fcmToken != null) {
-      var tokens =
-          _db.collection('users').doc(currUid).collection('tokens').doc(fcmToken);
+      var tokens = _db
+          .collection('users')
+          .doc(currUid)
+          .collection('tokens')
+          .doc(fcmToken);
 
       await tokens.set({
         'token': fcmToken,
       });
     }
+  }
+
+  setUserProperties() async {
+    var currUid = _auth.currentUser.uid;
+    await _analyticsService.setUserProperties(currUid);
   }
 }

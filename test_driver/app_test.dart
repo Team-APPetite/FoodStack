@@ -71,7 +71,10 @@ void main() {
 
       await driver.tap(loginButton);
       await driver.waitFor(find.text('Hungry? Order Now'));
-    });
+    },
+        timeout: Timeout(
+          Duration(minutes: 2),
+        ));
 
     test('Logout', () async {
       await driver.waitFor(bottomNavigationBar);
@@ -80,5 +83,8 @@ void main() {
       await driver.tap(logoutButton);
       await driver.waitFor(find.text('FoodStack'));
     });
-  });
+  },
+      timeout: Timeout(
+        Duration(minutes: 2),
+      ));
 }

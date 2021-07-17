@@ -54,7 +54,7 @@ class OrderProvider with ChangeNotifier {
 
   Stream<List<DocumentSnapshot>> getNearbyOrdersList(
       GeoFirePoint center, double radius) {
-    if (center != null && radius != null) {
+    if(center != null && radius !=null) {
       nearbyOrdersList = firestoreService.getNearbyOrders(center, radius);
       return firestoreService.getNearbyOrders(center, radius);
     }
@@ -106,21 +106,19 @@ class OrderProvider with ChangeNotifier {
   }
 
   getOrder(String orderId) async {
-    if (orderId != null) {
-      Order order = await firestoreService.getOrder(orderId);
-      _orderId = order.orderId;
-      _restaurantId = order.restaurantId;
-      _restaurantName = order.restaurantName;
-      _creatorId = order.creatorId;
-      _paymentId = order.paymentId;
-      _status = order.status;
-      _deliveryAddress = order.deliveryAddress;
-      _coordinates = order.coordinates;
-      _orderTime = order.orderTime;
-      _totalPrice = order.totalPrice;
-      _cartIds = order.cartIds;
-      notifyListeners();
-    }
+    Order order = await firestoreService.getOrder(orderId);
+    _orderId = order.orderId;
+    _restaurantId = order.restaurantId;
+    _restaurantName = order.restaurantName;
+    _creatorId = order.creatorId;
+    _paymentId = order.paymentId;
+    _status = order.status;
+    _deliveryAddress = order.deliveryAddress;
+    _coordinates = order.coordinates;
+    _orderTime = order.orderTime;
+    _totalPrice = order.totalPrice;
+    _cartIds = order.cartIds;
+    notifyListeners();
   }
 
   getNearbyOrder(String restaurantId) async {
@@ -219,9 +217,7 @@ class OrderProvider with ChangeNotifier {
   closeOrder() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('orderStatus', Status.closed.toString());
-    if (orderId != null) {
-      firestoreService.setStatus(Status.closed.toString(), orderId);
-    }
+    firestoreService.setStatus(Status.closed.toString(), orderId);
   }
 
   setStatusAsPaid(String id) async {
@@ -255,12 +251,13 @@ class OrderProvider with ChangeNotifier {
       userLatitude = coordinates.latitude;
       userLongitude = coordinates.longitude;
 
+
       GeoFirePoint center =
-          geo.point(latitude: userLatitude, longitude: userLongitude);
+      geo.point(latitude: userLatitude, longitude: userLongitude);
       double radius = 250 / 1000; // in kms
 
       Stream<List<DocumentSnapshot<Object>>> nearbyOrders =
-          getNearbyOrdersList(center, radius);
+      getNearbyOrdersList(center, radius);
 
       Stream<List<String>> restaurantIds = nearbyOrders.map((snapshot) =>
           snapshot

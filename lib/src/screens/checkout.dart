@@ -58,56 +58,60 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               (userLocator.deliveryAddress == null)
-                  ? Center(child: CircularProgressIndicator())
-                  : Column(children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Deliver to',
-                          style: TextStyles.heading2(),
+                  ? SizedBox(
+                      height: 150,
+                      child: Center(child: CircularProgressIndicator()))
+                  : Expanded(
+                      child: Column(children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Deliver to',
+                            style: TextStyles.heading2(),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 30.0),
-                      Expanded(
-                        child: Stack(
-                          children: [
-                            GoogleMap(
-                              mapType: MapType.normal,
-                              cameraTargetBounds: CameraTargetBounds(
-                                  LatLngBounds(
-                                      southwest: userCoordinates,
-                                      northeast: userCoordinates)),
-                              initialCameraPosition: CameraPosition(
-                                target: userCoordinates,
-                                zoom: 15,
-                              ),
-                            ),
-                            Center(
-                              child: Container(
-                                child: Icon(
-                                  Icons.location_pin,
-                                  color: ThemeColors.oranges,
-                                  size: 50.0,
+                        SizedBox(height: 30.0),
+                        Expanded(
+                          child: Stack(
+                            children: [
+                              GoogleMap(
+                                mapType: MapType.normal,
+                                cameraTargetBounds: CameraTargetBounds(
+                                    LatLngBounds(
+                                        southwest: userCoordinates,
+                                        northeast: userCoordinates)),
+                                initialCameraPosition: CameraPosition(
+                                  target: userCoordinates,
+                                  zoom: 15,
                                 ),
                               ),
-                            ),
-                          ],
+                              Center(
+                                child: Container(
+                                  child: Icon(
+                                    Icons.location_pin,
+                                    color: ThemeColors.oranges,
+                                    size: 50.0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              userLocator.deliveryAddress.addressLine,
-                              style: TextStyles.body(),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                userLocator.deliveryAddress.addressLine,
+                                style: TextStyles.body(),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ]),
+                      ]),
+                    ),
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(

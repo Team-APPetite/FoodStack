@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,7 +13,7 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		C23EDEEDCCB4E8F09DD62904 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F23CBE4EF1A2335083CBB08 /* Pods_Runner.framework */; };
+		AAC59F3CAFA6C3BDF44BF01F /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F23CBE4EF1A2335083CBB08 /* Pods_Runner.framework */; };
 		C7ACD49D265AAA2600A11E9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7ACD49C265AAA2600A11E9D /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -56,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C23EDEEDCCB4E8F09DD62904 /* Pods_Runner.framework in Frameworks */,
+				AAC59F3CAFA6C3BDF44BF01F /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,7 +169,7 @@
 				};
 			};
 			buildConfigurationList = 97C146E91CF9000F007C117D /* Build configuration list for PBXProject "Runner" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (

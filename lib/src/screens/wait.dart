@@ -33,6 +33,12 @@ class _WaitScreenState extends State<WaitScreen> {
     _getOrderInfo();
   }
 
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   Future<bool> _getUserRole() async {
     final prefs = await SharedPreferences.getInstance();
     isPooler = prefs.getBool('isPooler');
@@ -167,7 +173,9 @@ class _WaitScreenState extends State<WaitScreen> {
                   ),
                   enableCheckout
                       ? Container()
-                      : (TimeHelper.minutesRemaining(_orderCompletionTime, DateTime.now()) == 1)
+                      : (TimeHelper.minutesRemaining(
+                                  _orderCompletionTime, DateTime.now()) ==
+                              1)
                           ? Text(
                               '${TimeHelper.minutesRemaining(_orderCompletionTime, DateTime.now())} minute remaining',
                               style: TextStyles.heading3(),

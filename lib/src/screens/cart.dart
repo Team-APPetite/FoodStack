@@ -231,7 +231,7 @@ class _CartScreenState extends State<CartScreen> {
           children: [
             Row(
               children: [
-                Expanded(flex: 1, child: Image.network(image)),
+                Expanded(flex: 1, child: image.isNotEmpty ? Image.network(image) : Container()),
                 SizedBox(width: 10),
                 Expanded(
                   flex: 2,

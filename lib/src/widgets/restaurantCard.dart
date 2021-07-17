@@ -51,7 +51,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             Expanded(
               flex: 1,
-              child: Image.network(widget.image),
+              child: widget.image.isNotEmpty ? Image.network(widget.image) : Container(),
             ),
             Expanded(
               flex: 3,

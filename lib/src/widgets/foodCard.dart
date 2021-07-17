@@ -39,6 +39,7 @@ class _FoodCardState extends State<FoodCard> {
     return Stack(
       children: [
         TextButton(
+          key: Key("foodCard_${widget.foodName}"),
           onPressed: () {
             menuProvider.loadFoodItem(
                 widget.restaurantId,
@@ -67,7 +68,7 @@ class _FoodCardState extends State<FoodCard> {
                     children: [
                       Expanded(
                         flex: 5,
-                        child: Image.network(widget.image),
+                        child: widget.image.isNotEmpty ? Image.network(widget.image) : Container(),
                       ),
                       Expanded(
                         flex: 3,
@@ -96,6 +97,7 @@ class _FoodCardState extends State<FoodCard> {
         Align(
             alignment: Alignment.topRight,
             child: FloatingActionButton(
+              key: Key("addButton_${widget.foodName}"),
               child: Icon(Icons.add),
               mini: true,
               elevation: 0,

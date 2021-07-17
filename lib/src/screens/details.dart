@@ -30,12 +30,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Image.network(
+              menuProvider.image.isNotEmpty ? Image.network(
                 menuProvider.image,
                 fit: BoxFit.fitWidth,
                 width: MediaQuery.of(context).size.width,
                 height: 350,
-              ),
+              ) : Container(),
               Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Column(

@@ -36,15 +36,16 @@ class FirestoreOrders {
   Stream<List<DocumentSnapshot>> getNearbyOrders(
       GeoFirePoint center, double radius) {
     print("getNearbyOrders");
-    userLocation = center;
-    ordersRadius = radius;
-    return geo
-        .collection(
-            collectionRef: _db
-                .collection('orders')
-                .where('status', isEqualTo: 'Status.active')
-                .limit(10))
-        .within(center: center, radius: radius, field: 'coordinates');
+      userLocation = center;
+      ordersRadius = radius;
+      return geo
+          .collection(
+          collectionRef: _db
+              .collection('orders')
+              .where('status', isEqualTo: 'Status.active')
+              .limit(10))
+          .within(center: center, radius: radius, field: 'coordinates');
+
   }
 
   Future<Order> getNearbyOrder(String restaurantId) {

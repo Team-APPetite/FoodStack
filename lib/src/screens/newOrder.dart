@@ -54,7 +54,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
   @override
   void initState() {
     final restaurantProvider =
-        Provider.of<RestaurantProvider>(context, listen: false);
+    Provider.of<RestaurantProvider>(context, listen: false);
     restaurantsList = restaurantProvider.restaurantsList;
     filteredList = restaurantsList;
     super.initState();
@@ -74,8 +74,8 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     } else {
       result = restaurantsList.map((restaurants) => restaurants
           .where((restaurant) => restaurant.restaurantName
-              .toLowerCase()
-              .contains(searchWord.toLowerCase()))
+          .toLowerCase()
+          .contains(searchWord.toLowerCase()))
           .toList());
     }
 
@@ -94,7 +94,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
       sortingParameter = '';
     }
     final restaurantProvider =
-        Provider.of<RestaurantProvider>(context, listen: false);
+    Provider.of<RestaurantProvider>(context, listen: false);
     print(filters);
     if (filters.isNotEmpty || sortingParameter.isNotEmpty) {
       restaurantsList = restaurantProvider.filterRestaurantsList(
@@ -334,26 +334,26 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   if (value == 0) {
                     if (ascending) {
                       snapshot.data.sort((a, b) => Geolocator.distanceBetween(
-                              a.coordinates.latitude,
-                              a.coordinates.longitude,
-                              userLatitude,
-                              userLongitude)
+                          a.coordinates.latitude,
+                          a.coordinates.longitude,
+                          userLatitude,
+                          userLongitude)
                           .compareTo(Geolocator.distanceBetween(
-                              b.coordinates.latitude,
-                              b.coordinates.longitude,
-                              userLatitude,
-                              userLongitude)));
+                          b.coordinates.latitude,
+                          b.coordinates.longitude,
+                          userLatitude,
+                          userLongitude)));
                     } else {
                       snapshot.data.sort((a, b) => Geolocator.distanceBetween(
-                              b.coordinates.latitude,
-                              b.coordinates.longitude,
-                              userLatitude,
-                              userLongitude)
+                          b.coordinates.latitude,
+                          b.coordinates.longitude,
+                          userLatitude,
+                          userLongitude)
                           .compareTo(Geolocator.distanceBetween(
-                              a.coordinates.latitude,
-                              a.coordinates.longitude,
-                              userLatitude,
-                              userLongitude)));
+                          a.coordinates.latitude,
+                          a.coordinates.longitude,
+                          userLatitude,
+                          userLongitude)));
                     }
                   }
                   return Column(

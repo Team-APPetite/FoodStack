@@ -54,8 +54,10 @@ class OrderProvider with ChangeNotifier {
 
   Stream<List<DocumentSnapshot>> getNearbyOrdersList(
       GeoFirePoint center, double radius) {
-    nearbyOrdersList = firestoreService.getNearbyOrders(center, radius);
-    return firestoreService.getNearbyOrders(center, radius);
+    if(center != null && radius !=null) {
+      nearbyOrdersList = firestoreService.getNearbyOrders(center, radius);
+      return firestoreService.getNearbyOrders(center, radius);
+    }
   }
 
   // Functions
@@ -243,21 +245,27 @@ class OrderProvider with ChangeNotifier {
 
   getRestaurantsfromOrders(LatLng coordinates) {
     final geo = Geoflutterfire();
-    final userLatitude = coordinates.latitude;
-    final userLongitude = coordinates.longitude;
+    double userLatitude;
+    double userLongitude;
+    if (coordinates != null) {
+      userLatitude = coordinates.latitude;
+      userLongitude = coordinates.longitude;
 
-    GeoFirePoint center =
-        geo.point(latitude: userLatitude, longitude: userLongitude);
-    double radius = 250 / 1000; // in kms
 
-    Stream<List<DocumentSnapshot<Object>>> nearbyOrders =
-        getNearbyOrdersList(center, radius);
+      GeoFirePoint center =
+      geo.point(latitude: userLatitude, longitude: userLongitude);
+      double radius = 250 / 1000; // in kms
 
-    Stream<List<String>> restaurantIds = nearbyOrders.map((snapshot) => snapshot
-        .map((doc) => Order.fromFirestore(doc.data()))
-        .map((e) => e.restaurantId)
-        .toList());
+      Stream<List<DocumentSnapshot<Object>>> nearbyOrders =
+      getNearbyOrdersList(center, radius);
 
-    return restaurantIds;
+      Stream<List<String>> restaurantIds = nearbyOrders.map((snapshot) =>
+          snapshot
+              .map((doc) => Order.fromFirestore(doc.data()))
+              .map((e) => e.restaurantId)
+              .toList());
+
+      return restaurantIds;
+    }
   }
 }

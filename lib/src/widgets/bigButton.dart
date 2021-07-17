@@ -10,7 +10,7 @@ class BigButton extends StatefulWidget {
     @required this.buttonText,
     this.onPressed,
     this.icon,
-    this.color
+    this.color,
   });
 
   @override

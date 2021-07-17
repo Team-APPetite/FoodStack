@@ -57,15 +57,18 @@ class FirestoreRestaurants {
 
   Stream<List<Restaurant>> getFavouriteRestaurants() {
     print("getFavouriteRestaurants");
-    String uid = _auth.currentUser.uid;
-    return _db
-        .collection('users')
-        .doc(uid)
-        .get()
-        .then((snapshot) => Users.fromFirestore(snapshot.data()))
-        .then((value) =>
-            value.favourites.map((e) => Restaurant.fromJson(e)).toList())
-        .asStream();
+    if (_auth.currentUser != null) {
+      String uid = _auth.currentUser.uid;
+
+      return _db
+          .collection('users')
+          .doc(uid)
+          .get()
+          .then((snapshot) => Users.fromFirestore(snapshot.data()))
+          .then((value) =>
+          value.favourites.map((e) => Restaurant.fromJson(e)).toList())
+          .asStream();
+    }
   }
 
   Stream<List<Restaurant>> filterRestaurantsList(

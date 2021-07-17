@@ -134,7 +134,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       Expanded(
                         child: ListView.separated(
                           itemCount: paymentLabels.length,
-                          itemBuilder: (context, index) {
+                          itemBuilder: (context, index){
                             return RadioListTile(
                               activeColor: ThemeColors.oranges,
                               value: index,

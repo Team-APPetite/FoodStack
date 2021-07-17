@@ -32,7 +32,10 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
-    final uid = FirebaseAuth.instance.currentUser.uid.toString();
+    String uid;
+    if(auth.currentUser != null) {
+       uid = auth.currentUser.uid;
+    }
 
     return Scaffold(
         appBar: Header.getAppBar(title: 'Place Orders Again'),

@@ -99,7 +99,9 @@ class FirestoreUsers {
   }
 
   setUserProperties() async {
-    var currUid = _auth.currentUser.uid;
-    await _analyticsService.setUserProperties(currUid);
+    if (_auth.currentUser != null) {
+      var currUid = _auth.currentUser.uid;
+      await _analyticsService.setUserProperties(currUid);
+    }
   }
 }

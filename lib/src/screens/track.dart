@@ -122,7 +122,7 @@ class _TrackScreenState extends State<TrackScreen> {
 
   _estimateDeliveryTime() {
     details =
-        'Estimated delivery time: ${orderDeliveryTime.hour}:${orderDeliveryTime.minute}';
+        'Estimated delivery time: ${TimeHelper.formatTime(orderDeliveryTime)}';
     if (TimeHelper.minutesRemaining(orderDeliveryTime, DateTime.now()) > 1)
       details = details +
           '\n\nWithin ${TimeHelper.minutesRemaining(orderDeliveryTime, DateTime.now())} minutes';

@@ -6,6 +6,7 @@ import 'package:foodstack/src/models/foodItem.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/utilities/time.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/foodCard.dart';
 import 'package:foodstack/src/widgets/header.dart';
@@ -141,7 +142,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                           padding: const EdgeInsets.only(
                                               bottom: 8.0),
                                           child: Text(
-                                            'Order by ${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
+                                            'Order by ${TimeHelper.formatTime(_orderCompletionTime)}',
                                             style: TextStyles.textButton(),
                                           ),
                                         ),

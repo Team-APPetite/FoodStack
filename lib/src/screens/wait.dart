@@ -163,7 +163,7 @@ class _WaitScreenState extends State<WaitScreen> {
                     style: TextStyles.heading3(),
                   ),
                   Text(
-                    '${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
+                    '${TimeHelper.formatTime(_orderCompletionTime)}',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 40.0,

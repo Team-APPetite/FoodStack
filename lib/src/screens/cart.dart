@@ -119,7 +119,7 @@ class _CartScreenState extends State<CartScreen> {
       return _orderCompletionTime != DateTime.fromMillisecondsSinceEpoch(0)
           ? Container(
               child: Text(
-              'Confirm cart by ${_orderCompletionTime.hour}:${_orderCompletionTime.minute}',
+              'Confirm cart by ${TimeHelper.formatTime(_orderCompletionTime)}',
               style: TextStyles.textButton(),
             ))
           : Container();

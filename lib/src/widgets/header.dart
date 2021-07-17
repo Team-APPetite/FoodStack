@@ -33,6 +33,7 @@ class _BackArrowState extends State<BackArrow> {
   Widget build(BuildContext context) {
     return widget.back
         ? IconButton(
+          key: Key('backButton'),
             icon: Icon(CupertinoIcons.back),
             iconSize: 35.0,
             color: ThemeColors.dark,

@@ -38,7 +38,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
     final double _subtotal = cartProvider.getSubtotal();
     final double _deliveryFee = cartProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
-    final double _finalDeliveryFee = _deliveryFee / _numOfUsers;
+    final double _finalDeliveryFee = _deliveryFee != null ? _deliveryFee / _numOfUsers : 0;
     final double _total = _subtotal + _finalDeliveryFee;
 
     Widget _cartItem(String id, String name, String price, String image) {
@@ -126,7 +126,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     _paymentSummary('Total', '\$${Numbers.roundTo2d(_total)}'),
                     Divider(thickness: 1, height: 50,),
                     _paymentSummary(
-                        'Payment method', paymentProvider.paymentMethod),
+                        'Payment method', paymentProvider.paymentMethod ?? ''),
                     _paymentSummary(
                         'Amount paid', '\$${Numbers.roundTo2d(_total)}'),
                     Divider(thickness: 1, height: 50,),

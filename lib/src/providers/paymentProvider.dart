@@ -19,21 +19,23 @@ class PaymentProvider with ChangeNotifier {
   String get paymentMethod => _paymentMethod;
 
   addPayment(String orderId, double amountPaid, String paymentMethod) {
-    var uuid = Uuid();
-    _paymentId = uuid.v1();
-    _orderId = orderId;
-    _userId = _auth.currentUser.uid;
-    _amountPaid = amountPaid;
-    _paymentMethod = paymentMethod;
-    _paymentTime = Timestamp.now();
+    if (_auth.currentUser != null) {
+      var uuid = Uuid();
+      _paymentId = uuid.v1();
+      _orderId = orderId;
+      _userId = _auth.currentUser.uid;
+      _amountPaid = amountPaid;
+      _paymentMethod = paymentMethod;
+      _paymentTime = Timestamp.now();
 
-    var payment = Payment(
-        paymentId: _paymentId,
-        orderId: _orderId,
-        userId: _userId,
-        amountPaid: _amountPaid,
-        paymentMethod: _paymentMethod,
-        paymentTime: _paymentTime);
-    firestoreService.addPayment(payment);
+      var payment = Payment(
+          paymentId: _paymentId,
+          orderId: _orderId,
+          userId: _userId,
+          amountPaid: _amountPaid,
+          paymentMethod: _paymentMethod,
+          paymentTime: _paymentTime);
+      firestoreService.addPayment(payment);
+    }
   }
 }

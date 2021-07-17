@@ -13,7 +13,6 @@ import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckoutScreen extends StatefulWidget {
   @override
@@ -22,7 +21,6 @@ class CheckoutScreen extends StatefulWidget {
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   int value = 0;
-  bool isPooler = false;
 
   FirestoreUsers firestoreService = FirestoreUsers();
 
@@ -33,20 +31,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     super.initState();
     orderProvider.getOrder(orderProvider.orderId);
     orderProvider.closeOrder();
-    _getUserRole();
-  }
-
-  Future<bool> _getUserRole() async {
-    final prefs = await SharedPreferences.getInstance();
-    isPooler = prefs.getBool('isPooler');
-    return isPooler;
   }
 
   @override
   Widget build(BuildContext context) {
     final userLocator = Provider.of<UserLocator>(context);
     LatLng userCoordinates = userLocator.coordinates;
-    GoogleMapController _mapController;
 
     final orderProvider = Provider.of<OrderProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
@@ -55,24 +45,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final double _subtotal = cartProvider.getSubtotal();
     final double _deliveryFee = cartProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
-    final double _finalDeliveryFee = _deliveryFee / _numOfUsers;
-    final double _total = _subtotal + _finalDeliveryFee;
-
-    void whenMapCreated(GoogleMapController _controller) {
-      setState(() {
-        _mapController = _controller;
-      });
-    }
+    final double _finalDeliveryFee =
+        _deliveryFee != null ? _deliveryFee / _numOfUsers : null;
+    final double _total =
+        _finalDeliveryFee != null ? _subtotal + _finalDeliveryFee : 10;
 
     return Scaffold(
         appBar: Header.getAppBar(title: 'Checkout'),
-        body: (userLocator.deliveryAddress == null)
-            ? Center(child: CircularProgressIndicator())
-            : Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              (userLocator.deliveryAddress == null)
+                  ? Center(child: CircularProgressIndicator())
+                  : Column(children: [
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -94,7 +81,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 target: userCoordinates,
                                 zoom: 15,
                               ),
-                              onMapCreated: whenMapCreated,
                             ),
                             Center(
                               child: Container(
@@ -121,76 +107,72 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ],
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
-                          child: Text(
-                            'Payment Methods',
-                            style: TextStyles.heading2(),
-                          ),
-                        ),
+                    ]),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Text(
+                    'Payment Methods',
+                    style: TextStyles.heading2(),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.separated(
+                  itemCount: paymentLabels.length,
+                  itemBuilder: (context, index) {
+                    return RadioListTile(
+                      key: Key('paymentOption$index'),
+                      activeColor: ThemeColors.oranges,
+                      value: index,
+                      groupValue: value,
+                      onChanged: (i) => setState(() => value = i),
+                      title: Text(
+                        paymentLabels[index],
+                        style: TextStyle(color: ThemeColors.dark),
                       ),
-                      Expanded(
-                        child: ListView.separated(
-                          itemCount: paymentLabels.length,
-                          itemBuilder: (context, index){
-                            return RadioListTile(
-                              activeColor: ThemeColors.oranges,
-                              value: index,
-                              groupValue: value,
-                              onChanged: (i) => setState(() => value = i),
-                              title: Text(
-                                paymentLabels[index],
-                                style: TextStyle(color: ThemeColors.dark),
-                              ),
-                              secondary: Icon(paymentIcons[index],
-                                  color: ThemeColors.oranges),
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return Divider();
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: AppButton(
-                            buttonText: 'PAY',
-                            onPressed: () async {
-                              if (value == 0) {
-                                String result =
-                                    await BraintreeService.makePayment(
-                                        _total, 'FoodStack');
-                                if (result == "Payment successful!") {
-                                  orderProvider.setStatusAsPaid(
-                                      orderProvider.orderId);
-                                  paymentProvider.addPayment(
-                                      orderProvider.orderId,
-                                      _total,
-                                      paymentLabels[value]);
-                                  Navigator.pushNamed(
-                                      context, '/orderSummary');
-                                } else {
-                                  Fluttertoast.showToast(
-                                    msg: result,
-                                    gravity: ToastGravity.TOP,
-                                    timeInSecForIosWeb: 5,
-                                    backgroundColor: ThemeColors.dark,
-                                  );
-                                }
-                              } else {
-                                orderProvider
-                                    .setStatusAsPaid(orderProvider.orderId);
-                                paymentProvider.addPayment(
-                                    orderProvider.orderId,
-                                    _total,
-                                    paymentLabels[value]);
-                                Navigator.pushNamed(
-                                    context, '/orderSummary');
-                              }
-                            }),
-                      )
-                    ])));
+                      secondary:
+                          Icon(paymentIcons[index], color: ThemeColors.oranges),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider();
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: AppButton(
+                    keyString: 'payButton',
+                    buttonText: 'PAY',
+                    onPressed: () async {
+                      if (value == 0) {
+                        String result = await BraintreeService.makePayment(
+                            _total, 'FoodStack');
+                        if (result == "Payment successful!") {
+                          orderProvider.setStatusAsPaid(orderProvider.orderId);
+                          paymentProvider.addPayment(orderProvider.orderId,
+                              _total, paymentLabels[value]);
+                          Navigator.pushNamed(context, '/orderSummary');
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: result,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 5,
+                            backgroundColor: ThemeColors.dark,
+                          );
+                        }
+                      } else {
+                        orderProvider.setStatusAsPaid(orderProvider.orderId);
+                        paymentProvider.addPayment(orderProvider.orderId,
+                            _total, paymentLabels[value]);
+                        Navigator.pushNamed(context, '/orderSummary');
+                      }
+                    }),
+              )
+            ],
+          ),
+        ));
   }
 }

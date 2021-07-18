@@ -89,15 +89,22 @@ class CartProvider with ChangeNotifier {
     var uuid = Uuid();
     _cartId = uuid.v1();
     prefs.setString('cartId', _cartId);
+    if(_auth.currentUser != null) {
+      _userId = _auth.currentUser.uid;
 
-    _userId = _auth.currentUser.uid;
+      List<dynamic> cartItemsList = [];
 
-    List<dynamic> cartItemsList = [];
-
-    _cartItems.forEach((item) => cartItemsList.add(item.toMap()));
-    var cart = Cart(_cartId, _userId, _restaurantId, _restaurantName, _subtotal,
-        _deliveryFee, cartItemsList);
-    firestoreService.setCart(cart);
+      _cartItems.forEach((item) => cartItemsList.add(item.toMap()));
+      var cart = Cart(
+          _cartId,
+          _userId,
+          _restaurantId,
+          _restaurantName,
+          _subtotal,
+          _deliveryFee,
+          cartItemsList);
+      firestoreService.setCart(cart);
+    }
   }
 
   getCart(String cartId) async {

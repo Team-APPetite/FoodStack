@@ -1,10 +1,10 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/blocs/auth_blocs.dart';
+import 'package:foodstack/src/models/user.dart';
+import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/services/userAuth.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
@@ -22,37 +22,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String _email = '', _password = '';
   final auth = FirebaseAuth.instance;
-
-  StreamSubscription<User> loginStateSubscription;
-
-  @override
-  void initState() {
-    var authBloc = Provider.of<AuthBloc>(context, listen: false);
-    loginStateSubscription = authBloc.currentUser.listen((fbUser) {
-      if (fbUser != null) {
-        _navigate();
-      }
-    });
-    super.initState();
-  }
-
-  _navigate() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String orderStatus = prefs.getString('orderStatus');   
-    (orderStatus == 'Status.paid' || orderStatus == 'Status.prepared')
-              ? Navigator.pushReplacementNamed(context, '/trackOrder')
-              : (orderStatus == 'Status.active' ||
-                      orderStatus == 'Status.full' ||
-                      orderStatus == 'Status.closed')
-                  ? Navigator.pushReplacementNamed(context, '/wait')
-                  : Navigator.pushReplacementNamed(context, '/home');
-  }
-
-  @override
-  void dispose() {
-    loginStateSubscription.cancel();
-    super.dispose();
-  }
+  final FirestoreUsers firestoreService = FirestoreUsers();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Widget _loginForm() {
       return Column(children: [
         AppTextField(
-          keyString: 'loginEmail',
+            keyString: 'loginEmail',
             hintText: 'EMAIL',
             textInputType: TextInputType.emailAddress,
             onChanged: (value) {
@@ -113,7 +83,6 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           },
         ),
-        //SizedBox(height: 30.0),
       ]);
     }
 
@@ -129,12 +98,20 @@ class _LoginScreenState extends State<LoginScreen> {
             keyString: 'googleLogin',
             image: Image.asset('images/google.png'),
             onPressed: () async {
-              String state = await authBloc.loginGoogle();
-              if (state == "Success") {
+              String msg = await authBloc.loginGoogle();
+              if (msg == "Success") {
                 Navigator.pushNamed(context, '/home');
+              } else if (msg == "New User") {
+                User user = auth.currentUser;
+                var currUser = Users(uid: user.uid, email: user.email);
+                await firestoreService.addUser(currUser).then((value) async {});
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('email', user.email);
+
+                Navigator.pushNamed(context, '/welcome');
               } else {
                 Fluttertoast.showToast(
-                  msg: '$state',
+                  msg: '$msg',
                   gravity: ToastGravity.TOP,
                   timeInSecForIosWeb: 5,
                   backgroundColor: ThemeColors.dark,

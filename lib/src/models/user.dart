@@ -20,14 +20,18 @@ class Users {
       this.getCoordinates});
 
   Map<String, dynamic> toMap() {
-    return {
-      'uid': uid,
-      'name': name,
-      'email': email,
-      'address': address,
-      'coordinates': coordinates.data,
-      'favourites': favourites
-    };
+    if (coordinates != null) {
+      return {
+        'uid': uid,
+        'name': name,
+        'email': email,
+        'address': address,
+        'coordinates': coordinates.data,
+        'favourites': favourites
+      };
+    } else {
+      return {'uid': uid, 'name': name, 'email': email};
+    }
   }
 
   Users.fromFirestore(Map<String, dynamic> firestore)

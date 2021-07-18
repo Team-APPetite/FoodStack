@@ -1,16 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-
-
 class UserAuth {
   final FirebaseAuth auth;
   UserAuth({this.auth});
 
-
   Future<String> signInWithCredential(AuthCredential credential) async {
     try {
-      await auth.signInWithCredential(credential);
-      return "Success";
+      final UserCredential authResult =
+          await auth.signInWithCredential(credential);
+      final User user = authResult.user;
+
+      if (authResult.additionalUserInfo.isNewUser && user != null) {
+        return "New User";
+      } else {
+        return "Success";
+      }
     } on FirebaseAuthException catch (error) {
       return error.message;
     }
@@ -37,12 +41,16 @@ class UserAuth {
     }
   }
 
-  Future<String>  signup(String _firstName, String _lastName, String _email, String _password,
-      String _passwordConfirmation) async {
+  Future<String> signup(String _firstName, String _lastName, String _email,
+      String _password, String _passwordConfirmation) async {
     try {
-      if (_firstName == '' && _lastName == '' && _email == '' && _password == '' && _passwordConfirmation == ''){
+      if (_firstName == '' &&
+          _lastName == '' &&
+          _email == '' &&
+          _password == '' &&
+          _passwordConfirmation == '') {
         return "Please fill in your details";
-      }else if (_firstName == '') {
+      } else if (_firstName == '') {
         return 'Please enter your first name';
       } else if (_lastName == '') {
         return 'Please enter your last name';
@@ -58,7 +66,7 @@ class UserAuth {
         return "Success";
       }
     } on FirebaseAuthException catch (error) {
-          return error.message;
+      return error.message;
     }
   }
 }

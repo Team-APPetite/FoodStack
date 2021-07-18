@@ -20,9 +20,7 @@ import 'package:foodstack/src/screens/joinOrders.dart';
 import 'package:foodstack/src/screens/newOrder.dart';
 import 'package:foodstack/src/screens/orderSummary.dart';
 import 'package:foodstack/src/screens/recentOrders.dart';
-import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/foodCard.dart';
-import 'package:foodstack/src/widgets/textField.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,16 +61,16 @@ void main() async {
           )));
     }
 
-    Future<void> _navigateToHomeScreen(WidgetTester tester) async {
-      await tester.enterText(find.descendant(of: find.byType(AppTextField), matching: find.text('LOGIN')), 'nicole.joseph2122@gmail.com');
-      await tester.enterText(find.descendant(of: find.byType(AppTextField), matching: find.text('PASSWORD')), 'sample123');
+    // Future<void> _navigateToHomeScreen(WidgetTester tester) async {
+    //   await tester.enterText(find.descendant(of: find.byType(AppTextField), matching: find.text('LOGIN')), 'appfoodstack@gmail.com');
+    //   await tester.enterText(find.descendant(of: find.byType(AppTextField), matching: find.text('PASSWORD')), '123456');
 
-      var home = find.descendant(of: find.byType(AppButton), matching: find.text('LOGIN'));
+    //   var home = find.descendant(of: find.byType(AppButton), matching: find.text('LOGIN'));
 
-      await tester.tap(home);
-      await tester.pump();
-      await tester.pump();
-    }
+    //   await tester.tap(home);
+    //   await tester.pump();
+    //   await tester.pump();
+    // }
 
     Future<void> _navigateToSignUpScreen(WidgetTester tester) async {
       var signUp =
@@ -89,14 +87,14 @@ void main() async {
       await tester.pump();
     }
 
-    testWidgets('Navigate to Home Screen', (WidgetTester tester) async {
-      await _buildLoginScreen(tester);
-      await _navigateToHomeScreen(tester);
+    // testWidgets('Navigate to Home Screen', (WidgetTester tester) async {
+    //   await _buildLoginScreen(tester);
+    //   await _navigateToHomeScreen(tester);
 
-      verify(mockObserver.didPush(any, any));
+    //   verify(mockObserver.didPush(any, any));
 
-      expect(find.byType(HomeScreen), findsOneWidget);
-    });
+    //   expect(find.byType(HomeScreen), findsOneWidget);
+    // });
 
     testWidgets('Navigate to Sign Up Screen', (WidgetTester tester) async {
       await _buildLoginScreen(tester);
@@ -108,83 +106,6 @@ void main() async {
     });
 
     testWidgets('Navigate to Reset Password Screen', (WidgetTester tester) async {
-      await _buildLoginScreen(tester);
-      await _navigateToResetPasswordScreen(tester);
-
-      verify(mockObserver.didPush(any, any));
-
-      expect(find.byType(ResetScreen), findsOneWidget);
-    });
-  });
-
-  group('Home Screen', () {
-    NavigatorObserver mockObserver;
-
-    setUp(() {
-      mockObserver = MockNavigatorObserver();
-    });
-
-    Future<void> _buildLoginScreen(WidgetTester tester) async {
-      await Firebase.initializeApp();
-      await tester.pumpWidget(MultiProvider(
-          providers: [
-            Provider(create: (context) => AuthBloc()),
-          ],
-          child: MaterialApp(
-            title: 'FoodStack',
-            home: LoginScreen(),
-            navigatorObservers: [mockObserver],
-            routes: {
-              '/home': (context) => HomeScreen(),
-            },
-          )));
-    }
-
-    Future<void> _navigateToHomeScreen(WidgetTester tester) async {
-      var home =
-          find.descendant(of: find.byType(Row), matching: find.text('LOGIN'));
-
-      await tester.tap(home);
-      await tester.pump();
-      await tester.pump();
-    }
-
-    Future<void> _navigateToSignUpScreen(WidgetTester tester) async {
-      var signUp =
-          find.descendant(of: find.byType(Row), matching: find.text('Sign Up'));
-      await tester.tap(signUp);
-      await tester.pump();
-      await tester.pump();
-    }
-
-    Future<void> _navigateToResetPasswordScreen(WidgetTester tester) async {
-      var reset = find.descendant(
-          of: find.byType(Row), matching: find.text('Forgot Password?'));
-      await tester.tap(reset);
-      await tester.pump();
-      await tester.pump();
-    }
-
-    testWidgets('Navigate to Home Screen', (WidgetTester tester) async {
-      await _buildLoginScreen(tester);
-      await _navigateToHomeScreen(tester);
-
-      verify(mockObserver.didPush(any, any));
-
-      expect(find.byType(HomeScreen), findsOneWidget);
-    });
-
-    testWidgets('Navigate to Sign Up Screen', (WidgetTester tester) async {
-      await _buildLoginScreen(tester);
-      await _navigateToSignUpScreen(tester);
-
-      verify(mockObserver.didPush(any, any));
-
-      expect(find.byType(SignUpScreen), findsOneWidget);
-    });
-
-    testWidgets('Navigate to Reset Password Screen',
-        (WidgetTester tester) async {
       await _buildLoginScreen(tester);
       await _navigateToResetPasswordScreen(tester);
 

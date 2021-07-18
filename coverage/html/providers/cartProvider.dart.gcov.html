@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2021-07-18 00:37:53</td>
+            <td class="headerValue">2021-07-18 12:54:55</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -95,9 +95,9 @@
 <a name="33"><span class="lineNum">      33 </span>            : </a>
 <a name="34"><span class="lineNum">      34 </span><span class="lineNoCov">          0 :   String get restaurantName =&gt; _restaurantName;</span></a>
 <a name="35"><span class="lineNum">      35 </span>            : </a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          4 :   List get cartItems =&gt; _cartItems;</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          6 :   List get cartItems =&gt; _cartItems;</span></a>
 <a name="37"><span class="lineNum">      37 </span>            : </a>
-<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          2 :   double get deliveryFee =&gt; _deliveryFee;</span></a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          4 :   double get deliveryFee =&gt; _deliveryFee;</span></a>
 <a name="39"><span class="lineNum">      39 </span>            : </a>
 <a name="40"><span class="lineNum">      40 </span><span class="lineNoCov">          0 :   double get subtotal =&gt; _subtotal;</span></a>
 <a name="41"><span class="lineNum">      41 </span>            : </a>
@@ -118,24 +118,24 @@
 <a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :     _restaurantName = name;</span></a>
 <a name="57"><span class="lineNum">      57 </span>            :   }</a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
-<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          1 :   addToCart(CartItem cartItem) {</span></a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          2 :     CartItem exists = _cartItems.firstWhere(</span></a>
-<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          4 :         (item) =&gt; item.foodId == cartItem.foodId,</span></a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          1 :         orElse: () =&gt; null);</span></a>
+<a name="59"><span class="lineNum">      59 </span><span class="lineCov">          2 :   addToCart(CartItem cartItem) {</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          4 :     CartItem exists = _cartItems.firstWhere(</span></a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineCov">          8 :         (item) =&gt; item.foodId == cartItem.foodId,</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          2 :         orElse: () =&gt; null);</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : </a>
 <a name="64"><span class="lineNum">      64 </span>            :     if (exists == null) {</a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          2 :       _cartItems.add(1);</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          3 :       _cartItems[_uniqueItemCount] = cartItem;</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          5 :       _cartItems[_uniqueItemCount].quantity = cartItem.quantity;</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          7 :       _itemCount = _itemCount + _cartItems[_uniqueItemCount].quantity;</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          2 :       _uniqueItemCount++;</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          4 :       _cartItems.add(1);</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          6 :       _cartItems[_uniqueItemCount] = cartItem;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">         10 :       _cartItems[_uniqueItemCount].quantity = cartItem.quantity;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">         14 :       _itemCount = _itemCount + _cartItems[_uniqueItemCount].quantity;</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          4 :       _uniqueItemCount++;</span></a>
 <a name="70"><span class="lineNum">      70 </span>            :     } else {</a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 :       int updateIndex = _cartItems.indexOf(exists);</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          4 :       _cartItems[updateIndex].quantity++;</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          2 :       _itemCount++;</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          4 :       int updateIndex = _cartItems.indexOf(exists);</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          8 :       _cartItems[updateIndex].quantity++;</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          4 :       _itemCount++;</span></a>
 <a name="74"><span class="lineNum">      74 </span>            :     }</a>
 <a name="75"><span class="lineNum">      75 </span>            : </a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          1 :     notifyListeners();</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          2 :     notifyListeners();</span></a>
 <a name="77"><span class="lineNum">      77 </span>            :   }</a>
 <a name="78"><span class="lineNum">      78 </span>            : </a>
 <a name="79"><span class="lineNum">      79 </span><span class="lineCov">          1 :   removeFromCart(String foodId) {</span></a>
@@ -185,15 +185,15 @@
 <a name="123"><span class="lineNum">     123 </span><span class="lineCov">          2 :     _cartItems = [];</span></a>
 <a name="124"><span class="lineNum">     124 </span>            :   }</a>
 <a name="125"><span class="lineNum">     125 </span>            : </a>
-<a name="126"><span class="lineNum">     126 </span><span class="lineCov">          1 :   int getItemQuantityOf(String foodId) {</span></a>
-<a name="127"><span class="lineNum">     127 </span><span class="lineCov">          5 :     CartItem exists = _cartItems.firstWhere((item) =&gt; item.foodId == foodId,</span></a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineCov">          1 :         orElse: () =&gt; null);</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineCov">          3 :   int getItemQuantityOf(String foodId) {</span></a>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">         12 :     CartItem exists = _cartItems.firstWhere((item) =&gt; item.foodId == foodId,</span></a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineCov">          3 :         orElse: () =&gt; null);</span></a>
 <a name="129"><span class="lineNum">     129 </span>            : </a>
 <a name="130"><span class="lineNum">     130 </span>            :     if (exists == null) {</a>
 <a name="131"><span class="lineNum">     131 </span>            :       return 0;</a>
 <a name="132"><span class="lineNum">     132 </span>            :     } else {</a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">          2 :       int updateIndex = _cartItems.indexOf(exists);</span></a>
-<a name="134"><span class="lineNum">     134 </span><span class="lineCov">          3 :       return _cartItems[updateIndex].quantity;</span></a>
+<a name="133"><span class="lineNum">     133 </span><span class="lineCov">          4 :       int updateIndex = _cartItems.indexOf(exists);</span></a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">          6 :       return _cartItems[updateIndex].quantity;</span></a>
 <a name="135"><span class="lineNum">     135 </span>            :     }</a>
 <a name="136"><span class="lineNum">     136 </span>            :   }</a>
 <a name="137"><span class="lineNum">     137 </span>            : </a>
@@ -237,13 +237,13 @@
 <a name="175"><span class="lineNum">     175 </span>            :     );</a>
 <a name="176"><span class="lineNum">     176 </span>            :   }</a>
 <a name="177"><span class="lineNum">     177 </span>            : </a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          2 :   double getSubtotal() {</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          2 :     _subtotal = 0;</span></a>
-<a name="180"><span class="lineNum">     180 </span><span class="lineCov">          7 :     for (int i = 0; i &lt; _cartItems.length; i++) {</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          3 :   double getSubtotal() {</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          3 :     _subtotal = 0;</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">         10 :     for (int i = 0; i &lt; _cartItems.length; i++) {</span></a>
 <a name="181"><span class="lineNum">     181 </span><span class="lineCov">          9 :       _subtotal += (_cartItems[i].price * _cartItems[i].quantity);</span></a>
 <a name="182"><span class="lineNum">     182 </span>            :     }</a>
-<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          6 :     _subtotal = Numbers.roundTo2d(_subtotal);</span></a>
-<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          2 :     return _subtotal;</span></a>
+<a name="183"><span class="lineNum">     183 </span><span class="lineCov">          9 :     _subtotal = Numbers.roundTo2d(_subtotal);</span></a>
+<a name="184"><span class="lineNum">     184 </span><span class="lineCov">          3 :     return _subtotal;</span></a>
 <a name="185"><span class="lineNum">     185 </span>            :   }</a>
 <a name="186"><span class="lineNum">     186 </span>            : </a>
 <a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :   String deliveryFeeRange() {</span></a>

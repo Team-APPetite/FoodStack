@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class BraintreeService {
   static var url = 'https://us-central1-foodstack-e8d0f.cloudfunctions.net/makePayment';
 
-  static Future<String> makePayment(double amount, String payee) async {
+  Future<String> makePayment(double amount, String payee) async {
     var request = BraintreeDropInRequest(
         tokenizationKey: 'sandbox_x6ht3hjz_wy33zpcrkwngprjq',
         collectDeviceData: true,

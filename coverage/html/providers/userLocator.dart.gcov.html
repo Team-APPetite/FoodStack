@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2021-07-18 00:37:53</td>
+            <td class="headerValue">2021-07-18 12:54:55</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -74,14 +74,14 @@
 <a name="12"><span class="lineNum">      12 </span>            :   Address deliveryAddress;</a>
 <a name="13"><span class="lineNum">      13 </span>            :   bool isOnline = true;</a>
 <a name="14"><span class="lineNum">      14 </span>            : </a>
-<a name="15"><span class="lineNum">      15 </span><span class="lineCov">          3 :   UserLocator({GeolocatorService geolocator}) {</span></a>
-<a name="16"><span class="lineNum">      16 </span><span class="lineCov">          5 :     geolocatorService = geolocator != null ? geolocator : geolocatorService;</span></a>
-<a name="17"><span class="lineNum">      17 </span><span class="lineCov">          3 :     setCurrentLocation();</span></a>
+<a name="15"><span class="lineNum">      15 </span><span class="lineCov">          4 :   UserLocator({GeolocatorService geolocator}) {</span></a>
+<a name="16"><span class="lineNum">      16 </span><span class="lineCov">          7 :     geolocatorService = geolocator != null ? geolocator : geolocatorService;</span></a>
+<a name="17"><span class="lineNum">      17 </span><span class="lineCov">          4 :     setCurrentLocation();</span></a>
 <a name="18"><span class="lineNum">      18 </span>            :   }</a>
 <a name="19"><span class="lineNum">      19 </span>            : </a>
-<a name="20"><span class="lineNum">      20 </span><span class="lineCov">          3 :   setCurrentLocation() async {</span></a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineCov">          3 :     isOnline = true;</span></a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineCov">         10 :     currentLocation = await geolocatorService.getCurrentLocation();</span></a>
+<a name="20"><span class="lineNum">      20 </span><span class="lineCov">          4 :   setCurrentLocation() async {</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">          4 :     isOnline = true;</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">         13 :     currentLocation = await geolocatorService.getCurrentLocation();</span></a>
 <a name="23"><span class="lineNum">      23 </span><span class="lineCov">          6 :     coordinates = LatLng(currentLocation.latitude, currentLocation.longitude);</span></a>
 <a name="24"><span class="lineNum">      24 </span><span class="lineCov">          1 :     getCameraLocation();</span></a>
 <a name="25"><span class="lineNum">      25 </span><span class="lineCov">          1 :     notifyListeners();</span></a>

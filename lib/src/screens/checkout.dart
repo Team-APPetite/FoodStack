@@ -15,12 +15,17 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutScreen extends StatefulWidget {
+  final BraintreeService braintree;
+
+  const CheckoutScreen(this.braintree);
+
   @override
   _CheckoutScreenState createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   int value = 0;
+  BraintreeService _braintreeService = BraintreeService();
 
   FirestoreUsers firestoreService = FirestoreUsers();
 
@@ -152,8 +157,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     buttonText: 'PAY',
                     onPressed: () async {
                       if (value == 0) {
-                        String result = await BraintreeService.makePayment(
-                            _total, 'FoodStack');
+                        String result = widget.braintree == null
+                            ? await _braintreeService.makePayment(
+                                _total, 'FoodStack')
+                            : await widget.braintree
+                                .makePayment(_total, 'FoodStack');
                         if (result == "Payment successful!") {
                           orderProvider.setStatusAsPaid(orderProvider.orderId);
                           paymentProvider.addPayment(orderProvider.orderId,

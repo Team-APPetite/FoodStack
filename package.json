@@ -1,0 +1,26 @@
+{
+  "name": "foodstack",
+  "version": "1.0.0",
+  "description": "![example workflow](https://github.com/Team-APPetite/FoodStack/actions/workflows/build-actions.yml/badge.svg) ![example workflow](https://github.com/Team-APPetite/FoodStack/actions/workflows/github-actions.yml/badge.svg)",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-APPetite/foodstack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Team-APPetite/foodstack/issues"
+  },
+  "homepage": "https://github.com/Team-APPetite/foodstack#readme",
+  "dependencies": {
+    "lcov2badge": "^0.1.2"
+  }
+}

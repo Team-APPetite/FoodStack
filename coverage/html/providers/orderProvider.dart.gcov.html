@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">54</td>
             <td class="headerCovTableEntry">167</td>
-            <td class="headerCovTableEntryLo">10.8 %</td>
+            <td class="headerCovTableEntryLo">32.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2021-07-18 12:54:55</td>
+            <td class="headerValue">2021-07-18 19:58:31</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -95,7 +95,7 @@
 <a name="33"><span class="lineNum">      33 </span>            :   Stream&lt;List&lt;DocumentSnapshot&gt;&gt; nearbyOrdersList;</a>
 <a name="34"><span class="lineNum">      34 </span>            : </a>
 <a name="35"><span class="lineNum">      35 </span>            :   // Getters</a>
-<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          4 :   String get orderId =&gt; _orderId;</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineCov">          6 :   String get orderId =&gt; _orderId;</span></a>
 <a name="37"><span class="lineNum">      37 </span><span class="lineNoCov">          0 :   String get restaurantId =&gt; _restaurantId;</span></a>
 <a name="38"><span class="lineNum">      38 </span><span class="lineNoCov">          0 :   String get creatorId =&gt; _creatorId;</span></a>
 <a name="39"><span class="lineNum">      39 </span><span class="lineNoCov">          0 :   String get paymentId =&gt; _paymentId;</span></a>
@@ -107,7 +107,7 @@
 <a name="45"><span class="lineNum">      45 </span>            :       : null;</a>
 <a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 :   int get orderTimeInSeconds =&gt; _orderTime.seconds;</span></a>
 <a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 :   double get totalPrice =&gt; _totalPrice;</span></a>
-<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          4 :   List get cartIds =&gt; _cartIds;</span></a>
+<a name="48"><span class="lineNum">      48 </span><span class="lineCov">          6 :   List get cartIds =&gt; _cartIds;</span></a>
 <a name="49"><span class="lineNum">      49 </span>            : </a>
 <a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :   set orderId(String orderId) {</span></a>
 <a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 :     _orderId = orderId;</span></a>
@@ -123,48 +123,48 @@
 <a name="61"><span class="lineNum">      61 </span>            :   }</a>
 <a name="62"><span class="lineNum">      62 </span>            : </a>
 <a name="63"><span class="lineNum">      63 </span>            :   // Functions</a>
-<a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :   setOrder(Order order, int joinDurationMins) async {</span></a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :     _orderId = uuid.v4();</span></a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :     _restaurantId = order.restaurantId;</span></a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :     _restaurantName = order.restaurantName;</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :     _creatorId = order.creatorId;</span></a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :     _paymentId = null;</span></a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :     _status = Status.active.toString();</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :     _deliveryAddress = order.deliveryAddress;</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :     _coordinates = order.coordinates;</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :     _totalPrice = order.totalPrice;</span></a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :     _cartIds = order.cartIds;</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineCov">          1 :   setOrder(Order order, int joinDurationMins) async {</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          3 :     _orderId = uuid.v4();</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">          2 :     _restaurantId = order.restaurantId;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          2 :     _restaurantName = order.restaurantName;</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          2 :     _creatorId = order.creatorId;</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">          1 :     _paymentId = null;</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          2 :     _status = Status.active.toString();</span></a>
+<a name="71"><span class="lineNum">      71 </span><span class="lineCov">          2 :     _deliveryAddress = order.deliveryAddress;</span></a>
+<a name="72"><span class="lineNum">      72 </span><span class="lineCov">          2 :     _coordinates = order.coordinates;</span></a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          2 :     _totalPrice = order.totalPrice;</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">          2 :     _cartIds = order.cartIds;</span></a>
 <a name="75"><span class="lineNum">      75 </span>            : </a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :     SharedPreferences prefs = await SharedPreferences.getInstance();</span></a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :     prefs.setString('orderId', _orderId);</span></a>
-<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :     prefs.setString('orderStatus', Status.active.toString());</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          2 :     SharedPreferences prefs = await SharedPreferences.getInstance();</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          2 :     prefs.setString('orderId', _orderId);</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineCov">          2 :     prefs.setString('orderStatus', Status.active.toString());</span></a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :     Timestamp currentTime = Timestamp.now();</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">          1 :     Timestamp currentTime = Timestamp.now();</span></a>
 <a name="81"><span class="lineNum">      81 </span>            :     int seconds =</a>
-<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :         currentTime.seconds + (joinDurationMins * noOfSecondsPerMinute);</span></a>
-<a name="83"><span class="lineNum">      83 </span><span class="lineNoCov">          0 :     int nanoseconds = currentTime.nanoseconds;</span></a>
-<a name="84"><span class="lineNum">      84 </span><span class="lineNoCov">          0 :     Timestamp orderCompletionTime = Timestamp(seconds, nanoseconds);</span></a>
-<a name="85"><span class="lineNum">      85 </span><span class="lineNoCov">          0 :     _orderTime = orderCompletionTime;</span></a>
-<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 :     prefs.setInt('orderCompletionTime', seconds);</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          3 :         currentTime.seconds + (joinDurationMins * noOfSecondsPerMinute);</span></a>
+<a name="83"><span class="lineNum">      83 </span><span class="lineCov">          1 :     int nanoseconds = currentTime.nanoseconds;</span></a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">          1 :     Timestamp orderCompletionTime = Timestamp(seconds, nanoseconds);</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          1 :     _orderTime = orderCompletionTime;</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">          1 :     prefs.setInt('orderCompletionTime', seconds);</span></a>
 <a name="87"><span class="lineNum">      87 </span>            : </a>
-<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :     var newOrder = Order(</span></a>
-<a name="89"><span class="lineNum">      89 </span><span class="lineNoCov">          0 :       orderId: _orderId,</span></a>
-<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :       restaurantId: _restaurantId,</span></a>
-<a name="91"><span class="lineNum">      91 </span><span class="lineNoCov">          0 :       restaurantName: _restaurantName,</span></a>
-<a name="92"><span class="lineNum">      92 </span><span class="lineNoCov">          0 :       creatorId: _creatorId,</span></a>
-<a name="93"><span class="lineNum">      93 </span><span class="lineNoCov">          0 :       paymentId: _paymentId,</span></a>
-<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 :       status: _status,</span></a>
-<a name="95"><span class="lineNum">      95 </span><span class="lineNoCov">          0 :       deliveryAddress: _deliveryAddress,</span></a>
-<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :       coordinates: _coordinates,</span></a>
-<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :       orderTime: _orderTime,</span></a>
-<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 :       totalPrice: _totalPrice,</span></a>
-<a name="99"><span class="lineNum">      99 </span><span class="lineNoCov">          0 :       cartIds: _cartIds,</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineCov">          1 :     var newOrder = Order(</span></a>
+<a name="89"><span class="lineNum">      89 </span><span class="lineCov">          1 :       orderId: _orderId,</span></a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineCov">          1 :       restaurantId: _restaurantId,</span></a>
+<a name="91"><span class="lineNum">      91 </span><span class="lineCov">          1 :       restaurantName: _restaurantName,</span></a>
+<a name="92"><span class="lineNum">      92 </span><span class="lineCov">          1 :       creatorId: _creatorId,</span></a>
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          1 :       paymentId: _paymentId,</span></a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">          1 :       status: _status,</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">          1 :       deliveryAddress: _deliveryAddress,</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">          1 :       coordinates: _coordinates,</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineCov">          1 :       orderTime: _orderTime,</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineCov">          1 :       totalPrice: _totalPrice,</span></a>
+<a name="99"><span class="lineNum">      99 </span><span class="lineCov">          1 :       cartIds: _cartIds,</span></a>
 <a name="100"><span class="lineNum">     100 </span>            :     );</a>
 <a name="101"><span class="lineNum">     101 </span>            : </a>
-<a name="102"><span class="lineNum">     102 </span><span class="lineNoCov">          0 :     return firestoreService</span></a>
-<a name="103"><span class="lineNum">     103 </span><span class="lineNoCov">          0 :         .addOrder(newOrder)</span></a>
-<a name="104"><span class="lineNum">     104 </span><span class="lineNoCov">          0 :         .then((value) =&gt; print('Order Saved'))</span></a>
-<a name="105"><span class="lineNum">     105 </span><span class="lineNoCov">          0 :         .catchError((error) =&gt; print(error));</span></a>
+<a name="102"><span class="lineNum">     102 </span><span class="lineCov">          1 :     return firestoreService</span></a>
+<a name="103"><span class="lineNum">     103 </span><span class="lineCov">          1 :         .addOrder(newOrder)</span></a>
+<a name="104"><span class="lineNum">     104 </span><span class="lineCov">          1 :         .then((value) =&gt; print('Order Saved'))</span></a>
+<a name="105"><span class="lineNum">     105 </span><span class="lineCov">          1 :         .catchError((error) =&gt; print(error));</span></a>
 <a name="106"><span class="lineNum">     106 </span>            :   }</a>
 <a name="107"><span class="lineNum">     107 </span>            : </a>
 <a name="108"><span class="lineNum">     108 </span><span class="lineCov">          2 :   getOrder(String orderId) async {</span></a>
@@ -282,10 +282,10 @@
 <a name="220"><span class="lineNum">     220 </span><span class="lineCov">          4 :     firestoreService.setStatus(Status.closed.toString(), orderId);</span></a>
 <a name="221"><span class="lineNum">     221 </span>            :   }</a>
 <a name="222"><span class="lineNum">     222 </span>            : </a>
-<a name="223"><span class="lineNum">     223 </span><span class="lineCov">          2 :   setStatusAsPaid(String id) async {</span></a>
-<a name="224"><span class="lineNum">     224 </span><span class="lineCov">          4 :     SharedPreferences prefs = await SharedPreferences.getInstance();</span></a>
-<a name="225"><span class="lineNum">     225 </span><span class="lineCov">          2 :     prefs.setString('orderStatus', Status.paid.toString());</span></a>
-<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          3 :     firestoreService.setStatus(Status.paid.toString(), id);</span></a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineCov">          3 :   setStatusAsPaid(String id) async {</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineCov">          6 :     SharedPreferences prefs = await SharedPreferences.getInstance();</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineCov">          4 :     prefs.setString('orderStatus', Status.paid.toString());</span></a>
+<a name="226"><span class="lineNum">     226 </span><span class="lineCov">          6 :     firestoreService.setStatus(Status.paid.toString(), id);</span></a>
 <a name="227"><span class="lineNum">     227 </span>            :   }</a>
 <a name="228"><span class="lineNum">     228 </span>            : </a>
 <a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 :   setStatusAsPrepared(String id) async {</span></a>

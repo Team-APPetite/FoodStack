@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">19</td>
             <td class="headerCovTableEntry">24</td>
-            <td class="headerCovTableEntryMed">75.0 %</td>
+            <td class="headerCovTableEntryMed">79.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2021-07-18 12:54:55</td>
+            <td class="headerValue">2021-07-18 19:58:31</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -66,7 +66,7 @@
 <a name="4"><span class="lineNum">       4 </span>            : </a>
 <a name="5"><span class="lineNum">       5 </span>            : class UserAuth {</a>
 <a name="6"><span class="lineNum">       6 </span>            :   final FirebaseAuth auth;</a>
-<a name="7"><span class="lineNum">       7 </span><span class="lineCov">          2 :   UserAuth({this.auth});</span></a>
+<a name="7"><span class="lineNum">       7 </span><span class="lineCov">          3 :   UserAuth({this.auth});</span></a>
 <a name="8"><span class="lineNum">       8 </span>            : </a>
 <a name="9"><span class="lineNum">       9 </span>            : </a>
 <a name="10"><span class="lineNum">      10 </span><span class="lineNoCov">          0 :   Future&lt;String&gt; signInWithCredential(AuthCredential credential) async {</span></a>
@@ -80,7 +80,7 @@
 <a name="18"><span class="lineNum">      18 </span>            : </a>
 <a name="19"><span class="lineNum">      19 </span><span class="lineNoCov">          0 :   Future&lt;void&gt; logout() =&gt; auth.signOut();</span></a>
 <a name="20"><span class="lineNum">      20 </span>            : </a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineNoCov">          0 :   Stream&lt;User&gt; get currentUser =&gt; auth.authStateChanges();</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">          3 :   Stream&lt;User&gt; get currentUser =&gt; auth.authStateChanges();</span></a>
 <a name="22"><span class="lineNum">      22 </span><span class="lineCov">          3 :   User get user =&gt; auth.currentUser;</span></a>
 <a name="23"><span class="lineNum">      23 </span>            : </a>
 <a name="24"><span class="lineNum">      24 </span><span class="lineCov">          1 :   Future&lt;String&gt; login(String _email, String _password) async {</span></a>

@@ -24,8 +24,6 @@ class Rating {
       'restaurantId': restaurantId,
       'rating': rating,
       'userId': userId,
-
-
     };
   }
 }

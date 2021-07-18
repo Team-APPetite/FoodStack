@@ -25,7 +25,7 @@ class Users {
       'name': name,
       'email': email,
       'address': address,
-      'coordinates': coordinates,
+      'coordinates': coordinates.data,
       'favourites': favourites
     };
   }

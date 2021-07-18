@@ -2,7 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodstack/src/models/foodItem.dart';
 
 class FirestoreMenu {
-  FirebaseFirestore _db = FirebaseFirestore.instance;
+  FirebaseFirestore firebaseFirestore;
+  FirebaseFirestore _db;
+
+  FirestoreMenu({FirebaseFirestore firestore}) {
+    if (firestore != null) {
+      _db = firestore;
+    } else {
+      _db = FirebaseFirestore.instance;
+    }
+  }
 
   // Read
   Stream<List<FoodItem>> getMenu(String restaurantId) {

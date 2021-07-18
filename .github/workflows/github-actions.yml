@@ -27,4 +27,5 @@ jobs:
           flutter-version: '2.2.0'
       - run: flutter pub get
       - run: flutter test
+      - run: node covBadgeGen.js
      

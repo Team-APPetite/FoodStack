@@ -153,7 +153,7 @@ void main() async {
           ],
           child: MaterialApp(
             title: 'FoodStack',
-            home: CheckoutScreen(),
+            home: CheckoutScreen(null),
             navigatorObservers: [mockObserver],
             routes: {
               '/orderSummary': (context) => SummaryScreen(),

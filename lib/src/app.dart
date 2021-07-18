@@ -63,7 +63,7 @@ class _AppState extends State<App> {
           '/resetPassword': (context) => ResetScreen(),
           '/pickAddress': (context) => AddressScreen(),
           '/cart': (context) => CartScreen(),
-          '/checkout': (context) => CheckoutScreen(),
+          '/checkout': (context) => CheckoutScreen(null),
           '/details': (context) => DetailsScreen(),
           '/favourites': (context) => FavouritesScreen(),
           '/home': (context) => HomeScreen(),

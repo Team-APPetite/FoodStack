@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2021-07-18 00:37:53</td>
+            <td class="headerValue">2021-07-18 12:54:55</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -78,10 +78,10 @@
 <a name="16"><span class="lineNum">      16 </span>            :   String _paymentMethod;</a>
 <a name="17"><span class="lineNum">      17 </span>            :   Timestamp _paymentTime;</a>
 <a name="18"><span class="lineNum">      18 </span>            : </a>
-<a name="19"><span class="lineNum">      19 </span><span class="lineCov">          2 :   String get paymentMethod =&gt; _paymentMethod;</span></a>
+<a name="19"><span class="lineNum">      19 </span><span class="lineCov">          4 :   String get paymentMethod =&gt; _paymentMethod;</span></a>
 <a name="20"><span class="lineNum">      20 </span>            : </a>
-<a name="21"><span class="lineNum">      21 </span><span class="lineCov">          1 :   addPayment(String orderId, double amountPaid, String paymentMethod) {</span></a>
-<a name="22"><span class="lineNum">      22 </span><span class="lineCov">          2 :     if (_auth.currentUser != null) {</span></a>
+<a name="21"><span class="lineNum">      21 </span><span class="lineCov">          2 :   addPayment(String orderId, double amountPaid, String paymentMethod) {</span></a>
+<a name="22"><span class="lineNum">      22 </span><span class="lineCov">          4 :     if (_auth.currentUser != null) {</span></a>
 <a name="23"><span class="lineNum">      23 </span><span class="lineNoCov">          0 :       var uuid = Uuid();</span></a>
 <a name="24"><span class="lineNum">      24 </span><span class="lineNoCov">          0 :       _paymentId = uuid.v1();</span></a>
 <a name="25"><span class="lineNum">      25 </span><span class="lineNoCov">          0 :       _orderId = orderId;</span></a>

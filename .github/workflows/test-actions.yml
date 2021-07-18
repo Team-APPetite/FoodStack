@@ -29,5 +29,4 @@ jobs:
       - run: |
           flutter pub get
           flutter test --coverage
-          genhtml coverage/lcov.info -o coverage/html
           node covBadgeGen.js 

@@ -66,6 +66,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
     }
 
     Widget _paymentSummary(String title, String input) {
+      print(input);
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(

@@ -3,7 +3,17 @@ import 'package:foodstack/src/models/cart.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class FirestoreCarts {
-  FirebaseFirestore _db = FirebaseFirestore.instance;
+  FirebaseFirestore firebaseFirestore;
+  FirebaseFirestore _db;
+
+  FirestoreCarts({FirebaseFirestore firestore}) {
+    if (firestore != null) {
+      _db = firestore;
+    } else {
+      _db = FirebaseFirestore.instance;
+    }
+  }
+
   final geo = Geoflutterfire();
 
   Future<Cart> getCart(String cartId) {
@@ -12,7 +22,8 @@ class FirestoreCarts {
         .collection('carts')
         .doc(cartId)
         .get()
-        .then((snapshot) => Cart.fromJson(snapshot.data()));
+        .then((snapshot) => Cart.fromJson(snapshot.data()))
+        .catchError((error) => null);
   }
 
   // Create and Update

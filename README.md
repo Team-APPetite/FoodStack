@@ -1,7 +1,7 @@
 # FoodStack
 
 ![example workflow](https://github.com/Team-APPetite/FoodStack/actions/workflows/build-actions.yml/badge.svg)
-![example workflow](https://github.com/Team-APPetite/FoodStack/actions/workflows/github-actions.yml/badge.svg)
+![example workflow](https://github.com/Team-APPetite/FoodStack/actions/workflows/test-actions.yml/badge.svg)
 ![Coverage](./coverage_badge.svg?sanitize=true)
 
 Flutter app by Team APPetite.

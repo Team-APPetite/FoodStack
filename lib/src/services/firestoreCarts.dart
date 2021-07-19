@@ -3,7 +3,6 @@ import 'package:foodstack/src/models/cart.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class FirestoreCarts {
-  FirebaseFirestore firebaseFirestore;
   FirebaseFirestore _db;
 
   FirestoreCarts({FirebaseFirestore firestore}) {

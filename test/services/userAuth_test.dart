@@ -66,10 +66,10 @@ void main() {
         mockFirebaseAuth.signInWithEmailAndPassword(
             email: "appfoodstack@gmail.com", password: ""),
       ).thenAnswer((realInvocation) =>
-          throw FirebaseAuthException(message: "Enter password", code: "No password"));
+          throw FirebaseAuthException(message: "Please enter your password", code: "No password"));
 
       expect(
-          await userAuth.login("appfoodstack@gmail.com", ""), "Enter password");
+          await userAuth.login("appfoodstack@gmail.com", ""), "Please enter your password");
     });
 
     test("invalid email address", () async {

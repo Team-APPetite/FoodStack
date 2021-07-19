@@ -31,6 +31,8 @@ class UserAuth {
         return "Please fill in your details";
       } else if (_email == '') {
         return "Please enter your email address";
+      } else if (_password == '') {
+        return "Please enter your password";
       } else {
         await auth.signInWithEmailAndPassword(
             email: _email, password: _password);

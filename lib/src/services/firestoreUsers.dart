@@ -14,7 +14,11 @@ class FirestoreUsers {
 
   //Set User uid, name and email
   Future<void> addUser(Users user) {
-    return _db.collection('users').doc(user.uid).set(user.toMap());
+    return _db
+        .collection('users')
+        .doc(user.uid)
+        .set(user.toMap())
+        .catchError((error) => print(error));
   }
 
   //Fetch User

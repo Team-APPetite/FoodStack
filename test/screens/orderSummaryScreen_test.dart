@@ -52,7 +52,6 @@ void main() async {
   setupFirebaseAuthMocks();
   await Firebase.initializeApp();
   SharedPreferences.setMockInitialValues({});
-  final prefs = await SharedPreferences.getInstance();
 
   var cartProvider = CartProvider();
   var orderProvider = OrderProvider();

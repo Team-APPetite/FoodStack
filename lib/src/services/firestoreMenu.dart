@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodstack/src/models/foodItem.dart';
 
 class FirestoreMenu {
-  FirebaseFirestore firebaseFirestore;
   FirebaseFirestore _db;
 
   FirestoreMenu({FirebaseFirestore firestore}) {

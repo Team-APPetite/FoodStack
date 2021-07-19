@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodstack/src/blocs/auth_blocs.dart';
-import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
@@ -44,7 +43,6 @@ class _AddressScreenState extends State<AddressScreen> {
     LatLng userCoordinates = userLocator.coordinates;
     GoogleMapController _mapController;
 
-    final orderProvider = Provider.of<OrderProvider>(context);
     final geo = Geoflutterfire();
     GeoFirePoint userLocation;
 
@@ -130,9 +128,6 @@ class _AddressScreenState extends State<AddressScreen> {
                             AppButton(buttonText: 'DELIVER HERE', onPressed: () {
                               firestoreService.updateAddress(authBloc.user.uid,userLocator.deliveryAddress.addressLine);
                               firestoreService.updateCoordinates(authBloc.user.uid,userLocation);
-                              if (!isPooler) {
-                                orderProvider.updateOrderAddress(userLocator.deliveryAddress.addressLine, userLocation);
-                              }
                               Fluttertoast.showToast(
                                   msg: 'Address Updated',
                                   gravity: ToastGravity.TOP,

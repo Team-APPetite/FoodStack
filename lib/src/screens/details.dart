@@ -8,7 +8,6 @@ import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
 class DetailsScreen extends StatefulWidget {

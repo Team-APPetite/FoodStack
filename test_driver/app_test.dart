@@ -56,7 +56,6 @@ void main() {
 
     test('Login', () async {
       if (await isPresent(bottomNavigationBar)) {
-        print("btm nav bar present");
         await driver.tap(navigateToProfileScreen);
         await driver.waitFor(find.text('Profile'));
         await driver.tap(logoutButton);

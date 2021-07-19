@@ -69,9 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
           buttonText: 'LOGIN',
           onPressed: () async {
             String state = await UserAuth(auth: auth).login(_email, _password);
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setString('email', _email);
             if (state == "Success") {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setString('email', _email);
               Navigator.pushNamed(context, '/home');
             } else {
               Fluttertoast.showToast(
@@ -100,18 +100,20 @@ class _LoginScreenState extends State<LoginScreen> {
             onPressed: () async {
               String msg = await authBloc.loginGoogle();
               if (msg == "Success") {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('email', _email);
                 Navigator.pushNamed(context, '/home');
               } else if (msg == "New User") {
                 User user = auth.currentUser;
                 var currUser = Users(uid: user.uid, email: user.email);
-                await firestoreService.addUser(currUser).then((value) async {});
+                await firestoreService.addUser(currUser);
+
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setString('email', user.email);
-
                 Navigator.pushNamed(context, '/welcome');
               } else {
                 Fluttertoast.showToast(
-                  msg: '$msg',
+                  msg: 'Sign in with Google failed. Please try again later',
                   gravity: ToastGravity.TOP,
                   timeInSecForIosWeb: 5,
                   backgroundColor: ThemeColors.dark,

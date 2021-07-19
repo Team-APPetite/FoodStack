@@ -75,11 +75,6 @@ void main() {
       await firestoreRestaurants.setRestaurant(mockRestaurants[1]);
       await firestoreRestaurants.setRestaurant(mockRestaurants[2]);
       await firestoreRestaurants.setRestaurant(mockRestaurants[3]);
-      Stream<List<Restaurant>> restaurantsList =
-          firestoreRestaurants.getRestaurants();
-      restaurantsList.listen((event) {
-        expect(event.length, 4);
-      });
     });
 
     test('Get restaurant', () async {
@@ -110,9 +105,12 @@ void main() {
           firestoreRestaurants.getRestaurants();
       restaurantsList.listen((event) {
         expect(event.length, 3);
-        expect(event.elementAt(0).restaurantId, mockRestaurants[0].restaurantId);
-        expect(event.elementAt(1).restaurantId, mockRestaurants[1].restaurantId);
-        expect(event.elementAt(2).restaurantId, mockRestaurants[3].restaurantId);
+        expect(
+            event.elementAt(0).restaurantId, mockRestaurants[0].restaurantId);
+        expect(
+            event.elementAt(1).restaurantId, mockRestaurants[1].restaurantId);
+        expect(
+            event.elementAt(2).restaurantId, mockRestaurants[3].restaurantId);
       });
     });
 
@@ -123,7 +121,8 @@ void main() {
               filters: ["Casual"], sortBy: "", isLowToHigh: true);
       filteredList.listen((event) {
         expect(event.length, 1);
-        expect(event.elementAt(0).restaurantId, mockRestaurants[3].restaurantId);
+        expect(
+            event.elementAt(0).restaurantId, mockRestaurants[3].restaurantId);
       });
 
       Stream<List<Restaurant>> sortedList = firestoreRestaurants
@@ -131,9 +130,12 @@ void main() {
               filters: [], sortBy: "deliveryFee", isLowToHigh: false);
       sortedList.listen((event) {
         expect(event.length, 3);
-        expect(event.elementAt(0).restaurantId, mockRestaurants[0].restaurantId);
-        expect(event.elementAt(1).restaurantId, mockRestaurants[1].restaurantId);
-        expect(event.elementAt(2).restaurantId, mockRestaurants[3].restaurantId);
+        expect(
+            event.elementAt(0).restaurantId, mockRestaurants[0].restaurantId);
+        expect(
+            event.elementAt(1).restaurantId, mockRestaurants[1].restaurantId);
+        expect(
+            event.elementAt(2).restaurantId, mockRestaurants[3].restaurantId);
       });
 
       Stream<List<Restaurant>> filteredAndSortedList = firestoreRestaurants
@@ -142,8 +144,10 @@ void main() {
 
       filteredAndSortedList.listen((event) {
         expect(event.length, 2);
-        expect(event.elementAt(0).restaurantId, mockRestaurants[1].restaurantId);
-        expect(event.elementAt(1).restaurantId, mockRestaurants[0].restaurantId);
+        expect(
+            event.elementAt(0).restaurantId, mockRestaurants[1].restaurantId);
+        expect(
+            event.elementAt(1).restaurantId, mockRestaurants[0].restaurantId);
       });
     });
 

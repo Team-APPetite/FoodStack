@@ -39,6 +39,7 @@ dependencies:
   flutter_rating_bar: ^3.2.0
   chips_choice: ^2.0.1
   firebase_analytics: ^8.2.0
+  internet_connection_checker: ^0.0.1+2
 
 dev_dependencies:
   flutter_test:

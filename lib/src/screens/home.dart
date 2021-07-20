@@ -15,6 +15,7 @@ import 'package:foodstack/src/widgets/bigButton.dart';
 import 'package:foodstack/src/widgets/customBottomNavBar.dart';
 import 'package:foodstack/src/utilities/enums.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,6 +26,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Timer _timer;
+  bool isOnline = true;
 
   @override
   void initState() {
@@ -36,8 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
     firestoreService.setUserProperties();
     final userLocator = Provider.of<UserLocator>(context, listen: false);
     userLocator.getCameraLocation();
+    _getConnectivityStatus();
     _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-      if (!userLocator.isOnline) {
+      if (!isOnline || !userLocator.isOnline) {
         showDialog<String>(context: context, builder: Alerts.noInternet());
         timer.cancel();
       }
@@ -45,11 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
         _showDeliveryAddress();
         firestoreService.updateAddress(
             authBloc.user.uid, userLocator.deliveryAddress.addressLine);
-        firestoreService.updateCoordinates(authBloc.user.uid, userLocator.getUserLocation());
+        firestoreService.updateCoordinates(
+            authBloc.user.uid, userLocator.getUserLocation());
         timer.cancel();
       }
     });
     super.initState();
+  }
+
+  Future<void> _getConnectivityStatus() async {
+    isOnline = await InternetConnectionChecker().hasConnection;
   }
 
   _getOrderStatus() async {

@@ -30,7 +30,7 @@ class Alerts {
         actions: <Widget>[
           TextButton(
             child: Text('Add more', style: TextStyles.emphasis()),
-            onPressed: () => Navigator.pop(context, 'Cancel'),
+            onPressed: () => Navigator.pop(context),
           ),
           TextButton(
             child: Text('Empty cart', style: TextStyles.textButton()),

@@ -34,10 +34,12 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               stream: favouritesList,
               builder: (context, snapshot) {
                 if (snapshot.data == null) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                        child: Text('Like restaurants to see them here!'));
                 } else {
                   if (snapshot.data.length == 0) {
-                    return Center(child: Text('Like restaurants to see them here!'));
+                    return Center(
+                        child: Text('Like restaurants to see them here!'));
                   }
                   return Scrollbar(
                     child: RefreshIndicator(

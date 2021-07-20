@@ -19,7 +19,7 @@ class FirestoreRestaurants {
 
   Stream<List<Restaurant>> nearbyOrderRestaurants;
 
-    // Create and Update
+  // Create and Update
   Future<void> setRestaurant(Restaurant restaurant) {
     var options = SetOptions(merge: true);
 
@@ -98,10 +98,11 @@ class FirestoreRestaurants {
 
   Stream<List<Restaurant>> getFavouriteRestaurants() {
     print("getFavouriteRestaurants");
+    Stream<List<Restaurant>> favouriteRestaurants;
     if (_auth.currentUser != null) {
       String uid = _auth.currentUser.uid;
 
-      return _db
+      favouriteRestaurants = _db
           .collection('users')
           .doc(uid)
           .get()
@@ -110,6 +111,8 @@ class FirestoreRestaurants {
               value.favourites.map((e) => Restaurant.fromJson(e)).toList())
           .asStream();
     }
+
+    return favouriteRestaurants ?? Stream.empty();
   }
 
   Future<void> addRating(String restaurantId, double newRating) async {

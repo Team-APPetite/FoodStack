@@ -31,7 +31,7 @@ List<Restaurant> mockRestaurants = [
       cuisineType: "Fast Food",
       deliveryFee: 8.00,
       rating: 3.8,
-      numOfRatings: 289,
+      numOfRatings: 28,
       image: "",
       coordinates: location1),
   Restaurant(
@@ -149,12 +149,52 @@ void main() {
         expect(
             event.elementAt(1).restaurantId, mockRestaurants[0].restaurantId);
       });
+
+
+      Stream<List<Restaurant>> noFiltersList = firestoreRestaurants
+          .filterRestaurantsList(
+              filters: [], sortBy: "", isLowToHigh: true);
+
+      noFiltersList.listen((event) {
+        expect(event.length, 3);
+        expect(
+            event.elementAt(0).restaurantId, mockRestaurants[0].restaurantId);
+        expect(
+            event.elementAt(1).restaurantId, mockRestaurants[1].restaurantId);
+            expect(
+            event.elementAt(2).restaurantId, mockRestaurants[3].restaurantId);
+      });
     });
 
-    test('Load nearby order restaurants list', () async {});
+    test('Load nearby order restaurants list', () async {
+      Stream<List<Restaurant>> nearbyOrderRestaurants =
+          firestoreRestaurants.loadNearbyOrderRestaurants(["123", "1011"]);
+      nearbyOrderRestaurants.listen((event) {
+        expect(event.length, 2);
+        expect(
+            event.elementAt(0).restaurantId, mockRestaurants[0].restaurantId);
+        expect(
+            event.elementAt(1).restaurantId, mockRestaurants[3].restaurantId);
+      });
+    });
 
-    test('Get favourite restaurants list', () async {});
+    test('Get favourite restaurants list', () async {
+      // No restaurants in list
+      Stream<List<Restaurant>> favouriteRestaurants =
+          firestoreRestaurants.getFavouriteRestaurants();
+      favouriteRestaurants.listen((event) {
+        expect(event.length, 0);
+      });
+    });
 
-    test('Add rating for a restaurant', () async {});
+    test('Add rating for a restaurant', () async {
+      await firestoreRestaurants.addRating("123", 5);
+      Restaurant restaurant = await firestoreRestaurants.getRestaurant("123");
+      double rating = restaurant.rating;
+      int numOfRatings = restaurant.numOfRatings;
+
+      expect(rating, ((3.8 * 28) + 5) / 29);
+      expect(numOfRatings, 29);
+    });
   });
 }

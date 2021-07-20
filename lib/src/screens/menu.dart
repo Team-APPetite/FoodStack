@@ -6,6 +6,7 @@ import 'package:foodstack/src/models/foodItem.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+import 'package:foodstack/src/utilities/alerts.dart';
 import 'package:foodstack/src/utilities/time.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/foodCard.dart';
@@ -48,6 +49,11 @@ class _MenuScreenState extends State<MenuScreen> {
         _orderCompletionTime = orderProvider.orderTime;
       });
     }
+  }
+
+  Future<bool> _onWillPop() async {
+    return (showDialog(
+        context: context, builder: Alerts.loseCart()) ?? false);
   }
 
   // TODO Add restaurant image by putting GridView in column(expanded())
@@ -118,61 +124,64 @@ class _MenuScreenState extends State<MenuScreen> {
           ));
     }
 
-    return Scaffold(
-        appBar: Header.getAppBar(
-          title: restaurantName,
-          alert: cartProvider.itemCount > 0 ? 'loseCart' : 'none',
-        ),
-        body: Stack(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 100.0),
-              child: StreamBuilder<List<FoodItem>>(
-                  stream: menuProvider.menu,
-                  builder: (context, snapshot) {
-                    return (snapshot.data == null)
-                        ? Center(child: CircularProgressIndicator())
-                        : Scrollbar(
-                            child: Column(
-                              children: [
-                                isPooler && _orderCompletionTime != null
-                                    ? Container(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: Text(
-                                            'Order by ${TimeHelper.formatTime(_orderCompletionTime)}',
-                                            style: TextStyles.textButton(),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+          appBar: Header.getAppBar(
+            title: restaurantName,
+            alert: cartProvider.itemCount > 0 ? 'loseCart' : 'none',
+          ),
+          body: Stack(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 100.0),
+                child: StreamBuilder<List<FoodItem>>(
+                    stream: menuProvider.menu,
+                    builder: (context, snapshot) {
+                      return (snapshot.data == null)
+                          ? Center(child: CircularProgressIndicator())
+                          : Scrollbar(
+                              child: Column(
+                                children: [
+                                  isPooler && _orderCompletionTime != null
+                                      ? Container(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 8.0),
+                                            child: Text(
+                                              'Order by ${TimeHelper.formatTime(_orderCompletionTime)}',
+                                              style: TextStyles.textButton(),
+                                            ),
                                           ),
+                                        )
+                                      : Container(),
+                                  Expanded(
+                                    child: GridView.builder(
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          childAspectRatio: 0.8,
                                         ),
-                                      )
-                                    : Container(),
-                                Expanded(
-                                  child: GridView.builder(
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: 0.8,
-                                      ),
-                                      itemCount: snapshot.data.length,
-                                      itemBuilder: (context, index) {
-                                        return FoodCard(
-                                            snapshot.data[index].foodId,
-                                            snapshot.data[index].foodName,
-                                            snapshot.data[index].description,
-                                            snapshot.data[index].price,
-                                            snapshot.data[index].image,
-                                            restaurantId);
-                                      }),
-                                ),
-                              ],
-                            ),
-                          );
-                  }),
-            ),
-            viewCart(),
-          ],
-        ));
+                                        itemCount: snapshot.data.length,
+                                        itemBuilder: (context, index) {
+                                          return FoodCard(
+                                              snapshot.data[index].foodId,
+                                              snapshot.data[index].foodName,
+                                              snapshot.data[index].description,
+                                              snapshot.data[index].price,
+                                              snapshot.data[index].image,
+                                              restaurantId);
+                                        }),
+                                  ),
+                                ],
+                              ),
+                            );
+                    }),
+              ),
+              viewCart(),
+            ],
+          )),
+    );
   }
 }

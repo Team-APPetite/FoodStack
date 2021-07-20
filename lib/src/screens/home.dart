@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _getConnectivityStatus() async {
-    isOnline = await InternetConnectionChecker().hasConnection;
+    // isOnline = await InternetConnectionChecker().hasConnection;
   }
 
   _getOrderStatus() async {

@@ -7,7 +7,6 @@ import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/widgets/button.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:provider/provider.dart';
@@ -42,15 +41,6 @@ class _AddressScreenState extends State<AddressScreen> {
     final authBloc = Provider.of<AuthBloc>(context);
     LatLng userCoordinates = userLocator.coordinates;
     GoogleMapController _mapController;
-
-    final geo = Geoflutterfire();
-    GeoFirePoint userLocation;
-
-    if (userCoordinates != null) {
-      userLocation = geo.point(
-          latitude: userCoordinates.latitude,
-          longitude: userCoordinates.longitude);
-    }
 
     void whenMapCreated(GoogleMapController _controller) {
       setState(() {
@@ -126,8 +116,8 @@ class _AddressScreenState extends State<AddressScreen> {
                               textAlign: TextAlign.center,
                             ),
                             AppButton(buttonText: 'DELIVER HERE', onPressed: () {
-                              firestoreService.updateAddress(authBloc.user.uid,userLocator.deliveryAddress.addressLine);
-                              firestoreService.updateCoordinates(authBloc.user.uid,userLocation);
+                              firestoreService.updateAddress(authBloc.user.uid, userLocator.deliveryAddress.addressLine);
+                              firestoreService.updateCoordinates(authBloc.user.uid, userLocator.getUserLocation());
                               Fluttertoast.showToast(
                                   msg: 'Address Updated',
                                   gravity: ToastGravity.TOP,

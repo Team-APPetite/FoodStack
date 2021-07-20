@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/services/geolocatorService.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:geoflutterfire/geoflutterfire.dart' hide Coordinates;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -45,5 +46,17 @@ class UserLocator with ChangeNotifier {
         isOnline = false;
       }
     }
+  }
+
+  GeoFirePoint getUserLocation() {
+    final geo = Geoflutterfire();
+    GeoFirePoint userLocation;
+
+    if (coordinates != null) {
+      userLocation = geo.point(
+          latitude: coordinates.latitude, longitude: coordinates.longitude);
+    }
+
+    return userLocation;
   }
 }

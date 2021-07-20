@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodstack/src/blocs/auth_blocs.dart';
 import 'package:foodstack/src/providers/orderProvider.dart';
 import 'package:foodstack/src/providers/restaurantProvider.dart';
 import 'package:foodstack/src/providers/userLocator.dart';
@@ -29,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     _getOrderStatus();
     final firestoreService = FirestoreUsers();
+    final authBloc = Provider.of<AuthBloc>(context, listen: false);
+
     firestoreService.saveDeviceToken();
     firestoreService.setUserProperties();
     final userLocator = Provider.of<UserLocator>(context, listen: false);
@@ -40,6 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       if (userLocator.deliveryAddress != null) {
         _showDeliveryAddress();
+        firestoreService.updateAddress(
+            authBloc.user.uid, userLocator.deliveryAddress.addressLine);
+        firestoreService.updateCoordinates(authBloc.user.uid, userLocator.getUserLocation());
         timer.cancel();
       }
     });

@@ -5,6 +5,7 @@ import 'package:foodstack/src/providers/paymentProvider.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/utilities/numbers.dart';
 import 'package:foodstack/src/utilities/statusEnums.dart';
+import 'package:foodstack/src/utilities/totalFee.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +40,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
     final double _deliveryFee = cartProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
     final double _finalDeliveryFee = _deliveryFee != null ? _deliveryFee / _numOfUsers : 0;
-    final double _total = _subtotal + _finalDeliveryFee;
+    final double _total = TotalCalculation.totalFee(_subtotal, _finalDeliveryFee);
 
     Widget _cartItem(String id, String name, String price, String image) {
       return Padding(

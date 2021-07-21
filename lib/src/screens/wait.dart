@@ -8,7 +8,7 @@ import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/alerts.dart';
 import 'package:foodstack/src/utilities/time.dart';
-import 'package:foodstack/src/utilities/totalFee.dart';
+import 'package:foodstack/src/utilities/priceCalculation.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -92,10 +92,8 @@ class _WaitScreenState extends State<WaitScreen> {
     final double _subtotal = cartProvider.getSubtotal();
     final double _deliveryFee = cartProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
-    final double _finalDeliveryFee =
-        _deliveryFee != null ? _deliveryFee / _numOfUsers : 0;
     final double _total =
-        TotalCalculation.totalFee(_subtotal, _finalDeliveryFee);
+        PriceCalculation.totalFee(_subtotal, _deliveryFee, _numOfUsers);
 
     _checkIfOrderComplete();
 
@@ -256,7 +254,7 @@ class _WaitScreenState extends State<WaitScreen> {
                                   Expanded(
                                       child: Text('Delivery Fee',
                                           style: TextStyles.heading3())),
-                                  Text('\$${_finalDeliveryFee}',
+                                  Text('\$${PriceCalculation.finalDeliveryFee(_deliveryFee, _numOfUsers)}',
                                       style: TextStyles.emphasis()),
                                 ],
                               ),

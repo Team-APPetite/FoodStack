@@ -39,7 +39,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
     final double _subtotal = cartProvider.getSubtotal();
     final double _deliveryFee = cartProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
-    final double _total = PriceCalculation.totalFee(_subtotal, _deliveryFee, _numOfUsers);
+    final double _total =
+        PriceCalculation.totalFee(_subtotal, _deliveryFee, _numOfUsers);
+    final double _amountSaved =
+        PriceCalculation.getAmountSaved(_deliveryFee, _numOfUsers);
 
     Widget _cartItem(String id, String name, String price, String image) {
       return Padding(
@@ -105,7 +108,24 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       style: TextStyles.heading2(),
                       textAlign: TextAlign.center,
                     ),
-                    Divider(thickness: 1, height: 50,),
+                    _amountSaved > 0
+                        ? Column(
+                            children: [
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                'Congrats! You just saved \$$_amountSaved on your order!',
+                                style: TextStyles.textButton(),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          )
+                        : Container(),
+                    Divider(
+                      thickness: 1,
+                      height: 50,
+                    ),
                     ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -114,23 +134,32 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           return _cartItem(
                             cartProvider.cartItems[index].foodId,
                             cartProvider.cartItems[index].foodName,
-                            '\$' + cartProvider.cartItems[index].price.toString(),
+                            '\$' +
+                                cartProvider.cartItems[index].price.toString(),
                             cartProvider.cartItems[index].image,
                           );
                         }),
-                    Divider(thickness: 1, height: 50,),
+                    Divider(
+                      thickness: 1,
+                      height: 50,
+                    ),
                     _paymentSummary('Subtotal', '\$$_subtotal'),
-                    _paymentSummary(
-                        'No. of order members', '$_numOfUsers'),
+                    _paymentSummary('No. of order members', '$_numOfUsers'),
                     _paymentSummary('Delivery Fee',
                         '\$$_deliveryFee \/ $_numOfUsers = \$${Numbers.roundTo2d(PriceCalculation.finalDeliveryFee(_deliveryFee, _numOfUsers))}'),
                     _paymentSummary('Total', '\$${Numbers.roundTo2d(_total)}'),
-                    Divider(thickness: 1, height: 50,),
+                    Divider(
+                      thickness: 1,
+                      height: 50,
+                    ),
                     _paymentSummary(
                         'Payment method', paymentProvider.paymentMethod ?? ''),
                     _paymentSummary(
                         'Amount paid', '\$${Numbers.roundTo2d(_total)}'),
-                    Divider(thickness: 1, height: 50,),
+                    Divider(
+                      thickness: 1,
+                      height: 50,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: Column(

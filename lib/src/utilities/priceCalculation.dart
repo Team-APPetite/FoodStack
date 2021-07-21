@@ -23,4 +23,15 @@ class PriceCalculation {
       return 0;
     }
   }
+
+  static double getAmountSaved(double _deliveryFee, int _numOfUsers) {
+    double _amountSaved;
+    double _finalDeliveryFee = finalDeliveryFee(_deliveryFee, _numOfUsers);
+    if (_finalDeliveryFee != 0) {
+      _amountSaved = _deliveryFee - _finalDeliveryFee;
+      return Numbers.roundTo2d(_amountSaved);
+    } else {
+      return 0;
+    }
+  }
 }

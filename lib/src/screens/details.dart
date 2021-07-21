@@ -17,24 +17,27 @@ class DetailsScreen extends StatefulWidget {
 
 class _DetailsScreenState extends State<DetailsScreen> {
   String notes = "none";
+  int itemQuantity;
 
   @override
   Widget build(BuildContext context) {
     final menuProvider = Provider.of<MenuProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
-    int itemQuantity = cartProvider.getItemQuantityOf(menuProvider.foodId);
+    itemQuantity = cartProvider.getItemQuantityOf(menuProvider.foodId);
     return Scaffold(
       appBar: Header.getAppBar(title: menuProvider.foodName),
       body: Scrollbar(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              menuProvider.image.isNotEmpty ? Image.network(
-                menuProvider.image,
-                fit: BoxFit.fitWidth,
-                width: MediaQuery.of(context).size.width,
-                height: 350,
-              ) : Container(),
+              menuProvider.image.isNotEmpty
+                  ? Image.network(
+                      menuProvider.image,
+                      fit: BoxFit.fitWidth,
+                      width: MediaQuery.of(context).size.width,
+                      height: 350,
+                    )
+                  : Container(),
               Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Column(
@@ -51,32 +54,24 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                            'I need   ',
-                            style: TextStyles
-                                .textButton()),
+                        Text('I need   ', style: TextStyles.textButton()),
                         CustomNumberPicker(
                             onValue: (value) {
-                              itemQuantity = value;
+                              setState(() {
+                                itemQuantity = value;
+                              });
                             },
                             initialValue: itemQuantity,
                             maxValue: 20,
                             minValue: 1),
-                        Text(
-                            '   of these',
-                            style: TextStyles
-                                .textButton()),
-
+                        Text('   of these', style: TextStyles.textButton()),
                       ],
                     ),
-
                     SizedBox(
                       height: 10.0,
                     ),
-
                     Text('Add notes for the restaurant:',
-                        style:
-                            TextStyles.heading3()),
+                        style: TextStyles.heading3()),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -98,24 +93,26 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                     AppButton(
                       buttonText: 'ADD TO CART',
-                      onPressed: () {
-                        cartProvider.addToCart(CartItem(
-                            foodId: menuProvider.foodId,
-                            foodName: menuProvider.foodName,
-                            image: menuProvider.image,
-                            price: menuProvider.price,
-                            quantity: itemQuantity,
-                            notes: notes));
+                      onPressed: itemQuantity > 0
+                          ? () {
+                              cartProvider.addToCart(CartItem(
+                                  foodId: menuProvider.foodId,
+                                  foodName: menuProvider.foodName,
+                                  image: menuProvider.image,
+                                  price: menuProvider.price,
+                                  quantity: itemQuantity,
+                                  notes: notes));
 
-                        Fluttertoast.showToast(
-                          msg: 'Item has been added to cart',
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 3,
-                          backgroundColor: ThemeColors.dark,
-                        );
+                              Fluttertoast.showToast(
+                                msg: 'Item has been added to cart',
+                                gravity: ToastGravity.TOP,
+                                timeInSecForIosWeb: 3,
+                                backgroundColor: ThemeColors.dark,
+                              );
 
-                        Navigator.pop(context);
-                      },
+                              Navigator.pop(context);
+                            }
+                          : null,
                     )
                   ],
                 ),

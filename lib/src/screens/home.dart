@@ -99,14 +99,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Hungry? Order Now',
                   style: TextStyles.heading1(),
                 ),
-                // TODO Search bar (Full-text / Restaurants only)
                 CupertinoSearchTextField(
                   padding: EdgeInsets.all(15.0),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/newOrder');
-                  },
                   onChanged: (value) {
-                    Navigator.pushNamed(context, '/newOrder');
+                    if (value != '')
+                      Navigator.pushNamed(context, '/newOrder',
+                          arguments: {'searchString': value});
                   },
                 ),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [

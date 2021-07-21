@@ -24,12 +24,17 @@ class NewOrderScreen extends StatefulWidget {
 class _NewOrderScreenState extends State<NewOrderScreen> {
   Stream<List<Restaurant>> restaurantsList;
   Stream<List<Restaurant>> filteredList;
+
+  String initialSearchString;
   String searchString;
 
   bool isFilterCardShown = false;
   bool areFiltersEnabled = false;
 
   List<String> tags = [];
+
+  TextEditingController textEditingController = TextEditingController();
+  FocusNode focusNode;
 
   // Commented out since this code is not being used currently
 
@@ -54,11 +59,24 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
   @override
   void initState() {
     final restaurantProvider =
-    Provider.of<RestaurantProvider>(context, listen: false);
+        Provider.of<RestaurantProvider>(context, listen: false);
     restaurantsList = restaurantProvider.restaurantsList;
     filteredList = restaurantsList;
+    focusNode = FocusNode();
     super.initState();
     _setUserRole();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final arguments = ModalRoute.of(context).settings.arguments as Map;
+
+    if (arguments != null) {
+      textEditingController.text = arguments['searchString'];
+      focusNode.requestFocus();
+      _onSearchChanged(textEditingController.text);
+    }
   }
 
   Future<void> _setUserRole() async {
@@ -74,8 +92,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     } else {
       result = restaurantsList.map((restaurants) => restaurants
           .where((restaurant) => restaurant.restaurantName
-          .toLowerCase()
-          .contains(searchWord.toLowerCase()))
+              .trim()
+              .toLowerCase()
+              .contains(searchWord..trim().toLowerCase()))
           .toList());
     }
 
@@ -94,7 +113,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
       sortingParameter = '';
     }
     final restaurantProvider =
-    Provider.of<RestaurantProvider>(context, listen: false);
+        Provider.of<RestaurantProvider>(context, listen: false);
     print(filters);
     if (filters.isNotEmpty || sortingParameter.isNotEmpty) {
       restaurantsList = restaurantProvider.filterRestaurantsList(
@@ -139,7 +158,8 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 value: tags,
                 onChanged: (val) => setState(() {
                   tags = val;
-                  _onFiltersAdded(filters: tags, sortBy: value, isLowToHigh: ascending);
+                  _onFiltersAdded(
+                      filters: tags, sortBy: value, isLowToHigh: ascending);
                   if (tags.isNotEmpty) {
                     areFiltersEnabled = true;
                   } else {
@@ -188,9 +208,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   setState(() {
                     value = i;
                     _onFiltersAdded(
-                        filters: tags,
-                        sortBy: value,
-                        isLowToHigh: ascending);
+                        filters: tags, sortBy: value, isLowToHigh: ascending);
                   });
                 },
                 title: Text(
@@ -208,9 +226,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   setState(() {
                     value = i;
                     _onFiltersAdded(
-                        filters: tags,
-                        sortBy: value,
-                        isLowToHigh: ascending);
+                        filters: tags, sortBy: value, isLowToHigh: ascending);
                   });
                 },
                 title: Text(
@@ -257,7 +273,10 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           descending = false;
                           ascendingColour = ThemeColors.oranges;
                           descendingColour = ThemeColors.dark;
-                          _onFiltersAdded(filters: tags, sortBy: value, isLowToHigh: ascending);
+                          _onFiltersAdded(
+                              filters: tags,
+                              sortBy: value,
+                              isLowToHigh: ascending);
                         });
                       },
                     ),
@@ -295,7 +314,10 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           descending = true;
                           ascendingColour = ThemeColors.dark;
                           descendingColour = ThemeColors.oranges;
-                          _onFiltersAdded(filters: tags, sortBy: value, isLowToHigh: ascending);
+                          _onFiltersAdded(
+                              filters: tags,
+                              sortBy: value,
+                              isLowToHigh: ascending);
                         });
                       },
                     ),
@@ -318,7 +340,6 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
       );
     }
 
-    // TODO Add search bar
     return Scaffold(
         appBar: Header.getAppBar(title: 'Start a New Order'),
         body: Padding(
@@ -334,26 +355,26 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   if (value == 0) {
                     if (ascending) {
                       snapshot.data.sort((a, b) => Geolocator.distanceBetween(
-                          a.coordinates.latitude,
-                          a.coordinates.longitude,
-                          userLatitude,
-                          userLongitude)
+                              a.coordinates.latitude,
+                              a.coordinates.longitude,
+                              userLatitude,
+                              userLongitude)
                           .compareTo(Geolocator.distanceBetween(
-                          b.coordinates.latitude,
-                          b.coordinates.longitude,
-                          userLatitude,
-                          userLongitude)));
+                              b.coordinates.latitude,
+                              b.coordinates.longitude,
+                              userLatitude,
+                              userLongitude)));
                     } else {
                       snapshot.data.sort((a, b) => Geolocator.distanceBetween(
-                          b.coordinates.latitude,
-                          b.coordinates.longitude,
-                          userLatitude,
-                          userLongitude)
+                              b.coordinates.latitude,
+                              b.coordinates.longitude,
+                              userLatitude,
+                              userLongitude)
                           .compareTo(Geolocator.distanceBetween(
-                          a.coordinates.latitude,
-                          a.coordinates.longitude,
-                          userLatitude,
-                          userLongitude)));
+                              a.coordinates.latitude,
+                              a.coordinates.longitude,
+                              userLatitude,
+                              userLongitude)));
                     }
                   }
                   return Column(
@@ -364,6 +385,8 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           children: [
                             Expanded(
                               child: CupertinoSearchTextField(
+                                controller: textEditingController,
+                                focusNode: focusNode,
                                 onChanged: (value) {
                                   _onSearchChanged(value);
                                 },
@@ -415,6 +438,8 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
   @override
   void dispose() {
     searchString = null;
+    textEditingController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 }

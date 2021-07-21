@@ -58,10 +58,19 @@ class _AddressScreenState extends State<AddressScreen> {
                   children: [
                     CupertinoSearchTextField(
                       padding: EdgeInsets.all(15.0),
+                      onTap: () {
+                        Fluttertoast.showToast(
+                          msg:
+                              'Unfortunately you cannot search for addresses yet, please set your location using the map',
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor: ThemeColors.dark,
+                        );
+                      },
                       onChanged: (value) {
                         Fluttertoast.showToast(
                           msg:
-                              'Unfortunately you cannot search for address yet, please set your location using the map',
+                              'Unfortunately you cannot search for addresses yet, please set your location using the map',
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 5,
                           backgroundColor: ThemeColors.dark,

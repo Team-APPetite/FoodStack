@@ -102,11 +102,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 // TODO Search bar (Full-text / Restaurants only)
                 CupertinoSearchTextField(
                   padding: EdgeInsets.all(15.0),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/newOrder');
+                  },
+                  onChanged: (value) {
+                    Navigator.pushNamed(context, '/newOrder');
+                  },
                 ),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Expanded(
                     child: BigButton(
-                      buttonText: 'Start a\nNew Order',
+                      buttonText: 'New\nOrder',
                       icon: Icons.add_shopping_cart,
                       color: ThemeColors.mint,
                       onPressed: () {

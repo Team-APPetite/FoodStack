@@ -9,7 +9,7 @@ import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:foodstack/src/utilities/payment.dart';
-import 'package:foodstack/src/utilities/totalFee.dart';
+import 'package:foodstack/src/utilities/priceCalculation.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -51,10 +51,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final double _subtotal = cartProvider.getSubtotal();
     final double _deliveryFee = cartProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
-    final double _finalDeliveryFee =
-        _deliveryFee != null ? _deliveryFee / _numOfUsers : null;
-    final double _total =
-        _finalDeliveryFee != null ? TotalCalculation.totalFee(_subtotal, _finalDeliveryFee) : 10;
+    final double _total = PriceCalculation.totalFee(_subtotal, _deliveryFee, _numOfUsers);
 
     return Scaffold(
         appBar: Header.getAppBar(title: 'Checkout'),

@@ -147,7 +147,7 @@ void main() async {
 
     Future<void> _navigateToNewOrderScreen(WidgetTester tester) async {
       var newOrder = find.descendant(
-          of: find.byType(Row), matching: find.text('Start a\nNew Order'));
+          of: find.byType(Row), matching: find.text('New\nOrder'));
 
       await tester.tap(newOrder);
       await tester.pump();
@@ -295,7 +295,7 @@ void main() async {
 
     Future<void> _navigateToNewOrderScreen(WidgetTester tester) async {
       var newOrder = find.descendant(
-          of: find.byType(Row), matching: find.text('Start a\nNew Order'));
+          of: find.byType(Row), matching: find.text('New\nOrder'));
       await tester.tap(newOrder);
       await tester.pump();
       await tester.pump();

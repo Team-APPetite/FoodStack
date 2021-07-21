@@ -56,9 +56,17 @@ class _AddressScreenState extends State<AddressScreen> {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    // TODO Search for addresses
                     CupertinoSearchTextField(
                       padding: EdgeInsets.all(15.0),
+                      onChanged: (value) {
+                        Fluttertoast.showToast(
+                          msg:
+                              'Unfortunately you cannot search for address yet, please set your location using the map',
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 5,
+                          backgroundColor: ThemeColors.dark,
+                        );
+                      },
                     ),
                     SizedBox(height: 30.0),
                     Expanded(
@@ -115,17 +123,23 @@ class _AddressScreenState extends State<AddressScreen> {
                               style: TextStyles.body(),
                               textAlign: TextAlign.center,
                             ),
-                            AppButton(buttonText: 'DELIVER HERE', onPressed: () {
-                              firestoreService.updateAddress(authBloc.user.uid, userLocator.deliveryAddress.addressLine);
-                              firestoreService.updateCoordinates(authBloc.user.uid, userLocator.getUserLocation());
-                              Fluttertoast.showToast(
+                            AppButton(
+                              buttonText: 'DELIVER HERE',
+                              onPressed: () {
+                                firestoreService.updateAddress(
+                                    authBloc.user.uid,
+                                    userLocator.deliveryAddress.addressLine);
+                                firestoreService.updateCoordinates(
+                                    authBloc.user.uid,
+                                    userLocator.getUserLocation());
+                                Fluttertoast.showToast(
                                   msg: 'Address Updated',
                                   gravity: ToastGravity.TOP,
                                   timeInSecForIosWeb: 3,
                                   backgroundColor: ThemeColors.dark,
-                              );
-                              Navigator.pop(context);
-                            },
+                                );
+                                Navigator.pop(context);
+                              },
                             ),
                           ],
                         ),

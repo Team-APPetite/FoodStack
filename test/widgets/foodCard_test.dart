@@ -52,7 +52,7 @@ void main() async {
     testWidgets('Add item once', (WidgetTester tester) async {
       await _buildFoodCard(tester);
       await _increaseFoodItemQuantity(tester);
-      expect(find.text(' x1'), findsOneWidget);
+      expect(find.text('x1'), findsOneWidget);
     });
 
     testWidgets('Add item multiple times', (WidgetTester tester) async {
@@ -60,7 +60,7 @@ void main() async {
       for (int i = 0; i < 3; i++) {
         await _increaseFoodItemQuantity(tester);
       }
-      expect(find.text(' x3'), findsOneWidget);
+      expect(find.text('x3'), findsOneWidget);
     });
   });
 }

@@ -51,46 +51,72 @@ class _FoodCardState extends State<FoodCard> {
                     image: widget.image));
             Navigator.pushNamed(context, '/details');
           },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24.0),
-              border: Border.all(
-                color: ThemeColors.light,
-                width: 1,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
+            child: Container(
+              margin: const EdgeInsets.only(
+                  bottom: 6.0, right: 2.0, top: 1.0, left: 2.0),
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: ThemeColors.light,
+                    offset: Offset(0.0, 2.0), //(x,y)
+                    blurRadius: 6.0,
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(16.0),
+                border: Border.all(
+                  color: ThemeColors.light,
+                  width: 0.5,
+                ),
+                color: Colors.white,
               ),
-              color: Colors.white,
-            ),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
+              child: Stack(
+                children: [
+                  Column(
                     children: [
                       Expanded(
                         flex: 5,
-                        child: widget.image.isNotEmpty ? Image.network(widget.image) : Container(),
+                        child: widget.image.isNotEmpty
+                            ? Container(
+                                child: Image.network(
+                                widget.image,
+                                fit: BoxFit.cover,
+                              ))
+                            : Container(),
                       ),
                       Expanded(
-                        flex: 3,
-                        child: Center(
-                          child: Text(
-                            widget.foodName,
-                            textAlign: TextAlign.center,
-                            style: TextStyles.heading3(),
+                        flex: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16.0, bottom: 8.0),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Center(
+                                  child: Text(
+                                    widget.foodName,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyles.heading3(),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  '\$' + widget.price.toString(),
+                                  style: TextStyles.emphasis(),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          '\$' + widget.price.toString(),
-                          style: TextStyles.emphasis(),
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -100,7 +126,7 @@ class _FoodCardState extends State<FoodCard> {
               key: Key("addButton_${widget.foodName}"),
               child: Icon(Icons.add),
               mini: true,
-              elevation: 0,
+              elevation: 2,
               heroTag: null,
               onPressed: () {
                 cartProvider.addToCart(CartItem(
@@ -115,7 +141,7 @@ class _FoodCardState extends State<FoodCard> {
               splashColor: ThemeColors.oranges,
             )),
         Padding(
-          padding: const EdgeInsets.only(top: 20, left: 15),
+          padding: const EdgeInsets.only(top: 15, left: 15),
           child: Align(
             alignment: Alignment.topLeft,
             child: quantity > 0
@@ -125,7 +151,7 @@ class _FoodCardState extends State<FoodCard> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        ' x' + quantity.toString(),
+                        'x' + quantity.toString(),
                         style: TextStyles.textButton(),
                       ),
                     ))

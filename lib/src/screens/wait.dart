@@ -287,19 +287,45 @@ class _WaitScreenState extends State<WaitScreen> {
                         )
                   : Container(),
               enableCheckout
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AppButton(
-                              buttonText: 'CHECKOUT',
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/checkout');
-                              }),
-                        ],
-                      ),
-                    )
+                  ? (_numOfUsers > 1)
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AppButton(
+                                  buttonText: 'CHECKOUT',
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/checkout');
+                                  }),
+                            ],
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AppButton(
+                                  buttonText: 'CHECKOUT',
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, '/checkout');
+                                  }),
+                              TextButton(
+                                child: Text(
+                                  'Cancel Order',
+                                  style: TextStyles.textButton(),
+                                ),
+                                onPressed: () {
+                                  timer.cancel();
+                                  showDialog<String>(
+                                      context: context,
+                                      builder: Alerts.cancelOrder());
+                                },
+                              ),
+                            ],
+                          ),
+                        )
                   : TextButton(
                       child: Text(
                         'Cancel Order',

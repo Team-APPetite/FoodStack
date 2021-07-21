@@ -54,19 +54,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   labelText: "Name"),
               onChanged: (value) {
                 _displayName = value.trim();
+                if (_displayName == '') {
+                  Fluttertoast.showToast(
+                    msg: 'Name cannot be empty',
+                    gravity: ToastGravity.TOP,
+                    timeInSecForIosWeb: 3,
+                    backgroundColor: ThemeColors.dark,
+                  );
+                }
               },
               textInputAction: TextInputAction.newline,
               onFieldSubmitted: (term) {
                 authBloc.user.updateDisplayName(
                   _displayName,
                 );
-                _firestoreService.updateName(_displayName);
-                Fluttertoast.showToast(
-                  msg: 'Name Updated',
-                  gravity: ToastGravity.TOP,
-                  timeInSecForIosWeb: 3,
-                  backgroundColor: ThemeColors.dark,
-                );
+                if (_displayName != '') {
+                  _firestoreService.updateName(_displayName);
+                  Fluttertoast.showToast(
+                    msg: 'Name Updated',
+                    gravity: ToastGravity.TOP,
+                    timeInSecForIosWeb: 3,
+                    backgroundColor: ThemeColors.dark,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                    msg: 'Please enter a valid name',
+                    gravity: ToastGravity.TOP,
+                    timeInSecForIosWeb: 3,
+                    backgroundColor: ThemeColors.dark,
+                  );
+                }
               },
             ),
           ),

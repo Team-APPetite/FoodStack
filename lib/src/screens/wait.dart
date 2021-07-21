@@ -92,8 +92,10 @@ class _WaitScreenState extends State<WaitScreen> {
     final double _subtotal = cartProvider.getSubtotal();
     final double _deliveryFee = cartProvider.deliveryFee;
     final int _numOfUsers = orderProvider.cartIds.length;
-    final double _finalDeliveryFee = _deliveryFee != null ? _deliveryFee / _numOfUsers : 0;
-    final double _total = TotalCalculation.totalFee(_subtotal, _finalDeliveryFee);
+    final double _finalDeliveryFee =
+        _deliveryFee != null ? _deliveryFee / _numOfUsers : 0;
+    final double _total =
+        TotalCalculation.totalFee(_subtotal, _finalDeliveryFee);
 
     _checkIfOrderComplete();
 
@@ -235,11 +237,45 @@ class _WaitScreenState extends State<WaitScreen> {
                   : Container(),
               isCartAvailable
                   ? enableCheckout
-              ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text('Subtotal',
+                                          style: TextStyles.heading3())),
+                                  Text('\$${cartProvider.getSubtotal()}',
+                                      style: TextStyles.emphasis()),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text('Delivery Fee',
+                                          style: TextStyles.heading3())),
+                                  Text('\$${_finalDeliveryFee}',
+                                      style: TextStyles.emphasis()),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: Text('Total',
+                                          style: TextStyles.heading3())),
+                                  Text('\$${_total}',
+                                      style: TextStyles.emphasis()),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
                             children: [
                               Expanded(
                                   child: Text('Subtotal',
@@ -248,43 +284,7 @@ class _WaitScreenState extends State<WaitScreen> {
                                   style: TextStyles.emphasis()),
                             ],
                           ),
-                          SizedBox(height:10),
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: Text('Delivery Fee',
-                                      style: TextStyles.heading3())),
-                              Text('\$${_finalDeliveryFee}',
-                                  style: TextStyles.emphasis()),
-                            ],
-                          ),
-                          SizedBox(height:10),
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: Text('Total',
-                                      style: TextStyles.heading3())),
-                              Text('\$${_total}',
-                                  style: TextStyles.emphasis()),
-                            ],
-                          ),
-                        ],
-                      ),
-
-                    )
-              : Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Text('Subtotal',
-                            style: TextStyles.heading3())),
-                    Text('\$${cartProvider.getSubtotal()}',
-                        style: TextStyles.emphasis()),
-                  ],
-                ),
-              )
-
+                        )
                   : Container(),
               enableCheckout
                   ? Padding(

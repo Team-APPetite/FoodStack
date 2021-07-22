@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodstack/src/blocs/auth_blocs.dart';
 import 'package:foodstack/src/providers/cartProvider.dart';
@@ -27,7 +30,9 @@ import 'package:foodstack/src/screens/track.dart';
 import 'package:foodstack/src/screens/wait.dart';
 import 'package:foodstack/src/screens/welcome.dart';
 import 'package:foodstack/src/services/analyticsService.dart';
+import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/services/notifications.dart';
+import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
@@ -53,33 +58,62 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(create: (context) => RatingProvider()),
         Provider(create: (context) => AuthBloc())
       ],
-      child: MaterialApp(
-        title: 'FoodStack',
-        home: widget.home,
-        routes: {
-          '/login': (context) => LoginScreen(),
-          '/signup': (context) => SignUpScreen(),
-          '/verifyEmail': (context) => VerifyScreen(),
-          '/resetPassword': (context) => ResetScreen(),
-          '/pickAddress': (context) => AddressScreen(),
-          '/cart': (context) => CartScreen(),
-          '/checkout': (context) => CheckoutScreen(null),
-          '/details': (context) => DetailsScreen(),
-          '/favourites': (context) => FavouritesScreen(),
-          '/home': (context) => HomeScreen(),
-          '/joinOrders': (context) => JoinOrdersScreen(),
-          '/menu': (context) => MenuScreen(),
-          '/newOrder': (context) => NewOrderScreen(),
-          '/orderSummary': (context) => SummaryScreen(),
-          '/profile': (context) => ProfileScreen(),
-          '/recentOrders': (context) => RecentOrdersScreen(),
-          '/trackOrder': (context) => TrackScreen(),
-          '/wait': (context) => WaitScreen(),
-          '/welcome': (context) => WelcomeScreen(),
-        },
-        navigatorObservers: [
-          AnalyticsService().getAnalyticsObserver()
-        ],
+      child: FutureBuilder(future: Future(() async {
+        final auth = FirebaseAuth.instance;
+        if (auth.currentUser != null) {
+          final firestoreService = FirestoreUsers();
+          await firestoreService.saveDeviceToken();
+          await firestoreService.setUserProperties();
+        } else {
+          await Future.delayed(Duration(seconds: 1));
+        }
+        return;
+      }), builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return MaterialApp(home: SplashScreen());
+        } else {
+          return MaterialApp(
+            title: 'FoodStack',
+            home: widget.home,
+            routes: {
+              '/login': (context) => LoginScreen(),
+              '/signup': (context) => SignUpScreen(),
+              '/verifyEmail': (context) => VerifyScreen(),
+              '/resetPassword': (context) => ResetScreen(),
+              '/pickAddress': (context) => AddressScreen(),
+              '/cart': (context) => CartScreen(),
+              '/checkout': (context) => CheckoutScreen(null),
+              '/details': (context) => DetailsScreen(),
+              '/favourites': (context) => FavouritesScreen(),
+              '/home': (context) => HomeScreen(),
+              '/joinOrders': (context) => JoinOrdersScreen(),
+              '/menu': (context) => MenuScreen(),
+              '/newOrder': (context) => NewOrderScreen(),
+              '/orderSummary': (context) => SummaryScreen(),
+              '/profile': (context) => ProfileScreen(),
+              '/recentOrders': (context) => RecentOrdersScreen(),
+              '/trackOrder': (context) => TrackScreen(),
+              '/wait': (context) => WaitScreen(),
+              '/welcome': (context) => WelcomeScreen(),
+            },
+            navigatorObservers: [AnalyticsService().getAnalyticsObserver()],
+          );
+        }
+      }),
+    );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: ThemeColors.oranges,
+      body: Center(
+        child: Image.asset(
+          'images/FoodStack_Logo_Orange_Fast.gif',
+          width: MediaQuery.of(context).size.width / 1.5,
+        ),
       ),
     );
   }

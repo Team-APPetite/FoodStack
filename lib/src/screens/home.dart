@@ -33,9 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _getOrderStatus();
     final firestoreService = FirestoreUsers();
     final authBloc = Provider.of<AuthBloc>(context, listen: false);
-
-    firestoreService.saveDeviceToken();
-    firestoreService.setUserProperties();
     final userLocator = Provider.of<UserLocator>(context, listen: false);
     userLocator.getCameraLocation();
     _getConnectivityStatus();

@@ -20,7 +20,7 @@ void main() {
 
     test('Delivery fee is null', () {
       final value = PriceCalculation.totalFee(18.90, null, 4);
-      expect(value, 0);
+      expect(value, -1);
     });
   });
 
@@ -42,7 +42,7 @@ void main() {
 
     test('Delivery fee is null', () {
       final value = PriceCalculation.getAmountSaved(null, 4);
-      expect(value, 0);
+      expect(value, -1);
     });
   });
 }

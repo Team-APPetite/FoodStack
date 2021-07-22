@@ -324,16 +324,46 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 5),
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: IconButton(
-                      icon: Icon(CupertinoIcons.arrow_down_right_arrow_up_left),
-                      onPressed: () {
-                        setState(() {
-                          isFilterCardShown = false;
-                        });
-                      }))
+              SizedBox(height: 15),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    OutlinedButton(
+                        child: Text(
+                          'Clear',
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            tags = [];
+                            value = 0;
+                            ascending = true;
+                            descending = false;
+                            ascendingColour = ThemeColors.oranges;
+                            descendingColour = ThemeColors.dark;
+                            areFiltersEnabled = false;
+                            _onFiltersAdded(
+                                filters: tags, sortBy: 0, isLowToHigh: true);
+                          });
+                        }),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    OutlinedButton(
+                        child: Text(
+                          'Done',
+                          style: TextStyles.textButton(),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isFilterCardShown = false;
+                          });
+                        })
+                  ])
             ],
           ),
         ),

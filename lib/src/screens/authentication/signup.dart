@@ -149,27 +149,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
           keyString: 'googleLogin',
           image: Image.asset('images/google.png'),
           onPressed: () async {
-            String msg = await authBloc.loginGoogle();
-            if (msg == "Success") {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setString('email', _email);
-              Navigator.pushNamed(context, '/home');
-            } else if (msg == "New User") {
-              User user = auth.currentUser;
-              var currUser = Users(uid: user.uid, email: user.email);
-              await firestoreService.addUser(currUser);
+            await authBloc.loginGoogle().then((value) async {
+              if (value == "Success") {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('email', _email);
+                Navigator.pushNamed(context, '/home');
+              } else if (value == "New User") {
+                User user = auth.currentUser;
+                var currUser = Users(uid: user.uid, email: user.email);
+                await firestoreService.addUser(currUser);
 
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setString('email', user.email);
-              Navigator.pushNamed(context, '/welcome');
-            } else {
-              Fluttertoast.showToast(
-                msg: 'Sign up with Google failed. Please try again later',
-                gravity: ToastGravity.TOP,
-                timeInSecForIosWeb: 5,
-                backgroundColor: ThemeColors.dark,
-              );
-            }
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('email', user.email);
+                Navigator.pushNamed(context, '/welcome');
+              } else {
+                Fluttertoast.showToast(
+                  msg: 'Sign up with Google failed. Please try again later',
+                  gravity: ToastGravity.TOP,
+                  timeInSecForIosWeb: 5,
+                  backgroundColor: ThemeColors.dark,
+                );
+              }
+            });
           },
         ),
         SizedBox(height: 50.0)

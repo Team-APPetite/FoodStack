@@ -3,7 +3,12 @@ import 'package:foodstack/src/styles/textStyles.dart';
 import 'package:foodstack/src/widgets/button.dart';
 import 'package:foodstack/src/widgets/header.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,19 +19,25 @@ class WelcomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Welcome to FoodStack!',
+              'Welcome to\nFoodStack!',
               style: TextStyles.heading1(),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 30.0),
             Text(
-              'Set your delivery address to view available restaurants and join nearby orders.',
+              'FoodStack is your one-stop solution for placing group orders without any hassle.',
+              style: TextStyles.body(),
+              textAlign: TextAlign.center,
+            ),
+            Expanded(child: Image.asset('images/Welcome_Screen.gif')),
+            Text(
+              'Get started by setting your delivery address to view nearby orders.',
               style: TextStyles.body(),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 30.0),
             AppButton(
-                buttonText: 'PICK ADDRESS',
+                buttonText: 'LET\'S GO!',
                 onPressed: () {
                   Navigator.pushNamed(context, '/home');
                   Navigator.pushNamed(context, '/pickAddress');

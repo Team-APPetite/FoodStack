@@ -4,11 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:foodstack/src/models/cart.dart';
 import 'package:foodstack/src/services/firestoreCarts.dart';
 
+Timestamp currentTime = Timestamp.now();
+
 Cart mockCart1 =
-    Cart("123", "456", "789", "Mc Donalds", 7.65, 8.00, mockCartItems);
-Cart mockCart2 = Cart("abc", "def", "gtg", "KFC", 10.95, 4.00, mockCartItems);
+    Cart("123", "456", "789", "Mc Donalds", 7.65, 8.00, mockCartItems, currentTime);
+Cart mockCart2 = Cart("abc", "def", "gtg", "KFC", 10.95, 4.00, mockCartItems, currentTime);
 Cart mockCart3 =
-    Cart("xyz", "vfh", "bgn", "Pizza Hut", 22.80, 10.00, mockCartItems);
+    Cart("xyz", "vfh", "bgn", "Pizza Hut", 22.80, 10.00, mockCartItems, currentTime);
 
 List<CartItem> mockCartItems = [
   CartItem(
@@ -74,9 +76,9 @@ void main() {
       expect(cart, null);
     });
 
-    test('Get past orders', () async {
-      Stream<List<Cart>> pastOrders = firestoreCarts.getPastOrders("vfh");
-      pastOrders.listen((event) {
+    test('Get recent carts', () async {
+      Stream<List<Cart>> recentCarts = firestoreCarts.getRecentCarts("vfh");
+      recentCarts.listen((event) {
         expect(event.first.cartId, mockCart3.cartId);
       });
     });

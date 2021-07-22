@@ -33,8 +33,8 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     String uid;
-    if(auth.currentUser != null) {
-       uid = auth.currentUser.uid;
+    if (auth.currentUser != null) {
+      uid = auth.currentUser.uid;
     }
 
     return Scaffold(
@@ -42,13 +42,15 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: StreamBuilder<List<Cart>>(
-              stream: cartProvider.getPastOrdersList(uid),
+              stream: cartProvider.getRecentCartsList(uid),
               builder: (context, snapshot) {
                 if (snapshot.data == null) {
+                  print(cartProvider.getRecentCartsList(uid).toList());
                   return Center(child: CircularProgressIndicator());
                 } else {
                   if (snapshot.data.length == 0) {
-                    return Center(child: Text('Place orders to see them here!'));
+                    return Center(
+                        child: Text('Place orders to see them here!'));
                   }
                   return Scrollbar(
                       child: ListView.builder(

@@ -37,12 +37,12 @@ class FirestoreCarts {
     return _db.collection('carts').doc(cartId).delete();
   }
 
-  Stream<List<Cart>> getPastOrders(String uid) {
-    print("getPastOrders");
+  Stream<List<Cart>> getRecentCarts(String uid) {
+    print("getRecentCarts");
     return _db
         .collection('carts')
         .where('userId', isEqualTo: uid)
-        .limit(10)
+        .orderBy('orderTime', descending: true)
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => Cart.fromJson(doc.data())).toList());

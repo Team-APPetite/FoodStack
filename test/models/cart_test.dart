@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:foodstack/src/models/cart.dart';
 
-Cart mockCart =
-    Cart("123", "456", "789", "Mc Donalds", 7.65, 8.00, mockCartItems);
+Timestamp currentTime = Timestamp.now();
+
+Cart mockCart = Cart(
+    "123", "456", "789", "Mc Donalds", 7.65, 8.00, mockCartItems, currentTime);
 
 List<CartItem> mockCartItems = [
   CartItem(
@@ -76,7 +79,8 @@ void main() async {
         "subtotal": 7.65,
         "deliveryFee": 8.00,
         "cartItems":
-            cartItems.map((cartItem) => CartItem.fromJson(cartItem)).toList()
+            cartItems.map((cartItem) => CartItem.fromJson(cartItem)).toList(),
+        "orderTime": currentTime
       });
       expect(cart.cartId, mockCart.cartId);
       expect(cart.userId, mockCart.userId);
@@ -84,6 +88,7 @@ void main() async {
       expect(cart.restaurantName, mockCart.restaurantName);
       expect(cart.subtotal, mockCart.subtotal);
       expect(cart.deliveryFee, mockCart.deliveryFee);
+      expect(cart.orderTime, mockCart.orderTime);
     });
 
     test('To map', () {
@@ -132,7 +137,8 @@ void main() async {
         "restaurantName": "Mc Donalds",
         "subtotal": 7.65,
         "deliveryFee": 8.00,
-        "cartItems": cartItems
+        "cartItems": cartItems,
+        "orderTime": currentTime
       };
 
       mockCart.cartItems = mockCart.cartItems.map((e) => e.toMap()).toList();

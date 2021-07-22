@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class CartProvider with ChangeNotifier {
   String _userId;
   double _deliveryFee;
   double _subtotal = 0;
+  Timestamp _orderTime = Timestamp(0, 0);
 
   String get cartId => _cartId;
   int get joinDuration => _joinDuration;
@@ -89,20 +91,14 @@ class CartProvider with ChangeNotifier {
     var uuid = Uuid();
     _cartId = uuid.v1();
     prefs.setString('cartId', _cartId);
-    if(_auth.currentUser != null) {
+    if (_auth.currentUser != null) {
       _userId = _auth.currentUser.uid;
 
       List<dynamic> cartItemsList = [];
 
       _cartItems.forEach((item) => cartItemsList.add(item.toMap()));
-      var cart = Cart(
-          _cartId,
-          _userId,
-          _restaurantId,
-          _restaurantName,
-          _subtotal,
-          _deliveryFee,
-          cartItemsList);
+      var cart = Cart(_cartId, _userId, _restaurantId, _restaurantName,
+          _subtotal, _deliveryFee, cartItemsList, Timestamp.now());
       firestoreService.setCart(cart);
     }
   }
@@ -116,6 +112,7 @@ class CartProvider with ChangeNotifier {
     _subtotal = cart.subtotal;
     _deliveryFee = cart.deliveryFee;
     _cartItems = [];
+    _orderTime = cart.orderTime;
     cart.cartItems.forEach((item) => _cartItems.add(CartItem.fromJson(item)));
   }
 
@@ -159,8 +156,8 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Stream<List<Cart>> getPastOrdersList(String uid) {
-    return firestoreService.getPastOrders(uid);
+  Stream<List<Cart>> getRecentCartsList(String uid) {
+    return firestoreService.getRecentCarts(uid);
   }
 
   Widget itemQuantityIcon() {

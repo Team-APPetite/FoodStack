@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CartItem {
   String foodId;
   String foodName;
@@ -12,17 +14,16 @@ class CartItem {
       this.image,
       this.price,
       this.quantity,
-      this.notes});
+      this.notes,});
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
     return CartItem(
-      foodId: json['foodId'],
-      foodName: json['foodName'],
-      image: json['image'],
-      price: json['price'],
-      quantity: json['quantity'],
-      notes: json['notes'],
-    );
+        foodId: json['foodId'],
+        foodName: json['foodName'],
+        image: json['image'],
+        price: json['price'],
+        quantity: json['quantity'],
+        notes: json['notes'],);
   }
 
   Map<String, dynamic> toMap() => {
@@ -31,7 +32,7 @@ class CartItem {
         "image": image,
         "price": price,
         "quantity": this.quantity,
-        "notes": this.notes
+        "notes": this.notes,
       };
 }
 
@@ -43,9 +44,11 @@ class Cart {
   double subtotal;
   double deliveryFee;
   List<dynamic> cartItems = [];
+  Timestamp orderTime;
 
   Cart(this.cartId, this.userId, this.restaurantId, this.restaurantName,
-      this.subtotal, this.deliveryFee, this.cartItems);
+      this.subtotal, this.deliveryFee, this.cartItems,
+      this.orderTime);
 
   factory Cart.fromJson(Map<String, dynamic> json) {
     return Cart(
@@ -55,7 +58,8 @@ class Cart {
         json['restaurantName'],
         json['subtotal'],
         json['deliveryFee'],
-        json['cartItems']);
+        json['cartItems'],
+        json['orderTime']);
   }
 
   Map<String, dynamic> toMap() => {
@@ -65,6 +69,7 @@ class Cart {
         "restaurantName": this.restaurantName,
         "subtotal": this.subtotal,
         "deliveryFee": this.deliveryFee,
-        "cartItems": this.cartItems
+        "cartItems": this.cartItems,
+        "orderTime": this.orderTime,
       };
 }

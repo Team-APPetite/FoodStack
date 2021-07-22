@@ -264,7 +264,7 @@ class _CartScreenState extends State<CartScreen> {
                     alignment: Alignment.topRight,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text('Note: $notes', style: TextStyles.body()),
+                      child: Text('Notes: $notes', style: TextStyles.body()),
                     ),
                   )
                 : Container()

@@ -71,8 +71,13 @@ class CartProvider with ChangeNotifier {
       _uniqueItemCount++;
     } else {
       int updateIndex = _cartItems.indexOf(exists);
-      _cartItems[updateIndex].quantity++;
-      _itemCount++;
+      if (cartItem.notes != _cartItems[updateIndex].notes) {
+        for (int i = 0; i < cartItem.quantity; i++) {
+          _cartItems[updateIndex].notes += '; \n${cartItem.notes}';
+        }
+      }
+      _cartItems[updateIndex].quantity += cartItem.quantity;
+      _itemCount += cartItem.quantity;
     }
 
     notifyListeners();

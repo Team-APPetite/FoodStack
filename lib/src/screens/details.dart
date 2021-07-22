@@ -20,10 +20,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
   int itemQuantity;
 
   @override
+  void initState() {
+    itemQuantity = 1;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final menuProvider = Provider.of<MenuProvider>(context);
     final cartProvider = Provider.of<CartProvider>(context);
-    itemQuantity = cartProvider.getItemQuantityOf(menuProvider.foodId);
     return Scaffold(
       appBar: Header.getAppBar(title: menuProvider.foodName),
       body: Scrollbar(
@@ -61,7 +66,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 itemQuantity = value;
                               });
                             },
-                            initialValue: itemQuantity,
+                            initialValue: 1,
                             maxValue: 20,
                             minValue: 1),
                         Text('   of these', style: TextStyles.textButton()),
@@ -82,7 +87,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         fillColor: ThemeColors.light,
                         hintText: "Notes",
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15)),
+                            borderRadius: BorderRadius.circular(16)),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: ThemeColors.teals, width: 2.0,),
+                            borderRadius: BorderRadius.circular(16)),
                       ),
                       onChanged: (value) {
                         notes = value;
@@ -93,26 +101,25 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                     AppButton(
                       buttonText: 'ADD TO CART',
-                      onPressed: itemQuantity > 0
-                          ? () {
-                              cartProvider.addToCart(CartItem(
-                                  foodId: menuProvider.foodId,
-                                  foodName: menuProvider.foodName,
-                                  image: menuProvider.image,
-                                  price: menuProvider.price,
-                                  quantity: itemQuantity,
-                                  notes: notes));
+                      onPressed: () {
+                        print(itemQuantity);
+                        cartProvider.addToCart(CartItem(
+                            foodId: menuProvider.foodId,
+                            foodName: menuProvider.foodName,
+                            image: menuProvider.image,
+                            price: menuProvider.price,
+                            quantity: itemQuantity,
+                            notes: notes));
 
-                              Fluttertoast.showToast(
-                                msg: 'Item has been added to cart',
-                                gravity: ToastGravity.TOP,
-                                timeInSecForIosWeb: 3,
-                                backgroundColor: ThemeColors.dark,
-                              );
+                        Fluttertoast.showToast(
+                          msg: 'Item has been added to cart',
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: ThemeColors.dark,
+                        );
 
-                              Navigator.pop(context);
-                            }
-                          : null,
+                        Navigator.pop(context);
+                      },
                     )
                   ],
                 ),

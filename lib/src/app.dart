@@ -64,6 +64,7 @@ class _AppState extends State<App> {
           final firestoreService = FirestoreUsers();
           await firestoreService.saveDeviceToken();
           await firestoreService.setUserProperties();
+          await Future.delayed(Duration(milliseconds: 500));
         } else {
           await Future.delayed(Duration(seconds: 1));
         }

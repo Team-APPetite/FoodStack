@@ -92,9 +92,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     } else {
       result = restaurantsList.map((restaurants) => restaurants
           .where((restaurant) => restaurant.restaurantName
-              .trim()
               .toLowerCase()
-              .contains(searchWord..trim().toLowerCase()))
+              .trim()
+              .contains(searchWord.toLowerCase().trim()))
           .toList());
     }
 

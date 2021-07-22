@@ -45,7 +45,6 @@ class _RecentOrdersScreenState extends State<RecentOrdersScreen> {
               stream: cartProvider.getRecentCartsList(uid),
               builder: (context, snapshot) {
                 if (snapshot.data == null) {
-                  print(cartProvider.getRecentCartsList(uid).toList());
                   return Center(child: CircularProgressIndicator());
                 } else {
                   if (snapshot.data.length == 0) {

@@ -55,13 +55,13 @@ class _FoodCardState extends State<FoodCard> {
             borderRadius: BorderRadius.circular(16.0),
             child: Container(
               margin: const EdgeInsets.only(
-                  bottom: 6.0, right: 2.0, top: 1.0, left: 2.0),
+                  bottom: 3.0, right: 2.0, top: 1.0, left: 2.0),
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
                     color: ThemeColors.light,
                     offset: Offset(0.0, 2.0), //(x,y)
-                    blurRadius: 6.0,
+                    blurRadius: 3.0,
                   ),
                 ],
                 borderRadius: BorderRadius.circular(16.0),

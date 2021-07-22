@@ -76,20 +76,28 @@ class _PastOrderCardState extends State<PastOrderCard> {
           });
         },
         child: Container(
+            margin: const EdgeInsets.only(
+                bottom: 3.0, right: 2.0, top: 1.0, left: 2.0),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24.0),
+              borderRadius: BorderRadius.circular(16.0),
               border: Border.all(
                 color: ThemeColors.light,
-                width: 1,
+                width: 0.5,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: ThemeColors.light,
+                  offset: Offset(0.0, 2.0), //(x,y)
+                  blurRadius: 3.0,
+                ),
+              ],
               color: Colors.white,
             ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Text(widget.restaurantName,
-                          style: TextStyles.heading3()),
+                  Text(widget.restaurantName, style: TextStyles.heading3()),
                   ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -123,7 +131,7 @@ class _PastOrderCardState extends State<PastOrderCard> {
                         size: 20,
                       ),
                       Text('\$${widget.deliveryFee}',
-                              style: TextStyles.details()),
+                          style: TextStyles.details()),
                     ],
                   ),
                 ],

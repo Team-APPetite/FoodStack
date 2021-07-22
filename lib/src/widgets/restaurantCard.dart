@@ -37,12 +37,21 @@ class _RestaurantCardState extends State<RestaurantCard> {
       },
       child: Container(
         height: 130.0,
+        margin:
+            const EdgeInsets.only(bottom: 3.0, right: 2.0, top: 1.0, left: 2.0),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24.0),
+          borderRadius: BorderRadius.circular(16.0),
           border: Border.all(
             color: ThemeColors.light,
-            width: 1,
+            width: 0.5,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: ThemeColors.light,
+              offset: Offset(0.0, 2.0), //(x,y)
+              blurRadius: 3.0,
+            ),
+          ],
           color: Colors.white,
         ),
         child: Padding(
@@ -51,7 +60,9 @@ class _RestaurantCardState extends State<RestaurantCard> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             Expanded(
               flex: 1,
-              child: widget.image.isNotEmpty ? Image.network(widget.image) : Container(),
+              child: widget.image.isNotEmpty
+                  ? Image.network(widget.image)
+                  : Container(),
             ),
             Expanded(
               flex: 3,

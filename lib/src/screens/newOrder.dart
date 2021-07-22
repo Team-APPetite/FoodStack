@@ -137,7 +137,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
     Widget _filterCard() {
       return Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24.0),
+          borderRadius: BorderRadius.circular(16.0),
           border: Border.all(
             color: ThemeColors.light,
             width: 1,
@@ -177,7 +177,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                     color: ThemeColors.oranges,
                     labelStyle: TextStyle(color: Colors.white),
                     brightness: Brightness.dark),
-                wrapped: true,
+                // wrapped: true,
               ),
               SizedBox(height: 20.0),
               Text(
@@ -236,7 +236,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 secondary: Icon(sortIcons[2], color: ThemeColors.oranges),
               ),
               SizedBox(
-                height: 10,
+                height: 5,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -281,7 +281,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                       },
                     ),
                   ),
-                  SizedBox(width: 20),
+                  SizedBox(width: 10),
                   Expanded(
                     child: InkWell(
                       child: Container(
@@ -324,7 +324,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 5),
               Align(
                   alignment: Alignment.bottomRight,
                   child: IconButton(

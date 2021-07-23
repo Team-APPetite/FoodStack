@@ -135,7 +135,7 @@ class _WaitScreenState extends State<WaitScreen> {
                   : Column(
                       children: [
                         Text(
-                          'Wait while others join the order',
+                          'Wait for others to join',
                           style: TextStyles.heading2(),
                           textAlign: TextAlign.center,
                         ),
@@ -166,7 +166,7 @@ class _WaitScreenState extends State<WaitScreen> {
               Column(
                 children: [
                   Text(
-                    'Order completes at',
+                    'We\'ll remind you to checkout at',
                     style: TextStyles.heading3(),
                   ),
                   Text(
@@ -198,7 +198,7 @@ class _WaitScreenState extends State<WaitScreen> {
                       children: [
                         Text(
                           'Your Cart',
-                          style: TextStyles.heading2(),
+                          style: TextStyles.emphasis(),
                         ),
                         SizedBox(height: 10),
                         Container(

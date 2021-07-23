@@ -254,7 +254,8 @@ class _WaitScreenState extends State<WaitScreen> {
                                   Expanded(
                                       child: Text('Delivery Fee',
                                           style: TextStyles.heading3())),
-                                  Text('\$${PriceCalculation.finalDeliveryFee(_deliveryFee, _numOfUsers)}',
+                                  Text(
+                                      '\$${PriceCalculation.finalDeliveryFee(_deliveryFee, _numOfUsers)}',
                                       style: TextStyles.emphasis()),
                                 ],
                               ),
@@ -264,7 +265,7 @@ class _WaitScreenState extends State<WaitScreen> {
                                   Expanded(
                                       child: Text('Total',
                                           style: TextStyles.heading3())),
-                                  Text('\$${_total}',
+                                  Text('\$$_total',
                                       style: TextStyles.emphasis()),
                                 ],
                               ),

@@ -33,6 +33,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
           'restaurantId': widget.restaurantId,
           'restaurantName': widget.restaurantName,
           'deliveryFee': widget.deliveryFee,
+          'image': widget.image,
         });
       },
       child: Container(

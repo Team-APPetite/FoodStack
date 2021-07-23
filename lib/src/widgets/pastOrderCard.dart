@@ -73,6 +73,7 @@ class _PastOrderCardState extends State<PastOrderCard> {
             'restaurantId': widget.restaurantId,
             'restaurantName': widget.restaurantName,
             'deliveryFee': widget.deliveryFee,
+            'image': ''
           });
         },
         child: Container(

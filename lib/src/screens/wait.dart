@@ -166,7 +166,7 @@ class _WaitScreenState extends State<WaitScreen> {
               Column(
                 children: [
                   Text(
-                    'We\'ll remind you to checkout at',
+                    enableCheckout ? 'Order closed at' : 'We\'ll remind you to checkout at',
                     style: TextStyles.heading3(),
                   ),
                   Text(

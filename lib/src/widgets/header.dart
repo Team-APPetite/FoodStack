@@ -28,7 +28,6 @@ class Header {
     return SliverAppBar(
         title: logo == '' ? Text(title, style: TextStyles.heading2()) : null,
         pinned: true,
-        floating: true,
         leading: BackArrow(alert, back),
         elevation: 0,
         backgroundColor: Color(ThemeColors.hexColor('FAFAFA')),

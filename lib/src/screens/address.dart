@@ -49,6 +49,7 @@ class _AddressScreenState extends State<AddressScreen> {
     }
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: Header.getAppBar(title: 'Add delivery address'),
         body: (userLocator.deliveryAddress == null)
             ? Center(child: CircularProgressIndicator())

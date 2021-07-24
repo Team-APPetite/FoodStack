@@ -60,6 +60,7 @@ class _AddressScreenState extends State<AddressScreen> {
                     CupertinoSearchTextField(
                       padding: EdgeInsets.all(15.0),
                       onChanged: (value) {
+                        if (value != '')
                         Fluttertoast.showToast(
                           msg:
                               'Unfortunately you cannot search for addresses yet, please set your location using the map',

@@ -48,6 +48,33 @@ class Alerts {
     };
   }
 
+  static Function orderClosed() {
+    return (BuildContext context) {
+      final cartProvider = Provider.of<CartProvider>(context);
+      return CupertinoAlertDialog(
+        title: const Text('Order closed'),
+        content: const Text('Sorry but the order has already closed'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Go home', style: TextStyles.emphasis()),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(context, '/home', (r) => false);
+              cartProvider.clearCart();
+            },
+          ),
+          TextButton(
+            child: Text('New order', style: TextStyles.textButton()),
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(context, '/home', (r) => false);
+              Navigator.pushNamed(context, '/newOrder');
+              cartProvider.clearCart();
+            },
+          ),
+        ],
+      );
+    };
+  }
+
   static Function cancelOrder() {
     return (BuildContext context) {
       final cartProvider = Provider.of<CartProvider>(context);

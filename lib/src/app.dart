@@ -33,6 +33,7 @@ import 'package:foodstack/src/services/analyticsService.dart';
 import 'package:foodstack/src/services/firestoreUsers.dart';
 import 'package:foodstack/src/services/notifications.dart';
 import 'package:foodstack/src/styles/themeColors.dart';
+// import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
@@ -60,7 +61,10 @@ class _AppState extends State<App> {
       ],
       child: FutureBuilder(future: Future(() async {
         final auth = FirebaseAuth.instance;
-        if (auth.currentUser != null) {
+        bool isOnline = true;
+        
+        // isOnline = await InternetConnectionChecker().hasConnection;
+        if (auth.currentUser != null && isOnline) {
           final firestoreService = FirestoreUsers();
           await firestoreService.saveDeviceToken();
           await firestoreService.setUserProperties();

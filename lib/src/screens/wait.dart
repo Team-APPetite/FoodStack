@@ -232,7 +232,7 @@ class _WaitScreenState extends State<WaitScreen> {
                         ),
                       ],
                     )
-                  : Container(),
+                  : Container(height: 220),
               isCartAvailable
                   ? enableCheckout
                       ? Padding(

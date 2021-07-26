@@ -37,7 +37,7 @@ class NotificationService extends ChangeNotifier {
     0,
     'Pay for your order',
     'You can checkout now for the meal you have ordered!',
-    tz.TZDateTime.now(tz.local).add(Duration(minutes: joinDuration)),
+    tz.TZDateTime.now(tz.local).add(Duration(seconds: joinDuration)),
     const NotificationDetails(
         android: AndroidNotificationDetails('0',
             'FoodStack', 'Order Closing Notification'),

@@ -19,6 +19,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class Alerts {
+  static int noOfSecondsPerMinute = 60;
+
   static Function loseCart() {
     return (BuildContext context) {
       final cartProvider = Provider.of<CartProvider>(context);
@@ -104,8 +106,8 @@ class Alerts {
                           .getNearbyOrder(cartProvider.restaurantId);
                       orderProvider.addToCartsList(
                           cartProvider.cartId, orderProvider.orderId);
-                      model.scheduledNotification(
-                          TimeHelper.minutesRemaining(orderProvider.orderTime, DateTime.now()));
+                      model.scheduledNotification(TimeHelper.secondsRemaining(
+                          orderProvider.orderTime, DateTime.now()));
                       Navigator.pushNamed(context, '/wait');
                     },
                   ),
@@ -124,7 +126,8 @@ class Alerts {
                               cartIds: [cartProvider.cartId]),
                           cartProvider.joinDuration);
                       if (cartProvider.joinDuration != 0)
-                        model.scheduledNotification(cartProvider.joinDuration);
+                        model.scheduledNotification(
+                            cartProvider.joinDuration * noOfSecondsPerMinute);
                       Navigator.pushNamed(context, '/wait');
                     },
                   ),

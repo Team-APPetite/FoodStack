@@ -27,6 +27,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  static final int noOfSecondsPerMinute = 60;
+
   DateTime _orderCompletionTime;
   bool isPooler = false;
   bool isNearbyOrderAvailable = false;
@@ -185,7 +187,7 @@ class _CartScreenState extends State<CartScreen> {
                             cartProvider.cartId,
                             orderProvider
                                 .orderId); // TODO Need to update total price as well
-                        model.scheduledNotification(TimeHelper.minutesRemaining(
+                        model.scheduledNotification(TimeHelper.secondsRemaining(
                             orderProvider.orderTime, DateTime.now()));
                         Navigator.pushNamed(context, '/wait');
                       } else {
@@ -209,7 +211,7 @@ class _CartScreenState extends State<CartScreen> {
                               cartProvider.joinDuration);
                           if (cartProvider.joinDuration != 0)
                             model.scheduledNotification(
-                                cartProvider.joinDuration);
+                                cartProvider.joinDuration * noOfSecondsPerMinute);
                           Navigator.pushNamed(context, '/wait');
                         }
                       }

@@ -62,7 +62,7 @@ class _AppState extends State<App> {
       child: FutureBuilder(future: Future(() async {
         final auth = FirebaseAuth.instance;
         bool isOnline = true;
-        
+
         // isOnline = await InternetConnectionChecker().hasConnection;
         if (auth.currentUser != null && isOnline) {
           final firestoreService = FirestoreUsers();
@@ -75,9 +75,11 @@ class _AppState extends State<App> {
         return;
       }), builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return MaterialApp(home: SplashScreen());
+          return MaterialApp(
+              debugShowCheckedModeBanner: false, home: SplashScreen());
         } else {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'FoodStack',
             home: widget.home,
             routes: {

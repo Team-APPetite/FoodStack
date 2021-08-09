@@ -4,16 +4,15 @@
 ![example workflow](https://github.com/Team-APPetite/FoodStack/actions/workflows/test-actions.yml/badge.svg)
 ![Coverage](./coverage_badge.svg?sanitize=true)
 
-Flutter app by Team APPetite.
+Group food-ordering app by Team APPetite, Artemis (Extreme) level, Orbital 2021.
 
-## Getting Started
-This project is a starting point for a Flutter application.
+[Project README](https://docs.google.com/document/d/1rlbRK2gxNLM7VrQf2PNl_nj6aiuhsDKyiJ3leHSIkTU/edit?usp=sharing)
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stack:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter + Dart
+- Firebase
+- Node.js + Javascript
+- Google Maps API
+- Braintree Sandbox API
+- Git + Github

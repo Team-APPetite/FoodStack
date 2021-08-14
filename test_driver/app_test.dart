@@ -32,6 +32,20 @@ void main() {
       final addItem1ToCart = find.byValueKey('addToCart1');
       final viewCartButton = find.byValueKey('viewCartButton');
 
+      // Cart screen
+      final joinDurationScrollable = find.byValueKey('joinDurationScrollable');
+      final confirmCartButton = find.byValueKey('confirmCartButton');
+
+      // Wait screen
+      final checkoutButton = find.byValueKey('checkoutButton');
+
+      // Checkout screen
+      final cashOnDeliveryOption = find.byValueKey('paymentOption1');
+      final payButton = find.byValueKey('payButton');
+
+      // Order confirmation screen
+      final trackOrderButton = find.byValueKey('trackOrderButton');
+
       FlutterDriver driver;
 
       Future<bool> isPresent(SerializableFinder byValueKey,
@@ -110,16 +124,35 @@ void main() {
             Duration(minutes: 2),
           ));
 
-      // test('Logout', () async {
-      //   await driver.waitFor(bottomNavigationBar);
-      //   await driver.tap(navigateToProfileScreen);
-      //   await driver.waitFor(find.text('Profile'));
-      //   await driver.tap(logoutButton);
-      //   await driver.waitFor(find.text('FoodStack'));
-      // },
-      //     timeout: Timeout(
-      //       Duration(minutes: 2),
-      //     ));
+      test('Place order', () async {
+        await driver.waitFor(find.text('CONFIRM CART'));
+        await driver.scrollUntilVisible(joinDurationScrollable, find.text('0'),
+            dyScroll: 25, alignment: 20);
+        await driver.tap(confirmCartButton);
+        await driver.waitFor(find.text('CHECKOUT'));
+        await driver.tap(checkoutButton);
+        await driver.waitFor(find.text('Checkout'));
+        await driver.tap(cashOnDeliveryOption);
+        await driver.tap(payButton);
+        await driver.waitFor(find.text('Your order has been confirmed!'));
+        await driver.tap(trackOrderButton);
+        await driver.waitFor(find.text('Track Your Order'));
+        await driver.waitFor(bottomNavigationBar);
+      },
+          timeout: Timeout(
+            Duration(minutes: 2),
+          ));
+
+      test('Logout', () async {
+        await driver.waitFor(bottomNavigationBar);
+        await driver.tap(navigateToProfileScreen);
+        await driver.waitFor(find.text('Profile'));
+        await driver.tap(logoutButton);
+        await driver.waitFor(find.text('FoodStack'));
+      },
+          timeout: Timeout(
+            Duration(minutes: 2),
+          ));
     },
   );
 }

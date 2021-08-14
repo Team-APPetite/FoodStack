@@ -91,6 +91,7 @@ class _CartScreenState extends State<CartScreen> {
         children: [
           Text('Wait  ', style: TextStyles.heading3()),
           NumberPicker(
+            key: Key('joinDurationScrollable'),
             minValue: 0, // can change to 5: Design decision
             maxValue: 60,
             step: 5,
@@ -176,6 +177,7 @@ class _CartScreenState extends State<CartScreen> {
                   isPooler ? _displayOrderCompletionTime() : _setJoinDuration(),
                   _paymentSummary(),
                   AppButton(
+                    keyString: 'confirmCartButton',
                     buttonText: 'CONFIRM CART',
                     onPressed: () async {
                       await cartProvider.confirmCart();

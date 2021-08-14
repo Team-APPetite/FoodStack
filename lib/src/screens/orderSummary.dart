@@ -166,6 +166,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppButton(
+                            keyString: 'trackOrderButton',
                             buttonText: 'TRACK ORDER',
                             onPressed: () {
                               cartProvider.clearCart();

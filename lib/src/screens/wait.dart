@@ -293,6 +293,7 @@ class _WaitScreenState extends State<WaitScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               AppButton(
+                                  keyString: 'checkoutButton',
                                   buttonText: 'CHECKOUT',
                                   onPressed: () {
                                     Navigator.pushNamed(context, '/checkout');
@@ -306,6 +307,7 @@ class _WaitScreenState extends State<WaitScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               AppButton(
+                                  keyString: 'checkoutButton',
                                   buttonText: 'CHECKOUT',
                                   onPressed: () {
                                     Navigator.pushNamed(context, '/checkout');

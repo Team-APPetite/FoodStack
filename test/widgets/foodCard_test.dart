@@ -31,13 +31,13 @@ void main() async {
           child: MaterialApp(
             title: 'FoodStack',
             home: FoodCard(
-                "123", "French Fries", "Salted potato fries", 2.95, '', "987"),
+                0, "123", "French Fries", "Salted potato fries", 2.95, '', "987"),
             navigatorObservers: [mockObserver],
           )));
     }
 
     Future<void> _increaseFoodItemQuantity(WidgetTester tester) async {
-      final addButton = find.byKey(ValueKey('addButton_French Fries'));
+      final addButton = find.byKey(ValueKey('addToCart0'));
       await tester.tap(addButton);
       await tester.pump();
       await tester.pump();

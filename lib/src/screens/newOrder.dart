@@ -449,6 +449,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                               itemCount: snapshot.data.length,
                               itemBuilder: (context, index) {
                                 return RestaurantCard(
+                                    'restaurant$index',
                                     snapshot.data[index].restaurantId,
                                     snapshot.data[index].restaurantName,
                                     snapshot.data[index].cuisineType,

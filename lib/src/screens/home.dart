@@ -108,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Expanded(
                     child: BigButton(
+                      keyString: 'NewOrder',
                       buttonText: 'New\nOrder',
                       icon: Icons.add_shopping_cart,
                       color: ThemeColors.mint,
@@ -119,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(width: 10),
                   Expanded(
                     child: BigButton(
+                      keyString: 'JoinOrders',
                       buttonText: 'Join\nOrders',
                       icon: Icons.person_add_alt_1_outlined,
                       color: ThemeColors.oranges,
@@ -133,6 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Expanded(
                       child: BigButton(
+                        keyString: 'YourFavourites',
                         buttonText: 'Your\nFavourites',
                         icon: Icons.favorite_border_outlined,
                         color: ThemeColors.yellows,
@@ -144,6 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(width: 10),
                     Expanded(
                       child: BigButton(
+                        keyString: 'OrderAgain',
                         buttonText: 'Order\nAgain',
                         icon: Icons.access_time_outlined,
                         color: ThemeColors.teals,

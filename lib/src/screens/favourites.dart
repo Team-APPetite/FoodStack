@@ -35,7 +35,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               builder: (context, snapshot) {
                 if (snapshot.data == null) {
                   return Center(
-                        child: Text('Like restaurants to see them here!'));
+                      child: Text('Like restaurants to see them here!'));
                 } else {
                   if (snapshot.data.length == 0) {
                     return Center(
@@ -48,6 +48,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                             itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
                               return RestaurantCard(
+                                  'restaurant$index',
                                   snapshot.data[index].restaurantId,
                                   snapshot.data[index].restaurantName,
                                   snapshot.data[index].cuisineType,

@@ -340,7 +340,7 @@ void main() async {
           child: MaterialApp(
             title: 'FoodStack',
             home: FoodCard(
-                "123", "French Fries", "Salted potato fries", 2.95, '', "987"),
+                0, "123", "French Fries", "Salted potato fries", 2.95, '', "987"),
             navigatorObservers: [mockObserver],
             routes: {
               '/details': (context) => DetailsScreen(),

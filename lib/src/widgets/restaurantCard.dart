@@ -6,6 +6,7 @@ import 'package:foodstack/src/styles/themeColors.dart';
 
 // ignore: must_be_immutable
 class RestaurantCard extends StatefulWidget {
+  final String keyString;
   final String restaurantId;
   final String restaurantName;
   final String cuisineType;
@@ -14,7 +15,7 @@ class RestaurantCard extends StatefulWidget {
   final String image;
   bool favourite = false;
 
-  RestaurantCard(this.restaurantId, this.restaurantName, this.cuisineType,
+  RestaurantCard(this.keyString, this.restaurantId, this.restaurantName, this.cuisineType,
       this.deliveryFee, this.rating, this.image,
       {this.favourite = false});
 
@@ -28,6 +29,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
     final FirestoreUsers firestoreService = FirestoreUsers();
 
     return TextButton(
+      key: Key(widget.keyString),
       onPressed: () {
         Navigator.pushNamed(context, '/menu', arguments: {
           'restaurantId': widget.restaurantId,

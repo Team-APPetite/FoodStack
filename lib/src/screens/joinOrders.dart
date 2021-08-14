@@ -56,7 +56,8 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
                           : snapshot2.data.length == 1
                               ? restaurantProvider
                                       .loadNearbyOrdersRestaurantsList(
-                                          snapshot1.data) == null
+                                          snapshot1.data) ==
+                                  null
                               : false) {
                         return Center(
                             child: Text(
@@ -67,6 +68,7 @@ class _JoinOrdersScreenState extends State<JoinOrdersScreen> {
                                 itemCount: snapshot2.data.length,
                                 itemBuilder: (context, index) {
                                   return RestaurantCard(
+                                      'restaurant$index',
                                       snapshot2.data[index].restaurantId,
                                       snapshot2.data[index].restaurantName,
                                       snapshot2.data[index].cuisineType,

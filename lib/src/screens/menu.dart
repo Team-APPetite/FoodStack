@@ -56,7 +56,6 @@ class _MenuScreenState extends State<MenuScreen> {
     return (showDialog(context: context, builder: Alerts.loseCart()) ?? false);
   }
 
-  // TODO Add restaurant image by putting GridView in column(expanded())
   @override
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context).settings.arguments as Map;
@@ -98,6 +97,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 children: [
                   (!isPooler || _orderCompletionTime != null)
                       ? AppButton(
+                          keyString: 'viewCartButton',
                           buttonText: 'VIEW CART',
                           onPressed: () {
                             Navigator.pushNamed(context, '/cart');
@@ -176,6 +176,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                 delegate: SliverChildBuilderDelegate(
                                     (context, index) {
                                   return FoodCard(
+                                      index,
                                       snapshot.data[index].foodId,
                                       snapshot.data[index].foodName,
                                       snapshot.data[index].description,

@@ -9,6 +9,7 @@ import 'package:foodstack/src/styles/themeColors.dart';
 import 'package:provider/provider.dart';
 
 class FoodCard extends StatefulWidget {
+  final int index;
   final String foodId;
   final String foodName;
   final String description;
@@ -17,6 +18,7 @@ class FoodCard extends StatefulWidget {
   final String restaurantId;
 
   FoodCard(
+    this.index,
     this.foodId,
     this.foodName,
     this.description,
@@ -123,7 +125,7 @@ class _FoodCardState extends State<FoodCard> {
         Align(
             alignment: Alignment.topRight,
             child: FloatingActionButton(
-              key: Key("addButton_${widget.foodName}"),
+              key: Key('addToCart${widget.index}'),
               child: Icon(Icons.add),
               mini: true,
               elevation: 2,

@@ -5,85 +5,121 @@ import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('FoodStack', () {
-    // Login screen
-    final loginEmail = find.byValueKey('loginEmail');
-    final loginPassword = find.byValueKey('loginPassword');
-    final loginButton = find.byValueKey('loginButton');
+  group(
+    'FoodStack',
+    () {
+      // Login screen
+      final loginEmail = find.byValueKey('loginEmail');
+      final loginPassword = find.byValueKey('loginPassword');
+      final loginButton = find.byValueKey('loginButton');
 
-    // Bottom Navigation Bar
-    final bottomNavigationBar = find.byValueKey('bottomNavigationBar');
-    final navigateToProfileScreen = find.byValueKey('navigateToProfileScreen');
+      // Bottom Navigation Bar
+      final bottomNavigationBar = find.byValueKey('bottomNavigationBar');
+      final navigateToProfileScreen =
+          find.byValueKey('navigateToProfileScreen');
 
-    // Profile Screen
-    final logoutButton = find.byValueKey('logoutButton');
+      // Home Screen
+      final newOrder = find.byValueKey('NewOrder');
 
-    FlutterDriver driver;
+      // Profile Screen
+      final logoutButton = find.byValueKey('logoutButton');
 
-    Future<bool> isPresent(SerializableFinder byValueKey,
-        {Duration timeout = const Duration(seconds: 5)}) async {
-      try {
-        await driver.waitFor(byValueKey, timeout: timeout);
-        return true;
-      } catch (exception) {
-        return false;
-      }
-    }
+      // New Order
+      final restaurant = find.byValueKey('restaurant0');
 
-    setUpAll(() async {
-      final envVars = Platform.environment;
-      print(envVars);
-      final adbPath = join(
-        envVars['ANDROID_SDK_ROOT'] ?? envVars['ANDROID_HOME'],
-        'platform-tools',
-        Platform.isWindows ? 'adb.exe' : 'adb',
-      );
-      await Process.run(adbPath, [
-        'shell',
-        'pm',
-        'grant',
-        'com.charismakausar.foodstack',
-        'android.permission.ACCESS_FINE_LOCATION'
-      ]);
-      driver = await FlutterDriver.connect();
-    });
+      // Menu
+      final addItem0ToCart = find.byValueKey('addToCart0');
+      final addItem1ToCart = find.byValueKey('addToCart1');
+      final viewCartButton = find.byValueKey('viewCartButton');
 
-    tearDownAll(() async {
-      if (driver != null) {
-        driver.close();
-      }
-    });
+      FlutterDriver driver;
 
-    test('Login', () async {
-      if (await isPresent(bottomNavigationBar)) {
-        await driver.tap(navigateToProfileScreen);
-        await driver.waitFor(find.text('Profile'));
-        await driver.tap(logoutButton);
-        await driver.waitFor(find.text('FoodStack'));
+      Future<bool> isPresent(SerializableFinder byValueKey,
+          {Duration timeout = const Duration(seconds: 5)}) async {
+        try {
+          await driver.waitFor(byValueKey, timeout: timeout);
+          return true;
+        } catch (exception) {
+          return false;
+        }
       }
 
-      await driver.tap(loginEmail);
-      await driver.enterText('appfoodstack@gmail.com');
+      setUpAll(() async {
+        final envVars = Platform.environment;
+        print(envVars);
+        final adbPath = join(
+          envVars['ANDROID_SDK_ROOT'] ?? envVars['ANDROID_HOME'],
+          'platform-tools',
+          Platform.isWindows ? 'adb.exe' : 'adb',
+        );
+        await Process.run(adbPath, [
+          'shell',
+          'pm',
+          'grant',
+          'com.charismakausar.foodstack',
+          'android.permission.ACCESS_FINE_LOCATION',
+          'android.permission.INTERNET',
+          'android.permission.VIBRATE',
+          'android.permission.RECEIVE_BOOT_COMPLETED'
+        ]);
+        driver = await FlutterDriver.connect();
+      });
 
-      await driver.tap(loginPassword);
-      await driver.enterText('123456');
+      tearDownAll(() async {
+        if (driver != null) {
+          driver.close();
+        }
+      });
 
-      await driver.tap(loginButton);
-      await driver.waitFor(find.text('Hungry? Order Now'));
+      test('Login', () async {
+        if (await isPresent(bottomNavigationBar)) {
+          await driver.tap(navigateToProfileScreen);
+          await driver.waitFor(find.text('Profile'));
+          await driver.tap(logoutButton);
+          await driver.waitFor(find.text('FoodStack'));
+        }
+
+        await driver.tap(loginEmail);
+        await driver.enterText('demouser@email.com');
+
+        await driver.tap(loginPassword);
+        await driver.enterText('123456');
+
+        await driver.tap(loginButton);
+        await driver.waitFor(find.text('Hungry? Order Now'));
+      },
+          timeout: Timeout(
+            Duration(minutes: 2),
+          ));
+
+      test('Add items to cart', () async {
+        await driver.waitFor(find.text('Hungry? Order Now'));
+        await driver.tap(newOrder);
+        await driver.waitFor(find.text('Start a New Order'));
+        await driver.tap(restaurant);
+        await driver.waitFor(find.text('VIEW CART'));
+        await driver.tap(addItem0ToCart);
+        await driver.tap(addItem0ToCart);
+        await driver.waitFor(find.text('x2'));
+        await driver.tap(addItem1ToCart);
+        await driver.waitFor(find.text('x1'));
+        await driver.waitFor(find.text('3'));
+        await driver.tap(viewCartButton);
+      },
+          timeout: Timeout(
+            Duration(minutes: 2),
+          ));
+
+      // test('Logout', () async {
+      //   await driver.waitFor(bottomNavigationBar);
+      //   await driver.tap(navigateToProfileScreen);
+      //   await driver.waitFor(find.text('Profile'));
+      //   await driver.tap(logoutButton);
+      //   await driver.waitFor(find.text('FoodStack'));
+      // },
+      //     timeout: Timeout(
+      //       Duration(minutes: 2),
+      //     ));
     },
-        timeout: Timeout(
-          Duration(minutes: 2),
-        ));
-
-    test('Logout', () async {
-      await driver.waitFor(bottomNavigationBar);
-      await driver.tap(navigateToProfileScreen);
-      await driver.waitFor(find.text('Profile'));
-      await driver.tap(logoutButton);
-      await driver.waitFor(find.text('FoodStack'));
-    });
-  },
-      timeout: Timeout(
-        Duration(minutes: 2),
-      ));
+  );
 }
